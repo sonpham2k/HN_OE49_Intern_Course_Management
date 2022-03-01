@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\LecturerHomeController;
+use App\Http\Controllers\UserController;
+use App\Models\Role;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,4 +20,9 @@ Route::prefix('users')->group(function () {
     Route::get('login', [UserController::class, 'login'])->name('login');
     Route::post('login', [UserController::class, 'store']);
     Route::get('home', [UserController::class, 'home'])->name('home');
+});
+
+Route::prefix('lecturers')->group(function () {
+    Route::get('home', [LecturerHomeController::class, 'home'])->name('home-lecturer');
+    Route::get('timetable', [LecturerHomeController::class, 'timeTable'])->name('timetable-lecturer');
 });
