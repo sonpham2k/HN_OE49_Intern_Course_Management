@@ -1,0 +1,17 @@
+{
+    "login": "Login",
+    "lang": "Languages",
+    "signin": "Sign In",
+    "user": "Username",
+    "pass": "Password",
+    "forgot": "Forgot password",
+    "forgotyour": "Forgot your password",
+    "enteremal": "Enter your username",
+    "send": "Send",
+    "back": "Back",
+    "en": "English",
+    "vi": "Vietnamese",
+    "resetpass": "Reset Password",
+    "newpass": "New Password",
+    "confirmpass": "Confirm Password"
+}

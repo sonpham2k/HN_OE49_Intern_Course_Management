@@ -1,9 +1,12 @@
 <?php
 
+namespace App\Http\Controllers;
+
 use App\Http\Controllers\LecturerHomeController;
 use App\Http\Controllers\UserController;
 use App\Models\Role;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,4 +31,11 @@ Route::prefix('lecturers')->group(function () {
     Route::get('liststudent/{course_id}', [LecturerHomeController::class, 'listStudent'])->name('liststudent-lecturer');
     Route::get('edit', [LecturerHomeController::class, 'edit'])->name('edit-lecturer');
     Route::put('update', [LecturerHomeController::class, 'update'])->name('update-lecturer');
+});
+
+Route::group(['middleware' => 'localization'], function () {
+    Route::get('/login', [LoginController::class, 'login'])->name('login');
+    Route::get('/forgot', [LoginController::class, 'forgot'])->name('forgot');
+    Route::get('/reset', [LoginController::class, 'resetpass'])->name('reset');
+    Route::get('change-language/{language}', [Localization::class, 'changeLanguage'])->name('change-language');
 });

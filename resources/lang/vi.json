@@ -1,0 +1,17 @@
+{
+    "login": "Đăng nhập hệ thống",
+    "lang": "Ngôn ngữ",
+    "signin": "Đăng nhập",
+    "user": "Tên đăng nhập",
+    "pass": "Mật khẩu",
+    "forgot": "Quên mật khẩu",
+    "forgotyour": "Bạn đã quên mật khẩu",
+    "enteremal": "Nhập tên đăng nhập của bạn",
+    "send": "Gửi",
+    "back": "Trở về",
+    "en": "Tiếng Anh",
+    "vi": "Tiếng Việt",
+    "resetpass": "Đặt lại mật khẩu",
+    "newpass": "Mật khẩu mới",
+    "confirmpass": "Xác nhận mật khẩu mới"
+}
