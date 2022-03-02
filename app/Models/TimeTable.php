@@ -10,6 +10,7 @@ class TimeTable extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $table = 'timetables';
     protected $fillable = [
         'day',
         'lesson',

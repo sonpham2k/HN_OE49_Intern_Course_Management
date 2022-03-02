@@ -28,25 +28,32 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($timetables as $key => $timetable)
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex px-2 py-1">
-                                                    <div class="d-flex flex-column justify-content-center">
-                                                        <h6 class="mb-0 text-sm">{{ ++$key }}</h6>
+                                    @php
+                                        $key = 1;
+                                    @endphp
+                                    @foreach ($users->courses as $course)
+                                        @foreach ($course->timetables as $timetable)
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex px-2 py-1">
+                                                        <div class="d-flex flex-column justify-content-center">
+                                                            <h6 class="mb-0 text-sm">{{ $key++ }}</h6>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <<h6 class="mb-0 text-sm">{{ $timetable->name }}</h6>
-                                            </td>
-                                            <td class="align-middle text-center text-sm">
-                                                <<h6 class="mb-0 text-sm">{{ $timetable->day }}</h6>
-                                            </td>
-                                            <td class="align-middle text-center">
-                                                <<h6 class="mb-0 text-sm">{{ $timetable->lesson }}</h6>
-                                            </td>
-                                        </tr>
+                                                </td>
+                                                <td>
+                                                    <h6 class="mb-0 text-sm"><a
+                                                            href="{{ route('liststudent-lecturer', ['course_id' => $course->id]) }}">{{ $course->name }}</a>
+                                                    </h6>
+                                                </td>
+                                                <td class="align-middle text-center text-sm">
+                                                    <h6 class="mb-0 text-sm">{{ $timetable->day }}</h6>
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <h6 class="mb-0 text-sm">{{ $timetable->lesson }}</h6>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     @endforeach
                                 </tbody>
                             </table>
