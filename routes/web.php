@@ -25,4 +25,7 @@ Route::prefix('users')->group(function () {
 Route::prefix('lecturers')->group(function () {
     Route::get('home', [LecturerHomeController::class, 'home'])->name('home-lecturer');
     Route::get('timetable', [LecturerHomeController::class, 'timeTable'])->name('timetable-lecturer');
+    Route::get('liststudent/{course_id}', [LecturerHomeController::class, 'listStudent'])->name('liststudent-lecturer');
+    Route::get('edit', [LecturerHomeController::class, 'edit'])->name('edit-lecturer');
+    Route::put('update', [LecturerHomeController::class, 'update'])->name('update-lecturer');
 });
