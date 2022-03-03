@@ -13,5 +13,16 @@
     "vi": "Tiếng Việt",
     "resetpass": "Đặt lại mật khẩu",
     "newpass": "Mật khẩu mới",
-    "confirmpass": "Xác nhận mật khẩu mới"
+    "confirmpass": "Xác nhận mật khẩu mới",
+    "lecture": "GIẢNG VIÊN",
+    "home": "Trang chủ",
+    "timeTable": "Thời khóa biểu",
+    "profile": "Thông tin cá nhân",
+    "signout": "Đăng xuất",
+    "Subject": "Tên môn học",
+    "Day": "Ngày (Thứ)",
+    "Lesson": "Thời gian (Kíp)",
+    "nameStudent": "Họ và tên",
+    "dobStudent": "Ngày sinh",
+    "addressStudent": "Địa chỉ"
 }

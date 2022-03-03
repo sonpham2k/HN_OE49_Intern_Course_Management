@@ -13,5 +13,16 @@
     "vi": "Vietnamese",
     "resetpass": "Reset Password",
     "newpass": "New Password",
-    "confirmpass": "Confirm Password"
+    "confirmpass": "Confirm Password",
+    "lecture": "LECTURER",
+    "home": "Home",
+    "timeTable": "Time table",
+    "profile": "My profile",
+    "signout": "Sign Out",
+    "Subject": "Subject",
+    "Day": "Day",
+    "Lesson": "Lesson",
+    "nameStudent": "Full Name",
+    "dobStudent": "Day of Birth",
+    "addressStudent": "Address"
 }

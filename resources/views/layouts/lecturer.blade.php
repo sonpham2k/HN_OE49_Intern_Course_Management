@@ -41,9 +41,9 @@
         <div class="sidenav-header">
             <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
                 aria-hidden="true" id="iconSidenav"></i>
-            <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/material-dashboard/pages/dashboard "
+            <a class="navbar-brand m-0"
                 target="_blank">
-                <span class="ms-1 font-weight-bold text-white">{{ __('Lecture Dashboard') }}</span>
+                <span class="ms-1 font-weight-bold text-white">{{ __('lecture') }}</span>
             </a>
         </div>
         <hr class="horizontal light mt-0 mb-2">
@@ -54,7 +54,7 @@
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">dashboard</i>
                         </div>
-                        <span class="nav-link-text ms-1">{{ __('Dashboard') }}</span>
+                        <span class="nav-link-text ms-1">{{ __('home') }}</span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -62,15 +62,15 @@
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">table_view</i>
                         </div>
-                        <span class="nav-link-text ms-1">{{ __('Time Table') }}</span>
+                        <span class="nav-link-text ms-1">{{ __('timeTable') }}</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white " href="">
+                    <a class="nav-link text-white " href="{{ route('edit-lecturer') }}">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">person</i>
                         </div>
-                        <span class="nav-link-text ms-1">{{ __('Profile') }}</span>
+                        <span class="nav-link-text ms-1">{{ __('profile') }}</span>
                     </a>
                 </li>
             </ul>
@@ -83,8 +83,14 @@
             <div class="container-fluid py-1 px-3">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-                        <li class="breadcrumb-item text-sm"><a href="javascript:;">{{ __('Eng') }}</a></li>
-                        <li class="breadcrumb-item text-sm"><a href="javascript:;">{{ __('VN') }}</a></li>
+                        <li class="breadcrumb-item text-sm"> <a href="{{ route('change-language', ['vi']) }}"><img
+                                    height="25px" width="25px"
+                                    src=" {{ asset('bower_components/bower_project1/img/vn.png') }}"></a>
+                        </li>
+                        <li class="breadcrumb-item text-sm"> <a href="{{ route('change-language', ['en']) }}"><img
+                                    height="25px" width="25px"
+                                    src=" {{ asset('bower_components/bower_project1/img/gb.png') }}"></a>
+                        </li>
                     </ol>
                 </nav>
                 <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
@@ -98,7 +104,7 @@
                         <li class="nav-item d-flex align-items-center">
                             <a href="javascript:;" class="nav-link text-body font-weight-bold px-0">
                                 <i class="fa fa-user me-sm-1"></i>
-                                <span class="d-sm-inline d-none">{{ __('Sign Out') }}</span>
+                                <span class="d-sm-inline d-none">{{ __('signout') }}</span>
                             </a>
                         </li>
                         <li class="nav-item d-xl-none ps-3 d-flex align-items-center">

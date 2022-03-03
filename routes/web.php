@@ -19,21 +19,22 @@ use App\Http\Controllers\LoginController;
 |
 */
 
-Route::prefix('users')->group(function () {
-    Route::get('login', [UserController::class, 'login'])->name('login');
-    Route::post('login', [UserController::class, 'store']);
-    Route::get('home', [UserController::class, 'home'])->name('home');
-});
-
-Route::prefix('lecturers')->group(function () {
-    Route::get('home', [LecturerHomeController::class, 'home'])->name('home-lecturer');
-    Route::get('timetable', [LecturerHomeController::class, 'timeTable'])->name('timetable-lecturer');
-    Route::get('liststudent/{course_id}', [LecturerHomeController::class, 'listStudent'])->name('liststudent-lecturer');
-    Route::get('edit', [LecturerHomeController::class, 'edit'])->name('edit-lecturer');
-    Route::put('update', [LecturerHomeController::class, 'update'])->name('update-lecturer');
-});
-
 Route::group(['middleware' => 'localization'], function () {
+    Route::prefix('users')->group(function () {
+        Route::get('login', [UserController::class, 'login'])->name('login');
+        Route::post('login', [UserController::class, 'store']);
+        Route::get('home', [UserController::class, 'home'])->name('home');
+    });
+
+    Route::prefix('lecturers')->group(function () {
+        Route::get('home', [LecturerHomeController::class, 'home'])->name('home-lecturer');
+        Route::get('timetable', [LecturerHomeController::class, 'timeTable'])->name('timetable-lecturer');
+        Route::get('liststudent/{course_id}', [LecturerHomeController::class, 'listStudent'])
+            ->name('liststudent-lecturer');
+        Route::get('edit', [LecturerHomeController::class, 'edit'])->name('edit-lecturer');
+        Route::put('update', [LecturerHomeController::class, 'update'])->name('update-lecturer');
+    });
+
     Route::get('/login', [LoginController::class, 'login'])->name('login');
     Route::get('/forgot', [LoginController::class, 'forgot'])->name('forgot');
     Route::get('/reset', [LoginController::class, 'resetpass'])->name('reset');
