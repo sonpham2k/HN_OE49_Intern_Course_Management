@@ -18,13 +18,13 @@
                                             {{ __('ID') }}</th>
                                         <th
                                             class="text-uppercase text-secondary text-xxl font-weight-bolder opacity-7 ps-2">
-                                            {{ __('nameStudent') }}</th>
+                                            {{ __('name') }}</th>
                                         <th
                                             class="text-center text-uppercase text-secondary text-xxl font-weight-bolder opacity-7">
-                                            {{ __('dobStudent') }}</th>
+                                            {{ __('dob') }}</th>
                                         <th
                                             class="text-center text-uppercase text-secondary text-xxl font-weight-bolder opacity-7">
-                                            {{ __('addressStudent') }}</th>
+                                            {{ __('addressS') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>

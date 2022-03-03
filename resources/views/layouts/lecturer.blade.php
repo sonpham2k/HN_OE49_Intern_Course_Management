@@ -32,6 +32,11 @@
     <!-- CSS Files -->
     <link id="pagestyle" href="{{ asset('bower_components/bower_project1/css/user/material-dashboard.css?v=3.0.0') }}"
         rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('bower_components/bootstrap-iso/index.css') }}" />
+    <link rel="stylesheet"
+        href="{{ asset('bower_components/bootstrap-datepicker3/index.css') }}" />
+        <link rel="stylesheet"
+        href="{{ asset('bower_components/bower_project1/css/user/app.css') }}" />
 </head>
 
 <body class="g-sidenav-show  bg-gray-200">
@@ -41,8 +46,7 @@
         <div class="sidenav-header">
             <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
                 aria-hidden="true" id="iconSidenav"></i>
-            <a class="navbar-brand m-0"
-                target="_blank">
+            <a class="navbar-brand m-0" target="_blank">
                 <span class="ms-1 font-weight-bold text-white">{{ __('lecture') }}</span>
             </a>
         </div>
@@ -58,19 +62,31 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white " href="{{ route('timetable-lecturer') }}">
+                    <a class="nav-link text-white " href="{{ route('timetable-lecturer', session('user')->id) }}">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">table_view</i>
                         </div>
                         <span class="nav-link-text ms-1">{{ __('timeTable') }}</span>
                     </a>
                 </li>
+                <li class="nav-item mt-3">
+                    <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages
+                    </h6>
+                </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white " href="{{ route('edit-lecturer') }}">
+                    <a class="nav-link text-white " href="{{ route('lecturers.edit', session('user')->id) }}">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">person</i>
                         </div>
                         <span class="nav-link-text ms-1">{{ __('profile') }}</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white " href="{{ route('reset') }}">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">lock</i>
+                        </div>
+                        <span class="nav-link-text ms-1">{{ __('changePass') }}</span>
                     </a>
                 </li>
             </ul>
@@ -102,7 +118,7 @@
                     </div>
                     <ul class="navbar-nav  justify-content-end">
                         <li class="nav-item d-flex align-items-center">
-                            <a href="javascript:;" class="nav-link text-body font-weight-bold px-0">
+                            <a href="{{ route('logout') }}" class="nav-link text-body font-weight-bold px-0">
                                 <i class="fa fa-user me-sm-1"></i>
                                 <span class="d-sm-inline d-none">{{ __('signout') }}</span>
                             </a>
@@ -221,6 +237,10 @@
             Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
         }
     </script>
+    <script type="text/javascript" src="{{ asset('bower_components/jquery-1.11.3.min/index.js') }}"></script>
+    <script type="text/javascript"
+        src="{{ asset('bower_components/bootstrap-datepicker.min/index.js') }}"></script>
+    <script src="{{ asset('bower_components/bower_project1/js/user/datetime.js') }}"></script>
     <script async defer src="{{ asset('bower_components/bower_project1/js/user/buttons/index.js') }}"></script>
     <script src="{{ asset('bower_components/bower_project1/js/user/material-dashboard.min.js?v=3.0.0') }}"></script>
 </body>
