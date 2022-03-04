@@ -10,7 +10,6 @@
                         </div>
                     </div>
                     <form method="GET">
-                        @csrf
                         <div class="centerForm">
                             <b>Học kì: </b>
                             <select name="semester">

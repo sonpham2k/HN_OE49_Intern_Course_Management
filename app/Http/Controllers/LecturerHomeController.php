@@ -17,14 +17,16 @@ class LecturerHomeController extends Controller
         return view('lecturer.home');
     }
 
-    public function getTimeTable($id)
+    public function getTimeTable()
     {
         $semesters = Semester::all();
 
-        $users = User::with(['courses' => function ($query) {
-            $query->with('timetables', 'semesters');
-        }])
-            ->where('id', $id)
+        $users = User::with([
+            'courses' => function ($query) {
+                $query->with('timetables', 'semesters');
+            },
+        ])
+            ->where('id', Auth::id())
             ->firstOrFail();
 
         return view('lecturer.timetable', compact('users', 'semesters'));

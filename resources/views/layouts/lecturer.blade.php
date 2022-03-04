@@ -33,10 +33,8 @@
     <link id="pagestyle" href="{{ asset('bower_components/bower_project1/css/user/material-dashboard.css?v=3.0.0') }}"
         rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('bower_components/bootstrap-iso/index.css') }}" />
-    <link rel="stylesheet"
-        href="{{ asset('bower_components/bootstrap-datepicker3/index.css') }}" />
-        <link rel="stylesheet"
-        href="{{ asset('bower_components/bower_project1/css/user/app.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bower_components/bootstrap-datepicker3/index.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bower_components/bower_project1/css/user/app.css') }}" />
 </head>
 
 <body class="g-sidenav-show  bg-gray-200">
@@ -74,7 +72,7 @@
                     </h6>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white " href="{{ route('lecturers.edit', session('user')->id) }}">
+                    <a class="nav-link text-white " href="{{ route('lecturers.edit') }}">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">person</i>
                         </div>
@@ -238,8 +236,7 @@
         }
     </script>
     <script type="text/javascript" src="{{ asset('bower_components/jquery-1.11.3.min/index.js') }}"></script>
-    <script type="text/javascript"
-        src="{{ asset('bower_components/bootstrap-datepicker.min/index.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bower_components/bootstrap-datepicker.min/index.js') }}"></script>
     <script src="{{ asset('bower_components/bower_project1/js/user/datetime.js') }}"></script>
     <script async defer src="{{ asset('bower_components/bower_project1/js/user/buttons/index.js') }}"></script>
     <script src="{{ asset('bower_components/bower_project1/js/user/material-dashboard.min.js?v=3.0.0') }}"></script>
