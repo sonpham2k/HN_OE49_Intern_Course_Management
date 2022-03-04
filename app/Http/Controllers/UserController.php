@@ -10,41 +10,42 @@ class UserController extends Controller
 {
     public function login()
     {
-        return view('login');
+        return view('login.login');
     }
 
     public function store(UserStoreRequest $request)
     {
         if (Auth::attempt([
-            'username' => $request->username(),
-            'password' => $request->password(),
+            'email' => $request->input('email'),
+            'password' => $request->input('password'),
         ])) {
-            $role = Auth::user()->role_id;
-            $request->session()->put('role', $role);
+            $request->session()->put('user', Auth::user());
 
             return redirect()->route('home');
         }
         $data = "__('Login fail')";
 
-        return view('login', compact('data'));
+        return view('login.login', compact('data'));
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
         Auth::logout();
+        $request->session()->forget('user');
 
-        return view('login');
+        return redirect()->route('login');
     }
 
     public function home()
     {
-        $role = session('role');
+        $role = session('user')->role_id;
+        $user = session('user');
         if ($role == config('auth.roles.admin')) {
-            return view('admin.home');
-        } elseif ($role == config('auth.roles.lecturer')) {
-            return view('lecturer.home');
+            return view('admin.home', compact('user'));
+        } elseif ($role == config('auth.roles.lecture')) {
+            return view('lecturer.home', compact('user'));
         } else {
-            return view('student.home');
+            return view('student.home', compact('user'));
         }
     }
 }

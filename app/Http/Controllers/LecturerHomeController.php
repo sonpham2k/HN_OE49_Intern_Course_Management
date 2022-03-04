@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\UpdateLecturerRequest;
+use App\Http\Requests\UpdateProfileRequest;
 use App\Models\Course;
 use App\Models\User;
+use App\Models\Semester;
 
 class LecturerHomeController extends Controller
 {
@@ -15,33 +17,17 @@ class LecturerHomeController extends Controller
         return view('lecturer.home');
     }
 
-    public function timeTable()
+    public function getTimeTable($id)
     {
+        $semesters = Semester::all();
+
         $users = User::with(['courses' => function ($query) {
-            $query->with('timetables');
+            $query->with('timetables', 'semesters');
         }])
-            ->where('id', Auth::user()->id)
+            ->where('id', $id)
             ->firstOrFail();
 
-        return view('lecturer.timetable', compact('users'));
-    }
-
-    public function edit()
-    {
-        $user = Auth::user();
-
-        return view('lecturer.edit', compact('user'));
-    }
-
-    public function update(Request $request)
-    {
-        $user = User::where('id', Auth::user()->id)->findOrFail();
-        $user->fullname = $request->fullname;
-        $user->dob = $request->dob;
-        $user->address = $request->address;
-        $user->save();
-
-        return view('lecturer.edit');
+        return view('lecturer.timetable', compact('users', 'semesters'));
     }
 
     public function listStudent($course_id)

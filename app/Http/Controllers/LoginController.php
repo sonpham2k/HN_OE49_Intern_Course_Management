@@ -8,16 +8,16 @@ class LoginController extends Controller
 {
     public function login()
     {
-        return view('Login.login');
+        return view('login.login');
     }
 
     public function forgot()
     {
-        return view('Login.forgot');
+        return view('login.forgot');
     }
 
     public function resetpass()
     {
-        return view('Login.resetpass');
+        return view('login.resetpass');
     }
 }

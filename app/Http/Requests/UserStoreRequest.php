@@ -25,7 +25,7 @@ class UserStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'username' => 'required|min:6|max:255|string',
+            'email' => 'required|min:6|max:255|email',
             'password' => 'required|min:6|max:255',
         ];
     }
@@ -33,13 +33,13 @@ class UserStoreRequest extends FormRequest
     public function messages()
     {
         return [
-            'password.required' => '__("Password required")',
-            'username.required' => '__("Username required")',
-            'username.string' => '__("Username is string")',
-            'password.min' => '__("Password min")',
-            'password.max' => '__("Password max")',
-            'username.min' => '__("Username min")',
-            'username.max' => '__("Username max")',
+            'password.required' => __('Password required'),
+            'email.required' => __('email required'),
+            'email.email' => __('email is string'),
+            'password.min' => __('Password min'),
+            'password.max' => __('Password max'),
+            'email.min' => __('email min'),
+            'email.max' => __('email max'),
         ];
     }
 }
