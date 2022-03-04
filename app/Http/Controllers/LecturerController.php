@@ -56,9 +56,12 @@ class LecturerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit()
     {
-        $user = User::findOrFail($id);
+        $user = Auth::user();
+        if (!$user) {
+            abort('404');
+        }
 
         return view('lecturer.edit', compact('user'));
     }
@@ -70,18 +73,17 @@ class LecturerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateProfileRequest $request, $id)
+    public function update(UpdateProfileRequest $request)
     {
-        User::where('id', $id)->update([
+        User::where('id', Auth::id())->update([
             'fullname' => $request->input('name'),
             'dob' => $request->input('date'),
             'address' => $request->input('address'),
         ]);
-
-        $success = '{{ __("changeSucess") }}';
+        $success = __('changeSucess');
 
         return redirect()
-            ->route('lecturers.edit', $id)
+            ->route('lecturers.edit')
             ->with('success');
     }
 

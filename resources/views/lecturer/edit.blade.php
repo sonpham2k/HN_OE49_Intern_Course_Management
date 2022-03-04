@@ -15,7 +15,7 @@
     <div class="col-20 col-xl-4 centerForm">
         <div class="card card-plain h-100">
             <div class="card my-4">
-                <form method="POST" role="form" class="text-start" action="{{ route('lecturers.update', $user->id) }}">
+                <form method="POST" role="form" class="text-start" action="{{ route('lecturers.update') }}">
                     @method("PUT")
                     @csrf
                     <div class="input-group input-group-outline mb-5">

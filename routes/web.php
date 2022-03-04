@@ -29,11 +29,12 @@ Route::group(['middleware' => 'localization'], function () {
 
     Route::prefix('lecturer')->group(function () {
         Route::get('home', [LecturerHomeController::class, 'home'])->name('home-lecturer');
-        Route::get('timetable/{user}', [LecturerHomeController::class, 'getTimeTable'])->name('timetable-lecturer');
+        Route::get('timetable', [LecturerHomeController::class, 'getTimeTable'])->name('timetable-lecturer');
         Route::get('liststudent/{course_id}', [LecturerHomeController::class, 'listStudent'])
                 ->name('liststudent-lecturer');
     });
-    Route::resource('lecturers', LecturerController::class);
+    Route::get('lecturers/edit', [LecturerController::class, 'edit'])->name('lecturers.edit');
+    Route::put('lecturers', [LecturerController::class, 'update'])->name('lecturers.update');
     Route::get('/login', [LoginController::class, 'login'])->name('login');
     Route::get('/forgot', [LoginController::class, 'forgot'])->name('forgot');
     Route::get('/reset', [LoginController::class, 'resetpass'])->name('reset');
