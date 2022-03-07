@@ -49,5 +49,7 @@
     "email max": "Email length max is 255",
     "search": "Search",
     "semester": "Semester",
-    "year": "Year"
+    "year": "Year",
+    "student": "Student",
+    "register": "Register for courses"
 }

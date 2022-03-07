@@ -40,9 +40,10 @@ class UserController extends Controller
     {
         $role = session('user')->role_id;
         $user = session('user');
+
         if ($role == config('auth.roles.admin')) {
             return view('admin.home', compact('user'));
-        } elseif ($role == config('auth.roles.lecture')) {
+        } elseif ($role == config('auth.roles.lecturer')) {
             return view('lecturer.home', compact('user'));
         } else {
             return view('student.home', compact('user'));
