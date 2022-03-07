@@ -13,7 +13,12 @@
                         <div class="centerForm">
                             <b>Học kì: </b>
                             <select name="semester">
-                                <option></option>
+                                @foreach ($semesters as $key => $semester)
+                                    <option value="{{ $semester->begin }}{{ $semester->name }}"> Học kì
+                                        {{ $semester->name }} năm học
+                                        {{ $semester->begin }}-{{ $semester->begin + 1 }}
+                                    </option>
+                                @endforeach
                             </select>
                             <input type="submit" value="{{ __('search') }}">
                         </div>
@@ -41,6 +46,48 @@
                                                 {{ __('year') }}</th>
                                         </tr>
                                     </thead>
+                                    <tbody>
+                                        @if (isset($_GET['semester']))
+                                            @php
+                                                $key = 1;
+                                                $semesValue = substr($_GET['semester'], -1);
+                                                $beginValue = substr($_GET['semester'], 0, 4);
+                                            @endphp
+                                            @foreach ($users->courses as $course)
+                                                @if ($course->semester->begin == $beginValue && $course->semester->name == $semesValue)
+                                                    @foreach ($course->timetables as $timetable)
+                                                        <tr>
+                                                            <td>
+                                                                <div class="d-flex px-2 py-1">
+                                                                    <div class="d-flex flex-column justify-content-center">
+                                                                        <h6 class="mb-0 text-sm">{{ $key++ }}</h6>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <h6 class="mb-0 text-sm">{{ $course->name }}</h6>
+                                                            </td>
+                                                            <td class="align-middle text-center text-sm">
+                                                                <h6 class="mb-0 text-sm">{{ $timetable->day }}</h6>
+                                                            </td>
+                                                            <td class="align-middle text-center">
+                                                                <h6 class="mb-0 text-sm">{{ $timetable->lesson }}</h6>
+                                                            </td>
+                                                            <td class="align-middle text-center">
+                                                                <h6 class="mb-0 text-sm">
+                                                                    {{ $course->semester->name }}</h6>
+                                                            </td>
+                                                            <td class="align-middle text-center">
+                                                                <h6 class="mb-0 text-sm">
+                                                                    {{ $course->semester->begin }}-{{ $course->semester->end }}
+                                                                </h6>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                    </tbody>
                                 </table>
                             </div>
                         </div>

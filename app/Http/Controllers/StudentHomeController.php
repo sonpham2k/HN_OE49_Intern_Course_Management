@@ -18,7 +18,17 @@ class StudentHomeController extends Controller
 
     public function getTimeTable()
     {
-        return view('student.timetable');
+        $semesters = Semester::all();
+
+        $users = User::with([
+            'courses' => function ($query) {
+                $query->with(['timetables', 'semester']);
+            },
+        ])
+            ->where('id', Auth::id())
+            ->firstOrFail();
+
+        return view('student.timetable', compact('users', 'semesters'));
     }
 
     public function registerCourse($course_id)

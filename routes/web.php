@@ -32,9 +32,9 @@ Route::group(['middleware' => 'localization'], function () {
         Route::get('timetable', [LecturerHomeController::class, 'getTimeTable'])->name('timetable-lecturer');
         Route::get('liststudent/{course_id}', [LecturerHomeController::class, 'listStudent'])
                 ->name('liststudent-lecturer');
+        Route::get('edit', [LecturerHomeController::class, 'edit'])->name('lecturers.edit');
+        Route::put('update', [LecturerHomeController::class, 'update'])->name('lecturers.update');
     });
-    Route::get('lecturers/edit', [LecturerController::class, 'edit'])->name('lecturers.edit');
-    Route::put('lecturers', [LecturerController::class, 'update'])->name('lecturers.update');
 
     Route::prefix('student')->group(function () {
         Route::get('home', [StudentHomeController::class, 'home'])->name('home-student');
