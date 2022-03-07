@@ -22,7 +22,7 @@ class Course extends Model
 
     public function semesters()
     {
-        return $this->hasMany(Semester::class);
+        return $this->belongsTo(Semester::class);
     }
 
     public function timeTables()

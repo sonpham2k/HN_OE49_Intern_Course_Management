@@ -23,7 +23,7 @@ class LecturerHomeController extends Controller
 
         $users = User::with([
             'courses' => function ($query) {
-                $query->with('timetables', 'semesters');
+                $query->with(['timetables', 'semesters']);
             },
         ])
             ->where('id', Auth::id())

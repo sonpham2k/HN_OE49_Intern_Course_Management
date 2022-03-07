@@ -19,6 +19,6 @@ class Semester extends Model
 
     public function courses()
     {
-        $this->belongsTo(Course::class);
+        $this->hasMany(Course::class);
     }
 }
