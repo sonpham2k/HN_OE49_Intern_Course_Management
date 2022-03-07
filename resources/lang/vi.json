@@ -49,5 +49,7 @@
     "email max": "Email có độ dài tối đa 255 kí tự",
     "search": "Tìm kiếm",
     "semester": "Học kì",
-    "year": "Năm học"
+    "year": "Năm học",
+    "student": "Sinh viên",
+    "register": "Đăng kí môn học"
 }
