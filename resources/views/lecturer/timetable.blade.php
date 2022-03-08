@@ -47,16 +47,14 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-
                                         @if (isset($_GET['semester']))
                                             @php
                                                 $key = 1;
                                                 $semesValue = substr($_GET['semester'], -1);
                                                 $beginValue = substr($_GET['semester'], 0, 4);
                                             @endphp
-
                                             @foreach ($users->courses as $course)
-                                                @if ($course->semesters[0]->begin == $beginValue && $course->semesters[0]->name == $semesValue)
+                                                @if ($course->semester->begin == $beginValue && $course->semester->name == $semesValue)
                                                     @foreach ($course->timetables as $timetable)
                                                         <tr>
                                                             <td>
@@ -79,11 +77,11 @@
                                                             </td>
                                                             <td class="align-middle text-center">
                                                                 <h6 class="mb-0 text-sm">
-                                                                    {{ $course->semesters[0]->name }}</h6>
+                                                                    {{ $course->semester->name }}</h6>
                                                             </td>
                                                             <td class="align-middle text-center">
                                                                 <h6 class="mb-0 text-sm">
-                                                                    {{ $course->semesters[0]->begin }}-{{ $course->semesters[0]->end }}
+                                                                    {{ $course->semester->begin }}-{{ $course->semester->end }}
                                                                 </h6>
                                                             </td>
                                                         </tr>

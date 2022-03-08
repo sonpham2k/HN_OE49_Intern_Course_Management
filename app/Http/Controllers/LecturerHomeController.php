@@ -23,7 +23,7 @@ class LecturerHomeController extends Controller
 
         $users = User::with([
             'courses' => function ($query) {
-                $query->with(['timetables', 'semesters']);
+                $query->with(['timetables', 'semester']);
             },
         ])
             ->where('id', Auth::id())
@@ -39,5 +39,34 @@ class LecturerHomeController extends Controller
             ->firstOrFail();
 
         return view('lecturer.liststudent', compact('users'));
+    }
+
+    public function show($id)
+    {
+        return redirect()->route('timetable-lecturer');
+    }
+
+    public function edit()
+    {
+        $user = Auth::user();
+        if (!$user) {
+            abort('404');
+        }
+
+        return view('lecturer.edit', compact('user'));
+    }
+
+    public function update(UpdateProfileRequest $request)
+    {
+        User::where('id', Auth::id())->update([
+            'fullname' => $request->input('name'),
+            'dob' => $request->input('date'),
+            'address' => $request->input('address'),
+        ]);
+        $success = __('changeSucess');
+
+        return redirect()
+            ->route('lecturers.edit')
+            ->with('success');
     }
 }
