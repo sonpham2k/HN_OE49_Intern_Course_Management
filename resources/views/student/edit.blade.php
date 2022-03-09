@@ -11,23 +11,12 @@
             </div>
         </div>
     </div>
-
     <div class="col-20 col-xl-4 centerForm">
         <div class="card card-plain h-100">
             <div class="card my-4">
                 <form method="POST" role="form" class="text-start" action="{{ route('students.update') }}">
                     @method("PUT")
                     @csrf
-                    <div class="input-group input-group-outline mb-5">
-                        <label class="form-label"><span style="color: black">{{ __('fix') }}</span></label>
-                    </div>
-                    {{-- ID --}}
-                    <div class="input-group input-group-outline mb-5">
-                        <label class="form-label ">ID: (*)</label>
-                    </div>
-                    <div class="input-group input-group-outline mb-3">
-                        <label class="form-control">{{ $user->id }}</label>
-                    </div>
                     {{-- Full name --}}
                     <div class="input-group input-group-outline mb-2">
                         <label class="label">{{ __('name') }}:</label>
@@ -58,13 +47,6 @@
                     @error('address')
                         <span style="color: red">{{ $message }}</span>
                     @enderror
-                    {{-- Email --}}
-                    <div class="input-group input-group-outline mb-5">
-                        <label class="form-label">Email: (*)</label>
-                    </div>
-                    <div class="input-group input-group-outline mb-3">
-                        <label class="form-control">{{ $user->email }}</label>
-                    </div>
                     {{-- button --}}
                     <div class="text-center">
                         <button type="submit" class="btn bg-gradient-primary w-70 my-4 mb-2">{{ __('save') }}</button>

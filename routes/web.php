@@ -41,6 +41,7 @@ Route::group(['middleware' => 'localization'], function () {
         Route::get('timetable', [StudentHomeController::class, 'getTimeTable'])->name('timetable-student');
         Route::get('edit', [StudentHomeController::class, 'edit'])->name('students.edit');
         Route::put('update', [StudentHomeController::class, 'update'])->name('students.update');
+        Route::get('register', [StudentHomeController::class, 'registerCourse'])->name('students.register');
     });
 
     Route::get('/login', [LoginController::class, 'login'])->name('login');
