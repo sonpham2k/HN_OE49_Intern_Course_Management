@@ -72,5 +72,14 @@
     "Edit Course": "Sửa khoá học",
     "Course List of lecturer:": "Danh sách khoá học của giảng viên:",
     "Students List of course:": "Danh sách học sinh của khoá học",
-    "Lecturer Name": "Tên giảng viên"
+    "Lecturer Name": "Tên giảng viên",
+    "list course": "Danh sách môn học",
+    "list registerd": "Danh sách đã đăng kí",
+    "name course": "Tên môn học",
+    "credit course": "TC",
+    "total student": "Tổng SV",
+    "total register": "Đã ĐK",
+    "time table": "Lịch học",
+    "choose register": "Đăng kí",
+    "delete": "Hủy môn"
 }

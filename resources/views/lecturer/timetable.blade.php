@@ -11,11 +11,11 @@
                     </div>
                     <form method="GET">
                         <div class="centerForm">
-                            <b>Học kì: </b>
+                            <b>{{ __('semester') }}: </b>
                             <select name="semester">
                                 @foreach ($semesters as $key => $semester)
-                                    <option value="{{ $semester->begin }}{{ $semester->name }}"> Học kì
-                                        {{ $semester->name }} năm học
+                                    <option value="{{ $semester->begin }}{{ $semester->name }}"> {{ __('semester') }}
+                                        {{ $semester->name }} {{ __('year') }}
                                         {{ $semester->begin }}-{{ $semester->begin + 1 }}
                                     </option>
                                 @endforeach

@@ -71,5 +71,14 @@
     "Edit Course": "Edit Course",
     "Course List of lecturer:": "Course List of lecturer:",
     "Students List of course:": "Students List of course:",
-    "Lecturer Name": "Lecturer Name"
+    "Lecturer Name": "Lecturer Name",
+    "list course": "List Courses",
+    "list registerd": "List Registered Courses",
+    "name course": "Name Course",
+    "credit course": "Credits",
+    "total student": "Total Student",
+    "total register": "Total Registered",
+    "time table": "Time",
+    "choose register": "Registered",
+    "delete": "Delete"
 }

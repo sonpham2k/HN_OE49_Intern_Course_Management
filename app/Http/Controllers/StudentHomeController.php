@@ -31,9 +31,11 @@ class StudentHomeController extends Controller
         return view('student.timetable', compact('users', 'semesters'));
     }
 
-    public function registerCourse($course_id)
+    public function registerCourse()
     {
-        //
+        $semesters = Semester::all();
+        
+        return view('student.registerCourse', compact('semesters'));
     }
     public function show($id)
     {
