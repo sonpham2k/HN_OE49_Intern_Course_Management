@@ -15,7 +15,7 @@
     <div class="col-20 col-xl-4 centerForm">
         <div class="card card-plain h-100">
             <div class="card my-4">
-                <form method="POST" role="form" class="text-start" action="{{ route('lecturers.update') }}">
+                <form method="POST" role="form" class="text-start" action="{{ route('lecturer.update') }}">
                     @method("PUT")
                     @csrf
                     {{-- Full name --}}
@@ -33,7 +33,7 @@
                         <label class="form-label">{{ __('dob') }}:</label>
                     </div>
                     <div class="input-group input-group-outline mb-2">
-                        <input class="form-control" id="date" name="date" type="text" value="{{ $user->dob }}" />
+                        <input class="form-control" id="date" name="date" type="date" value="{{ $user->dob }}" />
                     </div>
                     @error('date')
                         <span style="color: red">{{ $message }}</span>

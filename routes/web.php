@@ -31,16 +31,16 @@ Route::group(['middleware' => 'localization'], function () {
         Route::get('home', [LecturerHomeController::class, 'home'])->name('home-lecturer');
         Route::get('timetable', [LecturerHomeController::class, 'getTimeTable'])->name('timetable-lecturer');
         Route::get('liststudent/{course_id}', [LecturerHomeController::class, 'listStudent'])
-               ->name('liststudent-lecturer');
-        Route::get('edit', [LecturerHomeController::class, 'edit'])->name('lecturers.edit');
-        Route::put('update', [LecturerHomeController::class, 'update'])->name('lecturers.update');
+            ->name('liststudent-lecturer');
+        Route::get('edit', [LecturerHomeController::class, 'edit'])->name('lecturer.edit');
+        Route::put('update', [LecturerHomeController::class, 'update'])->name('lecturer.update');
     });
 
     Route::prefix('student')->group(function () {
         Route::get('home', [StudentHomeController::class, 'home'])->name('home-student');
         Route::get('timetable', [StudentHomeController::class, 'getTimeTable'])->name('timetable-student');
-        Route::get('edit', [StudentHomeController::class, 'edit'])->name('students.edit');
-        Route::put('update', [StudentHomeController::class, 'update'])->name('students.update');
+        Route::get('edit', [StudentHomeController::class, 'edit'])->name('student.edit');
+        Route::put('update', [StudentHomeController::class, 'update'])->name('student.update');
         Route::get('register', [StudentHomeController::class, 'registerCourse'])->name('students.register');
         Route::get('liststudent/{course_id}', [StudentHomeController::class, 'listStudent'])
                ->name('liststudent-student');
@@ -50,4 +50,10 @@ Route::group(['middleware' => 'localization'], function () {
     Route::get('/forgot', [LoginController::class, 'forgot'])->name('forgot');
     Route::get('/reset', [LoginController::class, 'resetpass'])->name('reset');
     Route::get('change-language/{language}', [Localization::class, 'changeLanguage'])->name('change-language');
+
+    Route::resources([
+        'students' => StudentController::class,
+        'lecturers' => LecturerController::class,
+        'courses' => CourseController::class
+    ]);
 });

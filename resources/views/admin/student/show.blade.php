@@ -13,6 +13,7 @@
                         <tr>
                             <th>{{ 'ID' }} </th>
                             <th>{{ __('course') }}</th>
+                            <th>{{ __('lecturer') }}</th>
                             <th>{{ __('semester') }}</th>
                             <th>{{ __('year') }}</th>
                         </tr>
@@ -22,8 +23,10 @@
                             <tr>
                                 <td>{{ ++$key }}</td>
                                 <td>{{ $course->name }}</td>
+                                <td>{{ $course->users[0]->fullname }}</td>
                                 <td>{{ $course->semester->name }}</td>
                                 <td>{{ $course->semester->begin }} - {{ $course->semester->end }}</td>
+                            </tr>
                         @endforeach
                     </tbody>
                 </table>

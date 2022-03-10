@@ -66,7 +66,7 @@ class LecturerHomeController extends Controller
         $success = __('changeSucess');
 
         return redirect()
-            ->route('lecturers.edit')
+            ->route('lecturer.edit')
             ->with('success');
     }
 }
