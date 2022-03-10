@@ -9,17 +9,17 @@
                     </div>
                 </div>
                 <form method="GET">
-                    <div class="centerForm">
-                        <b>{{ __('semester') }}: </b>
-                        <select name="semester">
-                            @foreach ($semesters as $key => $semester)
-                                <option value="{{ $semester->begin }}{{ $semester->name }}"> {{ __('semester') }}
-                                    {{ $semester->name }} {{ __('year') }}
-                                    {{ $semester->begin }}-{{ $semester->begin + 1 }}
-                                </option>
-                            @endforeach
-                        </select>
-                        <input type="submit" value="{{ __('search') }}">
+                    <div class="card-body px-0 pb-2">
+                        <div class="centerType">
+                            <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+                                <div class="input-group input-group-outline">
+                                    <label class="form-label">{{ __('type') }}</label>
+                                    <input type="text" class="form-control">
+                                    <input type="submit" class="btn btn-outline-primary btn-sm mb-0"
+                                        value="{{ __('search') }}">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body px-0 pb-2">
                         <div class="table-responsive p-0">
@@ -27,13 +27,13 @@
                                 <thead>
                                     <tr>
                                         <th
-                                            class="text-uppercase text-secondary text-xxl text-center font-weight-bolder opacity-7 ps-2">
+                                            class="text-uppercase text-secondary text-xxl text-center font-weight-bosder opacity-7 ps-2">
                                             {{ __('name course') }}</th>
                                         <th
                                             class="text-center text-uppercase text-secondary text-xxl font-weight-bolder opacity-7">
                                             {{ __('lecture') }}</th>
                                         <th
-                                            class="text-uppercase text-secondary text-xxl font-weight-bolder opacity-7 ps-2">
+                                            class="text-center text-uppercase text-secondary text-xxl font-weight-bolder opacity-7">
                                             {{ __('credit course') }}</th>
                                         <th
                                             class="text-center text-uppercase text-secondary text-xxl font-weight-bolder opacity-7">
@@ -45,39 +45,53 @@
                                             class="text-center text-uppercase text-secondary text-xxl font-weight-bolder opacity-7">
                                             {{ __('time table') }}</th>
                                         <th class="text-secondary text-uppercase text-xxl opacity-7 font-weight-bolder">
-                                            {{ __('choose register') }}
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="align-middle text-center">
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <h6 class="mb-0 text-xl">Lập trình hướng đối tượng 1</h6>
-                                            </div>
-                                        </td>
-                                        <td class="align-middle text-center">
-                                            <span class="text-secondary text-xl font-weight-bold">Đỗ Thanh Hà Anh</span>
-                                        </td>
-                                        <td>
-                                            <p class="text-secondary text-xl font-weight-bold mb-0">3</p>
-                                        </td>
-                                        <td class="align-middle text-center">
-                                            <span class="text-secondary text-xl font-weight-bold">60</span>
-                                        </td>
-                                        <td class="align-middle text-center">
-                                            <span class="text-secondary text-xl font-weight-bold">12</span>
-                                        </td>
-                                        <td class="align-middle text-center">
-                                            <span class="text-secondary text-xl font-weight-bold">T2(2)</span>
-                                        </td>
-                                        <td class="align-middle text-center">
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input ms-auto" type="checkbox"
-                                                    id="flexSwitchCheckDefault1">
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    @php
+                                        $count = 0;
+                                    @endphp
+                                    @foreach ($course as $courses)
+                                        @foreach ($courses->timetables as $timetable)
+                                            @foreach ($courses->users as $teacher)
+                                                @if ($teacher->role_id == config('auth.roles.lecturer'))
+                                                    <tr>
+                                                        <td class="align-middle text-center">
+                                                            <div class="d-flex flex-column justify-content-center">
+                                                                <h6 class="mb-0 text-xxl">{{ $courses->name }}</h6>
+                                                            </div>
+                                                        </td>
+                                                        <td class="align-middle text-center">
+                                                            <span
+                                                                class="text-secondary text-xl font-weight-bold">{{ $teacher->fullname }}
+                                                            </span>
+                                                        </td>
+                                                        <td class="align-middle text-center">
+                                                            <span
+                                                                class="text-secondary text-xl font-weight-bold">{{ $courses->credits }}</span>
+                                                        </td>
+                                                        <td class="align-middle text-center">
+                                                            <span
+                                                                class="text-secondary text-xl font-weight-bold">{{ $courses->numbers }}</span>
+                                                        </td>
+                                                        <td class="align-middle text-center">
+                                                            <span
+                                                                class="text-secondary text-xl font-weight-bold">{{ $count }}</span>
+                                                        </td>
+                                                        <td class="align-middle text-center">
+                                                            <span
+                                                                class="text-secondary text-xl font-weight-bold">T{{ $timetable->day }}({{ $timetable->lesson }})</span>
+                                                        </td>
+                                                        <td class="align-middle text-center">
+                                                            <button type="button"
+                                                                class="btn btn-sm mb-0 btnRegister">Register</button>
+                                                        </td>
+                                                    </tr>
+                                                @endif
+                                            @endforeach
+                                        @endforeach
+                                    @endforeach
                             </table>
                         </div>
                     </div>
@@ -135,7 +149,8 @@
                                         <span class="text-secondary text-xl font-weight-bold">T2(2)</span>
                                     </td>
                                     <td class="align-middle text-center">
-                                        <a class="btn btn-link text-danger text-gradient px-3 mb-0" href="">
+                                        <a class="btn btn-link text-danger text-gradient px-3 mb-0"
+                                            onclick="return confirm('{{ __('pop up') }}?')" href="">
                                             <i class="material-icons text-xxxl me-2">delete</i>
                                             <span
                                                 class="text-secondary text-xxxl font-weight-bold">{{ __('delete') }}</span>

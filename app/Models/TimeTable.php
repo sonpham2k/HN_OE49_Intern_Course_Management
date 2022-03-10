@@ -17,7 +17,7 @@ class TimeTable extends Model
         'course_id',
     ];
 
-    public function courses()
+    public function course()
     {
         $this->belongsTo(Course::class);
     }

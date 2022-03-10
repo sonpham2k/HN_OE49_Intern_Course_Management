@@ -25,7 +25,7 @@ class Course extends Model
         return $this->belongsTo(Semester::class);
     }
 
-    public function timeTables()
+    public function timetables()
     {
         return $this->hasMany(TimeTable::class);
     }

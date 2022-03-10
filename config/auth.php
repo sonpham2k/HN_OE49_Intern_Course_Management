@@ -112,4 +112,13 @@ return [
         'lecturer' => 2,
         'student' => 3,
     ],
+    'register' => [
+        'month-1' => 8,
+        'seme-1' => 1,
+        'month-2' => 3,
+        'seme-2' => 2,
+        'month-3' => 5,
+        'seme-3' => 3,
+        'seme-0'
+    ],
 ];
