@@ -65,7 +65,9 @@
                                                                 </div>
                                                             </td>
                                                             <td>
-                                                                <h6 class="mb-0 text-sm">{{ $course->name }}</h6>
+                                                                <h6 class="mb-0 text-sm"><a class="underline"
+                                                                    href="{{ route('liststudent-student', ['course_id' => $course->id]) }}">{{ $course->name }}</a>
+                                                                </h6>
                                                             </td>
                                                             <td class="align-middle text-center text-sm">
                                                                 <h6 class="mb-0 text-sm">{{ $timetable->day }}</h6>

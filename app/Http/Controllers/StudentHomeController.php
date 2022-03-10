@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateProfileRequest;
 use App\Models\Course;
 use App\Models\User;
 use App\Models\Semester;
+use App\Models\TimeTable;
 
 class StudentHomeController extends Controller
 {
@@ -31,12 +32,39 @@ class StudentHomeController extends Controller
         return view('student.timetable', compact('users', 'semesters'));
     }
 
+    public function listCourses()
+    {
+        //
+    }
+
     public function registerCourse()
     {
-        $semesters = Semester::all();
+        $now = getdate();
+        $year = $now['year'];
+
+        $month = $now['mon'];
+        if ($month == config('auth.register.month-1')) {
+            $semesNow = config('auth.register.seme-1');
+        } elseif ($month == config('auth.register.month-2')) {
+            $semesNow = config('auth.register.seme-2');
+        } elseif ($month == config('auth.register.month-3')) {
+            $semesNow = config('auth.register.seme-3');
+        } else {
+            $semesNow = config('auth.register.seme-0');
+        }
+
+        $semester = Semester::where('name', $semesNow)
+            ->where('begin', $year)
+            ->firstOrFail();
+
+        $course = Course::with(['timeTables', 'semester', 'users'])
+            ->where('semester_id', $semester->id)
+            ->get();
+        $studentID = Auth::id();
         
-        return view('student.registerCourse', compact('semesters'));
+        return view('student.registerCourse', compact('course'));
     }
+
     public function show($id)
     {
         return redirect()->route('timetable-student');
@@ -64,5 +92,14 @@ class StudentHomeController extends Controller
         return redirect()
             ->route('students.edit')
             ->with('success');
+    }
+
+    public function listStudent($course_id)
+    {
+        $users = Course::with('users')
+            ->where('id', $course_id)
+            ->firstOrFail();
+
+        return view('student.liststudent', compact('users'));
     }
 }

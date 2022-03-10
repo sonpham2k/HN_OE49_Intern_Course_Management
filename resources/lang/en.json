@@ -80,5 +80,7 @@
     "total register": "Total Registered",
     "time table": "Time",
     "choose register": "Registered",
-    "delete": "Delete"
+    "delete": "Delete",
+    "pop up": "Are you sure delete",
+    "type": "Type name course"
 }

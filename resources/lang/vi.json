@@ -81,5 +81,7 @@
     "total register": "Đã ĐK",
     "time table": "Lịch học",
     "choose register": "Đăng kí",
-    "delete": "Hủy môn"
+    "delete": "Hủy môn",
+    "pop up": "Bạn có chắc chắn hủy môn",
+    "type": "Nhập tên môn học"
 }
