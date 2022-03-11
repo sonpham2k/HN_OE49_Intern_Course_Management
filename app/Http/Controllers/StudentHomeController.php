@@ -90,7 +90,7 @@ class StudentHomeController extends Controller
         $success = __('changeSucess');
 
         return redirect()
-            ->route('students.edit')
+            ->route('student.edit')
             ->with('success');
     }
 

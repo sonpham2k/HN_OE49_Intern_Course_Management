@@ -7,9 +7,9 @@
                 <table class="data display datatable" id="example">
                     <thead>
                         <tr>
-                            <th>{{ 'ID' }} </th>
-                            <th>{{ __('user') }}</th>
+                            <th>{{ __('ID') }} </th>
                             <th>{{ __('name') }}</th>
+                            <th>{{ __('user') }}</th>
                             <th>{{ __('dob') }}</th>
                             <th>{{ __('address') }}</th>
                             <th>{{ __('email') }}</th>
@@ -21,17 +21,17 @@
                         @foreach ($students as $key => $student)
                             <tr>
                                 <td>{{ ++$key }}</td>
-                                <td>{{ $student->name }}</td>
                                 <td><a
-                                        href="{{ route('students.show', ['student' => $student]) }}">{{ $student->name }}</a>
+                                        href="{{ route('students.show', ['student' => $student]) }}">{{ $student->fullname }}</a>
                                 </td>
+                                <td>{{ $student->username }}</td>
                                 <td>{{ $student->dob }}</td>
                                 <td>{{ $student->address }}</td>
                                 <td>{{ $student->email }}</td>
                                 <td>
                                     <form style="display: flex; justify-content: center"
                                         action="{{ route('students.edit', ['student' => $student]) }}" method="GET">
-                                        <button type="submit" class="btn btn-warning btn-sm">{{ __('Update') }}</button>
+                                        <button type="submit" class="btn btn-warning">{{ __('Update') }}</button>
                                         @csrf
                                     </form>
                                 </td>
@@ -39,7 +39,7 @@
                                     <form style="display: flex; justify-content: center"
                                         action="{{ route('students.destroy', ['student' => $student]) }}" method="POST">
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-warning btn-sm">{{ __('Delete') }}</button>
+                                        <button type="submit" class="btn btn-red">{{ __('Delete') }}</button>
                                         @csrf
                                     </form>
                                 </td>

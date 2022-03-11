@@ -82,5 +82,16 @@
     "choose register": "Registered",
     "delete": "Delete",
     "pop up": "Are you sure delete",
-    "type": "Type name course"
+    "type": "Type name course",
+    "Dashboard": "Dashboard",
+    "User Profile": "User Profile",
+    "username.unique": "This username already exists",
+    "email.unique": "This email already exists",
+    "Enter Username...": "Enter Username...",
+    "Enter Password...": "Enter Password...",
+    "Enter Name...": "Enter Name...",
+    "Enter Address...": "Enter Address...",
+    "Enter Email...": "Enter Email...",
+    "lecturer": "Lecturer",
+    "Success": "Success"
 }

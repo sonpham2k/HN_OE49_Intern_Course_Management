@@ -7,12 +7,12 @@
     <link rel="stylesheet" type="text/css"
         href="{{ asset('bower_components/bower_project1/css/admin/bootstrap.css') }}" media="screen" />
     <link rel="stylesheet" type="text/css" href="{{ asset('bower_components/bower_project1/css/admin/app.css') }}" />
+
     <!-- BEGIN: load jquery -->
     <script src="{{ asset('bower_components/bower_project1/js/admin/jquery.js') }}" type="text/javascript"></script>
     <!-- END: load jquery -->
     <script src="{{ asset('bower_components/bower_project1/js/admin/app.js') }}" type="text/javascript"></script>
     <script src="{{ asset('bower_components/bower_project1/js/admin/admin.js') }}" type="text/javascript"></script>
-
 </head>
 
 <body>
@@ -20,14 +20,15 @@
         <div class="grid_12 header-repeat">
             <div id="branding">
                 <div class="floatleft logo">
-                    <img src="{{ asset('img/admin/livelogo.png') }}" alt="Logo" />
+                    <img src="{{ asset('bower_components/bower_project1/img/livelogo.png') }}" alt="Logo" />
                 </div>
                 <div class="floatleft middle">
 
                 </div>
                 <div class="floatright">
                     <div class="floatleft">
-                        <img src="{{ asset('img/admin/img-profile.jpg') }}" alt="Profile Pic" />
+                        <img src="{{ asset('bower_components/bower_project1/img/img-profile.jpg') }}"
+                            alt="Profile Pic" />
                     </div>
                     <div class="floatleft marginleft10">
                         <ul class="inline-ul floatleft">
@@ -48,9 +49,7 @@
                 <li class="ic-dashboard"><a href="{{ route('home') }}"><span>{{ __('Dashboard') }}</span></a>
                 </li>
                 <li class="ic-form-style"><a href=""><span>{{ __('User Profile') }}</span></a></li>
-                <li class="ic-typography"><a href="changepassword.php"><span>{{ __('Change Password') }}</span></a>
                 </li>
-
             </ul>
         </div>
         <div class="clear">

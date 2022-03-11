@@ -1,20 +1,21 @@
 {
-  "name": "HN_OE49_Intern_Course_Management",
-  "description": "",
-  "main": "",
-  "authors": [
-    "FT-Mystogan <viponlyc@gmail.com>"
-  ],
-  "license": "MIT",
-  "homepage": "https://github.com/FT-Mystogan/HN_OE49_Intern_Course_Management",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
-  "dependencies": {
-    "bower_project1": "https://github.com/FT-Mystogan/bower_project1.git"
-  }
+    "name": "HN_OE49_Intern_Course_Management",
+    "description": "",
+    "main": "",
+    "authors": [
+        "FT-Mystogan <viponlyc@gmail.com>"
+    ],
+    "license": "MIT",
+    "homepage": "https://github.com/FT-Mystogan/HN_OE49_Intern_Course_Management",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ],
+    "dependencies": {
+        "bower_project1": "https://github.com/FT-Mystogan/bower_project1.git",
+        "jquery-1.11.3.min": "https://code.jquery.com/jquery-1.11.3.min.js"
+    }
 }
