@@ -3,13 +3,6 @@
     <div class="grid_10">
         <div class="box round first grid">
             <h2>{{ __('Edit Student') }}</h2>
-            @if (isset($data))
-                <div class="alert alert-danger">
-                    <h3>
-                        {{ $data }}
-                    </h3>
-                </div>
-            @endif
             <div class="block">
                 <form action="{{ route('students.update', ['student' => $student->id]) }}" method="post" id="form-1">
                     @method('PUT')
@@ -31,7 +24,7 @@
                                 <label>{{ __('name') }}</label>
                             </td>
                             <td>
-                                <input type="text" placeholder="{{ __('Enter Student name...') }}" class="medium"
+                                <input type="text" placeholder="{{ __('Enter Name...') }}" class="medium"
                                     name="fullname" id="fullname" value="{{ $student->fullname }}" />
                                 @error('name')
                                     <span class="mess_error">{{ $message }}</span>
@@ -45,7 +38,7 @@
                             <td>
                                 <input class="form-control" id="date" class="medium" name="date" type="date"
                                     value="{{ $student->dob }}" />
-                                @error('dob')
+                                @error('date')
                                     <span class="mess_error">{{ $message }}</span>
                                 @enderror
                             </td>
@@ -55,8 +48,8 @@
                                 <label>{{ __('address') }}</label>
                             </td>
                             <td>
-                                <input type="text" placeholder="{{ __('Enter Student address...') }}"
-                                    class="medium" name="address" id="address" value="{{ $student->address }}" />
+                                <input type="text" placeholder="{{ __('Enter Address...') }}" class="medium"
+                                    name="address" id="address" value="{{ $student->address }}" />
                                 @error('address')
                                     <span class="mess_error">{{ $message }}</span>
                                 @enderror

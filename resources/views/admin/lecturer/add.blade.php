@@ -3,10 +3,10 @@
     <div class="grid_10">
         <div class="box round first grid">
             <h2>{{ __('Add Lecturer') }}</h2>
-            @if (isset($data))
+            @if (session('success'))
                 <div class="alert alert-danger">
                     <h3>
-                        {{ $data }}
+                        {{ session('success') }}
                     </h3>
                 </div>
             @endif
@@ -30,9 +30,9 @@
                                 <label>{{ __('pass') }}</label>
                             </td>
                             <td>
-                                <input type="text" placeholder="{{ __('Enter pass..') }}" class="medium"
-                                    name="pass" id="pass" />
-                                @error('pass')
+                                <input type="text" placeholder="{{ __('Enter Password...') }}" class="medium"
+                                    name="password" id="pass" />
+                                @error('password')
                                     <span class="mess_error">{{ $message }}</span>
                                 @enderror
                             </td>
@@ -42,9 +42,20 @@
                                 <label>{{ __('name') }}</label>
                             </td>
                             <td>
-                                <input type="text" placeholder="{{ __('Enter Student name...') }}" class="medium"
-                                    name="name" id="name" />
-                                @error('name')
+                                <input type="text" placeholder="{{ __('Enter Name...') }}" class="medium"
+                                    name="fullname" id="name" />
+                                @error('fullname')
+                                    <span class="mess_error">{{ $message }}</span>
+                                @enderror
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>{{ __('dob') }}</label>
+                            </td>
+                            <td>
+                                <input class="form-control" id="date" class="medium" name="dob" type="date" />
+                                @error('date')
                                     <span class="mess_error">{{ $message }}</span>
                                 @enderror
                             </td>
@@ -54,8 +65,8 @@
                                 <label>{{ __('address') }}</label>
                             </td>
                             <td>
-                                <input type="text" placeholder="{{ __('Enter Student address...') }}"
-                                    class="medium" name="address" id="address" />
+                                <input type="text" placeholder="{{ __('Enter Address...') }}" class="medium"
+                                    name="address" id="address" />
                                 @error('address')
                                     <span class="mess_error">{{ $message }}</span>
                                 @enderror

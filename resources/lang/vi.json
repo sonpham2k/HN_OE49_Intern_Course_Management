@@ -94,5 +94,8 @@
     "Enter Address...": "Nhập vào địa chỉ",
     "Enter Email...": "Nhập vào email",
     "lecturer": "Giảng viên",
-    "Success": "Thêm mới thành công"
+    "Success": "Thêm mới thành công",
+    "email": "Email",
+    "username.min": "Tên đăng nhập ngắn nhất là 6 kí tự",
+    "username.required": "Nhập vào tên đăng nhập"
 }

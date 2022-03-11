@@ -3,13 +3,6 @@
     <div class="grid_10">
         <div class="box round first grid">
             <h2>{{ __('Edit Lecturer') }}</h2>
-            @if (isset($data))
-                <div class="alert alert-danger">
-                    <h3>
-                        {{ $data }}
-                    </h3>
-                </div>
-            @endif
             <div class="block">
                 <form action="{{ route('lecturers.update', ['lecturer' => $lecturer->id]) }}" method="post" id="form-1">
                     @method('PUT')
@@ -20,20 +13,8 @@
                             </td>
                             <td>
                                 <input type="text" placeholder="{{ __('Enter Username...') }}" class="medium"
-                                    name="username" id="username" />
+                                    name="username" id="username" value="{{ $lecturer->username }}" />
                                 @error('username')
-                                    <span class="mess_error">{{ $message }}</span>
-                                @enderror
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label>{{ __('pass') }}</label>
-                            </td>
-                            <td>
-                                <input type="text" placeholder="{{ __('Enter pass..') }}" class="medium"
-                                    name="pass" id="pass" />
-                                @error('pass')
                                     <span class="mess_error">{{ $message }}</span>
                                 @enderror
                             </td>
@@ -43,9 +24,21 @@
                                 <label>{{ __('name') }}</label>
                             </td>
                             <td>
-                                <input type="text" placeholder="{{ __('Enter Student name...') }}" class="medium"
-                                    name="name" id="name" />
-                                @error('name')
+                                <input type="text" placeholder="{{ __('Enter Name...') }}" class="medium"
+                                    name="fullname" id="fullname" value="{{ $lecturer->fullname }}" />
+                                @error('fullname')
+                                    <span class="mess_error">{{ $message }}</span>
+                                @enderror
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>{{ __('dob') }}</label>
+                            </td>
+                            <td>
+                                <input class="form-control" id="date" class="medium" name="date" type="date"
+                                    value="{{ $lecturer->dob }}" />
+                                @error('date')
                                     <span class="mess_error">{{ $message }}</span>
                                 @enderror
                             </td>
@@ -55,8 +48,8 @@
                                 <label>{{ __('address') }}</label>
                             </td>
                             <td>
-                                <input type="text" placeholder="{{ __('Enter Student address...') }}"
-                                    class="medium" name="address" id="address" />
+                                <input type="text" placeholder="{{ __('Enter Address...') }}" class="medium"
+                                    name="address" id="address" value="{{ $lecturer->address }}" />
                                 @error('address')
                                     <span class="mess_error">{{ $message }}</span>
                                 @enderror
@@ -68,7 +61,7 @@
                             </td>
                             <td>
                                 <input type="text" placeholder="{{ __('Enter Email..') }}" class="medium"
-                                    name="email" id="email" />
+                                    name="email" id="email" value="{{ $lecturer->email }}" />
                                 @error('email')
                                     <span class="mess_error">{{ $message }}</span>
                                 @enderror

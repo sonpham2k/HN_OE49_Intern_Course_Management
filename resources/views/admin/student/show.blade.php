@@ -4,7 +4,7 @@
         <div class="box round first grid">
             <h2>{{ __('Course List of student:') }}
                 @if (isset($user))
-                    {{ $user->name }}
+                    {{ $user->fullname }}
                 @endif
             </h2>
             <div class="block">
