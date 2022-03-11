@@ -32,7 +32,7 @@
                             <td>
                                 <input type="text" placeholder="{{ __('Enter Password...') }}" class="medium"
                                     name="password" id="password" type="password" />
-                                @error('pass')
+                                @error('password')
                                     <span class="mess_error">{{ $message }}</span>
                                 @enderror
                             </td>
@@ -44,7 +44,7 @@
                             <td>
                                 <input type="text" placeholder="{{ __('Enter Name...') }}" class="medium"
                                     name="fullname" id="name" />
-                                @error('name')
+                                @error('fullname')
                                     <span class="mess_error">{{ $message }}</span>
                                 @enderror
                             </td>
@@ -54,8 +54,8 @@
                                 <label>{{ __('dob') }}</label>
                             </td>
                             <td>
-                                <input class="form-control" id="date" class="medium" name="dob" type="date" />
-                                @error('dob')
+                                <input class="form-control" id="date" class="medium" name="date" type="date" />
+                                @error('date')
                                     <span class="mess_error">{{ $message }}</span>
                                 @enderror
                             </td>

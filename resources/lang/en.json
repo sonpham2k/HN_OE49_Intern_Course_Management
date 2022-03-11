@@ -23,7 +23,7 @@
     "Day": "Day",
     "Lesson": "Lesson",
     "name": "Full Name",
-    "dob": "Day of Birth",
+    "dob": "Date of Birth",
     "address": "Address",
     "changePass": "Change Password",
     "save": "Save change",
@@ -93,5 +93,8 @@
     "Enter Address...": "Enter Address...",
     "Enter Email...": "Enter Email...",
     "lecturer": "Lecturer",
-    "Success": "Success"
+    "Success": "Success",
+    "email": "Email",
+    "username.min": "Minimum username is 6 characters",
+    "username.required": "Enter username"
 }

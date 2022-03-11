@@ -3,15 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AddUserRequest;
-use App\Http\Requests\EditUserRequest;
-use App\Http\Requests\UpdateProfileRequest;
-use App\Http\Resources\Students;
+use App\Http\Requests\EditLecturerRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-class StudentController extends Controller
+class LecturerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,9 +18,9 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $students = User::where('role_id', config('auth.roles.student'))->get();
+        $lecturers = User::where('role_id', config('auth.roles.lecturer'))->get();
 
-        return view('admin.student.list', compact('students'));
+        return view('admin.lecturer.list', compact('lecturers'));
     }
 
     /**
@@ -32,7 +30,7 @@ class StudentController extends Controller
      */
     public function create()
     {
-        return view('admin.student.add');
+        return view('admin.lecturer.add');
     }
 
     /**
@@ -47,14 +45,14 @@ class StudentController extends Controller
             'username' => $request->username,
             'password' => Hash::make($request->password),
             'fullname' => $request->fullname,
-            'dob' => $request->date,
+            'dob' => $request->dob,
             'email' => $request->email,
             'address' => $request->address,
-            'role_id' => config('auth.roles.student'),
+            'role_id' => config('auth.roles.lecturer'),
         ]);
         $request->session()->flash('success', __('Success'));
 
-        return redirect()->route('students.create');
+        return redirect()->route('lecturers.create');
     }
 
     /**
@@ -65,12 +63,9 @@ class StudentController extends Controller
      */
     public function show($id)
     {
-        $user = User::with(['courses.users' => function ($query) {
-            $query->where('role_id', config('auth.roles.lecturer'));
-        }])
-            ->findOrFail($id);
+        $user = User::findOrFail($id);
 
-        return view('admin.student.show', compact('user'));
+        return view('admin.lecturer.show', compact('user'));
     }
 
     /**
@@ -81,9 +76,9 @@ class StudentController extends Controller
      */
     public function edit($id)
     {
-        $student = User::findOrFail($id);
+        $lecturer = User::findOrFail($id);
 
-        return view('admin.student.edit', compact('student'));
+        return view('admin.lecturer.edit', compact('lecturer'));
     }
 
     /**
@@ -93,9 +88,9 @@ class StudentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(EditUserRequest $request, $id)
+    public function update(EditLecturerRequest $request, $id)
     {
-        $row = DB::table('users')
+        DB::table('users')
             ->where('id', $id)
             ->update([
                 'fullname' => $request->input('fullname'),
@@ -105,7 +100,7 @@ class StudentController extends Controller
                 'email' => $request->input('email'),
             ]);
 
-        return redirect()->route('students.index');
+        return redirect()->route('lecturers.index');
     }
 
     /**
@@ -116,9 +111,9 @@ class StudentController extends Controller
      */
     public function destroy($id)
     {
-        $student = User::findOrFail($id);
-        $student->courses()->detach();
-        $student->delete();
+        $lecturer = User::findOrFail($id);
+        $lecturer->courses()->detach();
+        $lecturer->delete();
 
         return redirect()->back();
     }
