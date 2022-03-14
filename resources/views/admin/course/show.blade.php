@@ -13,13 +13,22 @@
                         <tr>
                             <th>{{ 'ID' }} </th>
                             <th>{{ __('name') }}</th>
+                            <th>{{ __('user') }}</th>
+                            <th>{{ __('dob') }}</th>
+                            <th>{{ __('address') }}</th>
+                            <th>{{ __('email') }}</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($course->users as $key => $user)
+                        @foreach ($users as $key => $user)
                             <tr>
-                                <td>{{ ++$key }}</td>
-                                <td>{{ $user->name }}</td>
+                                <td>{{ $key++ }}</td>
+                                <td>{{ $user->fullname }}</td>
+                                <td>{{ $user->username }}</td>
+                                <td>{{ $user->dob }}</td>
+                                <td>{{ $user->address }}</td>
+                                <td>{{ $user->email }}</td>
+                            </tr>
                         @endforeach
                     </tbody>
                 </table>
