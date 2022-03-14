@@ -96,5 +96,20 @@
     "Success": "Success",
     "email": "Email",
     "username.min": "Minimum username is 6 characters",
-    "username.required": "Enter username"
+    "username.required": "Enter username",
+    "credits": "Credit",
+    "Numbers": "Number",
+    "Enter Credit...": "Enter Credit...",
+    "Enter Number...": "Enter Number...",
+    "Course name": "Course Name",
+    "Lecturer": "Lecturer Name",
+    "course_name.string": "The course name must be a string",
+    "Save": "Save",
+    "Edit Success": "Edit Success",
+    "course_name.required": "Course name is required",
+    "course_name.string": "The course name must be a string",
+    "credits.integer": "The number of credits must be an integer",
+    "numbers.integer": "Number must be an integer",
+    "user.integer": "Do not pass a value to this field",
+    "semester.integer": "Do not pass a value to this field"
 }

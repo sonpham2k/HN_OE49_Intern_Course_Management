@@ -12,15 +12,15 @@
             @endif
             <div class="block">
                 <form action="{{ route('courses.update', ['course' => $course->id]) }}" method="post" id="form-1">
-                    @method('PUT')
+                    @method('PATCH')
                     <table class="form">
                         <tr>
                             <td>
-                                <label>{{ __('name') }}</label>
+                                <label>{{ __('Course name') }}</label>
                             </td>
                             <td>
-                                <input type="text" placeholder="{{ __('Enter Course name...') }}" class="medium"
-                                    name="name" id="name" />
+                                <input type="text" class="medium" value="{{ $course->name }}" name="name"
+                                    id="name" />
                                 @error('name')
                                     <span class="mess_error">{{ $message }}</span>
                                 @enderror
@@ -28,16 +28,50 @@
                         </tr>
                         <tr>
                             <td>
-                                <label>{{ __('credit') }}</label>
+                                <label>{{ __('credits') }}</label>
                             </td>
                             <td>
-                                <input type="text" placeholder="{{ __('Enter credit..') }}" class="medium"
-                                    name="credit" id="credit" />
-                                @error('credit')
+                                <input type="text" class="medium" value="{{ $course->credits }}" name="credits"
+                                    id="credits" />
+                                @error('credits')
                                     <span class="mess_error">{{ $message }}</span>
                                 @enderror
                             </td>
                         </tr>
+                        <tr>
+                            <td>
+                                <label>{{ __('Numbers') }}</label>
+                            </td>
+                            <td>
+                                <input type="text" class="medium" value="{{ $course->numbers }}" name="numbers"
+                                    id="numbers" />
+                                @error('numbers')
+                                    <span class="mess_error">{{ $message }}</span>
+                                @enderror
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>{{ __('Lecturer') }}</label>
+                            </td>
+                            <td>
+                                <select name="user">
+                                    @foreach ($lecturers as $key => $lecturer)
+                                        @if ($lecturer->id == $course->users[0]->id)
+                                            <option selected="selected" value="{{ $lecturer->id }}">
+                                                {{ $lecturer->fullname }}
+                                            </option>
+                                        @else
+                                            <option value="{{ $lecturer->id }}">
+                                                {{ $lecturer->fullname }}
+                                            </option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                                @error('user')
+                                    <span class="mess_error">{{ $message }}</span>
+                                @enderror
+                            </td>
                         <tr>
                             <td>
                                 <label>{{ __('semester') }}</label>
@@ -45,10 +79,17 @@
                             <td>
                                 <select name="semester">
                                     @foreach ($semesters as $key => $semester)
-                                        <option value="{{ $semester->begin }}{{ $semester->name }}"> Học kì
-                                            {{ $semester->name }} năm học
-                                            {{ $semester->begin }}-{{ $semester->begin + 1 }}
-                                        </option>
+                                        @if ($semester->id == $course->semester_id)
+                                            <option selected="selected" value="{{ $semester->id }}"> Học kì
+                                                {{ $semester->name }} năm học
+                                                {{ $semester->begin }}-{{ $semester->begin + 1 }}
+                                            </option>
+                                        @else
+                                            <option value="{{ $semester->id }}"> Học kì
+                                                {{ $semester->name }} năm học
+                                                {{ $semester->begin }}-{{ $semester->begin + 1 }}
+                                            </option>
+                                        @endif
                                     @endforeach
                                 </select>
                                 @error('semester')

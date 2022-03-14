@@ -3,10 +3,10 @@
     <div class="grid_10">
         <div class="box round first grid">
             <h2>{{ __('Add Course') }}</h2>
-            @if (isset($data))
+            @if (session('success'))
                 <div class="alert alert-danger">
                     <h3>
-                        {{ $data }}
+                        {{ session('success') }}
                     </h3>
                 </div>
             @endif
@@ -15,10 +15,10 @@
                     <table class="form">
                         <tr>
                             <td>
-                                <label>{{ __('name') }}</label>
+                                <label>{{ __('Course name') }}</label>
                             </td>
                             <td>
-                                <input type="text" placeholder="{{ __('Enter Course name...') }}" class="medium"
+                                <input type="text" placeholder="{{ __('Enter Name...') }}" class="medium"
                                     name="name" id="name" />
                                 @error('name')
                                     <span class="mess_error">{{ $message }}</span>
@@ -27,10 +27,10 @@
                         </tr>
                         <tr>
                             <td>
-                                <label>{{ __('credit') }}</label>
+                                <label>{{ __('credits') }}</label>
                             </td>
                             <td>
-                                <input type="text" placeholder="{{ __('Enter credit..') }}" class="medium"
+                                <input type="text" placeholder="{{ __('Enter Credit...') }}" class="medium"
                                     name="credits" id="credits" />
                                 @error('credits')
                                     <span class="mess_error">{{ $message }}</span>
@@ -39,12 +39,40 @@
                         </tr>
                         <tr>
                             <td>
+                                <label>{{ __('Numbers') }}</label>
+                            </td>
+                            <td>
+                                <input type="text" placeholder="{{ __('Enter Number...') }}" class="medium"
+                                    name="numbers" id="numbers" />
+                                @error('numbers')
+                                    <span class="mess_error">{{ $message }}</span>
+                                @enderror
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>{{ __('Lecturer') }}</label>
+                            </td>
+                            <td>
+                                <select name="user">
+                                    @foreach ($users as $key => $user)
+                                        <option value="{{ $user->id }}">
+                                            {{ $user->fullname }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('user')
+                                    <span class="mess_error">{{ $message }}</span>
+                                @enderror
+                            </td>
+                        <tr>
+                            <td>
                                 <label>{{ __('semester') }}</label>
                             </td>
                             <td>
                                 <select name="semester">
                                     @foreach ($semesters as $key => $semester)
-                                        <option value="{{ $semester->begin }}{{ $semester->name }}"> Học kì
+                                        <option value="{{ $semester->id }}"> Học kì
                                             {{ $semester->name }} năm học
                                             {{ $semester->begin }}-{{ $semester->begin + 1 }}
                                         </option>
