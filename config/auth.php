@@ -121,4 +121,7 @@ return [
         'seme-3' => 3,
         'seme-0'
     ],
+    'paginate' => [
+        'register' => 6,
+    ],
 ];

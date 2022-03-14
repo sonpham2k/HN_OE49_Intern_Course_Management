@@ -32,16 +32,10 @@ class StudentHomeController extends Controller
         return view('student.timetable', compact('users', 'semesters'));
     }
 
-    public function listCourses()
-    {
-        //
-    }
-
-    public function registerCourse()
+    public function registerCourse(Request $request)
     {
         $now = getdate();
         $year = $now['year'];
-
         $month = $now['mon'];
         if ($month == config('auth.register.month-1')) {
             $semesNow = config('auth.register.seme-1');
@@ -57,12 +51,18 @@ class StudentHomeController extends Controller
             ->where('begin', $year)
             ->firstOrFail();
 
-        $course = Course::with(['timeTables', 'semester', 'users'])
+        $courses = Course::with(['timeTables', 'semester', 'users'])
             ->where('semester_id', $semester->id)
-            ->get();
-        $studentID = Auth::id();
-        
-        return view('student.registerCourse', compact('course'));
+            ->where('name', 'like', '%' . $request->name_course . '%')
+            ->simplepaginate(config('auth.paginate.register'));
+
+        $user = User::with([
+            'courses.users' => function ($query) {
+                $query->where('role_id', config('auth.roles.lecturer'));
+            },
+        ])->findOrFail(Auth::id());
+
+        return view('student.registerCourse', compact('user', 'courses', 'semester'));
     }
 
     public function show($id)
@@ -101,5 +101,10 @@ class StudentHomeController extends Controller
             ->firstOrFail();
 
         return view('student.liststudent', compact('users'));
+    }
+
+    public function deleteCourse($course_id)
+    {
+        //
     }
 }
