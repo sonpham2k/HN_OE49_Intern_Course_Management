@@ -43,7 +43,7 @@ class TimeTableController extends Controller
     public function store(AddTimeTableRequest $request, $id)
     {
         $course = Course::findOrFail($id);
-        $lecturer = $course->users()->where('role_id', config('auth.roles.lecturer'))->first();
+        $lecturer = $course->users()->where('role_id', config('auth.roles.lecturer'))->firstOrFail();
         $lecturer->load('courses.timetables');
         $check = true;
         foreach ($lecturer->courses as $course) {
@@ -103,7 +103,7 @@ class TimeTableController extends Controller
     public function update(UpdateTimeTableRequest $request, $id, $timetable_id)
     {
         $course = Course::findOrFail($id);
-        $lecturer = $course->users()->where('role_id', config('auth.roles.lecturer'))->first();
+        $lecturer = $course->users()->where('role_id', config('auth.roles.lecturer'))->firstOrFail();
         $lecturer->load('courses.timetables');
         $check = true;
         foreach ($lecturer->courses as $course) {

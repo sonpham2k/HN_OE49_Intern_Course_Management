@@ -57,7 +57,7 @@ Route::group(['middleware' => 'localization'], function () {
 
     Route::get('change-language/{language}', [Localization::class, 'changeLanguage'])->name('change-language');
 
-    Route::prefix('admin')->group(function () {
+    Route::prefix('admin')->middleware('admin')->group(function () {
         Route::resources([
             'students' => StudentController::class,
             'lecturers' => LecturerController::class,
