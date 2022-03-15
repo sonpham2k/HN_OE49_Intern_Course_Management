@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\UserStoreRequest;
+use App\Http\Requests\ResetPassRequest;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -48,5 +50,20 @@ class UserController extends Controller
         } else {
             return view('student.home', compact('user'));
         }
+    }
+
+    public function forgot()
+    {
+        return view('login.forgot');
+    }
+
+    public function resetpass()
+    {
+        return view('login.resetpass');
+    }
+
+    public function storeResetPass(ResetPassRequest $request)
+    {
+        //
     }
 }

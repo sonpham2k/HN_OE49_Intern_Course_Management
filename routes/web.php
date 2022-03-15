@@ -21,6 +21,10 @@ use App\Http\Controllers\LoginController;
 
 Route::group(['middleware' => 'localization'], function () {
     Route::prefix('users')->group(function () {
+        Route::get('/login', [LoginController::class, 'login'])->name('login');
+        Route::get('/forgot', [LoginController::class, 'forgot'])->name('forgot');
+        Route::get('/reset', [LoginController::class, 'resetpass'])->name('reset');
+        Route::post('/reset', [UserController::class, 'storeResetPass'])->name('storeResetPass');
         Route::get('login', [UserController::class, 'login'])->name('login');
         Route::post('login', [UserController::class, 'store'])->name('store');
         Route::get('home', [UserController::class, 'home'])->name('home');
@@ -41,17 +45,16 @@ Route::group(['middleware' => 'localization'], function () {
         Route::get('timetable', [StudentHomeController::class, 'getTimeTable'])->name('timetable-student');
         Route::get('edit', [StudentHomeController::class, 'edit'])->name('student.edit');
         Route::put('update', [StudentHomeController::class, 'update'])->name('student.update');
-        Route::get('register', [StudentHomeController::class, 'registerCourse'])
-                ->name('students.register');
+        Route::get('searchCourse', [StudentHomeController::class, 'searchCourse'])
+                ->name('students.searchCourse');
         Route::get('liststudent/{course_id}', [StudentHomeController::class, 'listStudent'])
                 ->name('liststudent-student');
-        Route::get('delete/{course_id}', [StudentHomeController::class, 'deleteCourse'])
-                ->name('students.deleteCourse');
+        Route::delete('delete/{course_id}', [StudentHomeController::class, 'deleteCourse'])
+                ->name('students-deleteCourse');
+        Route::post('registerCourse/{course_id}', [StudentHomeController::class, 'registerCourse'])
+                ->name('students-registCourse');
     });
 
-    Route::get('/login', [LoginController::class, 'login'])->name('login');
-    Route::get('/forgot', [LoginController::class, 'forgot'])->name('forgot');
-    Route::get('/reset', [LoginController::class, 'resetpass'])->name('reset');
     Route::get('change-language/{language}', [Localization::class, 'changeLanguage'])->name('change-language');
 
     Route::resources([

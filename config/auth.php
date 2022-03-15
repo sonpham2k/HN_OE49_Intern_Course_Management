@@ -124,4 +124,8 @@ return [
     'paginate' => [
         'register' => 6,
     ],
+    'credit' => [
+        'min' => 10,
+        'max' => 30
+    ],
 ];
