@@ -14,12 +14,21 @@
                                     </h4>
                                 </div>
                             </div>
+                            @if ($message = Session::get('success'))
+                                <div class="alert alert-success">
+                                    <p>{{ $message }}</p>
+                                </div>
+                            @elseif ($message = Session::get('error'))
+                                <div class="alert alert-danger">
+                                    <p>{{ $message }}</p>
+                                </div>
+                            @endif
                             <div class="card-body">
                                 <form method="post" class="text-start" action="{{ route('storeResetPass') }}">
                                     @csrf
                                     <div class="input-group input-group-outline my-3">
                                         <label class="form-label">{{ __('oldpass') }}: </label>
-                                        <input type="text" name="oldpass" class="form-control">
+                                        <input type="password" name="oldpass" class="form-control">
                                     </div>
                                     @error('oldpass')
                                         <span style="color: red">{{ $message }}</span>
@@ -41,6 +50,10 @@
                                     <div class="text-center">
                                         <button
                                             class="btn bg-gradient-primary w-70 my-4 mb-2">{{ __('resetpass') }}</button>
+                                    </div>
+                                    <div class="text-center">
+                                        <a href="{{ route('home') }}"
+                                            class="btn bg-gradient-primary w-70 my-4 mb-2">{{ __('home') }}</a>
                                     </div>
                                 </form>
                             </div>

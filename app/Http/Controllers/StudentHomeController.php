@@ -54,7 +54,7 @@ class StudentHomeController extends Controller
         $courses = Course::with(['timeTables', 'semester', 'users'])
             ->where('semester_id', $semesters->id)
             ->where('name', 'like', '%' . $request->name_course . '%')
-            ->simplepaginate(config('auth.paginate.register'));
+            ->paginate(config('auth.paginate.register'));
 
         $countCourses = Course::with(['users'])->get();
 
@@ -79,8 +79,9 @@ class StudentHomeController extends Controller
                 }
             }
         }
+
         $compactData = [$users, $courses, $semesters, $countCourses, $total, $listTimeTable];
-        
+
         return view('student.registerCourse', compact('compactData'));
     }
 
@@ -110,7 +111,7 @@ class StudentHomeController extends Controller
 
         return redirect()
             ->route('student.edit')
-            ->with('success');
+            ->with('success', __('update success'));
     }
 
     public function listStudent($course_id)
@@ -125,6 +126,7 @@ class StudentHomeController extends Controller
     public function deleteCourse($course_id)
     {
         $user = Auth::user();
+        $user->courses()->detach($course_id);
 
         return redirect()->back();
     }
@@ -132,6 +134,7 @@ class StudentHomeController extends Controller
     public function registerCourse($course_id)
     {
         $user = Auth::user();
+        $user->courses()->attach($course_id);
 
         return redirect()->back();
     }

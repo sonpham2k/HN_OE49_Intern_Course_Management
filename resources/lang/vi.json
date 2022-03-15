@@ -127,5 +127,10 @@
     "confirm required": "Hãy nhập lại mật khẩu mới",
     "pass min": "Mật khẩu dài tối thiểu 6 kí tự",
     "pass max": "Mật khẩu dài tối đa 20 kí tự",
-    "changeok": "Thay đổi mật khẩu thành công"
+    "changeok": "Thay đổi mật khẩu thành công",
+    "error pass": "Mật khẩu sai",
+    "same pass": "Mật khẩu mới chưa được thay đổi",
+    "sucess pass": "Thay đổi mật khẩu thành công",
+    "error confirm": "Nhập lại mật khẩu không đúng",
+    "update success": "Cập nhật thông tin thành công"
 }

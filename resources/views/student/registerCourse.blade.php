@@ -1,12 +1,12 @@
 @extends('layouts.student')
 @section('content')
     @php
-        $users = $compactData[0];
-        $courses = $compactData[1];
-        $semesters = $compactData[2];
-        $countCourses = $compactData[3];
-        $total = $compactData[4];
-        $listTimeTable = $compactData[5];
+    $users = $compactData[0];
+    $courses = $compactData[1];
+    $semesters = $compactData[2];
+    $countCourses = $compactData[3];
+    $total = $compactData[4];
+    $listTimeTable = $compactData[5];
     @endphp
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
         <div class="container-fluid">
@@ -17,7 +17,7 @@
                     {{ config('auth.credit.max') }}]</h>
             </div>
         </div>
-        
+
         <div class="container-fluid py-4">
             <div class="card my-4">
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
@@ -153,7 +153,9 @@
                                                                     </td>
                                                                 @else
                                                                     <td class="align-middle text-center">
-                                                                        <form action="{{ route('students-registCourse', ['course_id' => $course->id]) }}" method="POST">
+                                                                        <form
+                                                                            action="{{ route('students-registCourse', ['course_id' => $course->id]) }}"
+                                                                            method="POST">
                                                                             @csrf
                                                                             <input type="submit"
                                                                                 class="btn btn-sm mb-0 btnRegister"
@@ -171,11 +173,13 @@
                         @endif
                         </table>
                     </div>
-                    {{ $courses->links() }}
+                    <div class="d-flex justify-content-center paginate">
+                        {{ $courses->links() }}
+                    </div>
                 </div>
             </div>
-
         </div>
+        
         <div class="card my-4">
             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                 <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
@@ -245,8 +249,7 @@
                                                     @method('delete')
                                                     @csrf
                                                     <td class="align-middle text-center">
-                                                        <input
-                                                            class="btn btn-link text-danger text-gradient btn-delete"
+                                                        <input class="btn btn-link text-danger text-gradient btn-delete"
                                                             type="submit" class="btn-delete"
                                                             data-confirm="{{ __('pop up') }}?"
                                                             value="{{ __('delete') }}">

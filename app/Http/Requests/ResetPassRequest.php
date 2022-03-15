@@ -36,7 +36,7 @@ class ResetPassRequest extends FormRequest
         return [
             'oldpass.required' => __('oldpass required'),
             'newpass.required' => __('newpass required'),
-            'confirmpass.required' => __('confirmpass required'),
+            'confirmpass.required' => __('confirm required'),
             'oldpass.min' => __('pass min'),
             'newpass.min' => __('pass min'),
             'confirmpass.min' => __('pass min'),

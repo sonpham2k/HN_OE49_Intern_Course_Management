@@ -11,7 +11,7 @@
     "back": "Back",
     "en": "English",
     "vi": "Vietnamese",
-    "resetpass": "Reset Password",
+    "resetpass": "Change Password",
     "oldpass": "Old Password",
     "newpass": "New Password",
     "confirmpass": "Confirm Password",
@@ -146,5 +146,10 @@
     "confirm required": "Please enter confirmpass",
     "pass min": "Password have length min 6",
     "pass max": "Password have length max 20",
-    "changeok": "Change Password successful"
+    "changeok": "Change Password successful",
+    "error pass": "Wrong password",
+    "same pass": "New password not change",
+    "sucess pass": "Change password sucess",
+    "error confirm": "Wrong confirm password",
+    "update success": "Edit information success"
 }
