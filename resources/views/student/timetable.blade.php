@@ -37,9 +37,6 @@
                                                 {{ __('Day') }}</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxl font-weight-bolder opacity-7">
-                                                {{ __('Lesson') }}</th>
-                                            <th
-                                                class="text-center text-uppercase text-secondary text-xxl font-weight-bolder opacity-7">
                                                 {{ __('semester') }}</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxl font-weight-bolder opacity-7">
@@ -55,37 +52,34 @@
                                             @endphp
                                             @foreach ($users->courses as $course)
                                                 @if ($course->semester->begin == $beginValue && $course->semester->name == $semesValue)
-                                                    @foreach ($course->timetables as $timetable)
-                                                        <tr>
-                                                            <td>
-                                                                <div class="d-flex px-2 py-1">
-                                                                    <div class="d-flex flex-column justify-content-center">
-                                                                        <h6 class="mb-0 text-sm">{{ $key++ }}</h6>
-                                                                    </div>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="d-flex px-2 py-1">
+                                                                <div class="d-flex flex-column justify-content-center">
+                                                                    <h6 class="mb-0 text-sm">{{ $key++ }}</h6>
                                                                 </div>
-                                                            </td>
-                                                            <td>
-                                                                <h6 class="mb-0 text-sm"><a class="underline"
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <h6 class="mb-0 text-sm"><a class="underline"
                                                                     href="{{ route('liststudent-student', ['course_id' => $course->id]) }}">{{ $course->name }}</a>
-                                                                </h6>
-                                                            </td>
-                                                            <td class="align-middle text-center text-sm">
-                                                                <h6 class="mb-0 text-sm">{{ $timetable->day }}</h6>
-                                                            </td>
-                                                            <td class="align-middle text-center">
-                                                                <h6 class="mb-0 text-sm">{{ $timetable->lesson }}</h6>
-                                                            </td>
-                                                            <td class="align-middle text-center">
-                                                                <h6 class="mb-0 text-sm">
-                                                                    {{ $course->semester->name }}</h6>
-                                                            </td>
-                                                            <td class="align-middle text-center">
-                                                                <h6 class="mb-0 text-sm">
-                                                                    {{ $course->semester->begin }}-{{ $course->semester->end }}
-                                                                </h6>
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
+                                                            </h6>
+                                                        </td>
+                                                        <td class="align-middle text-center text-sm">
+                                                            @foreach ($course->timetables as $timetable)
+                                                                T{{ $timetable->day }}({{ $timetable->lesson }})
+                                                            @endforeach
+                                                        </td>
+                                                        <td class="align-middle text-center">
+                                                            <h6 class="mb-0 text-sm">
+                                                                {{ $course->semester->name }}</h6>
+                                                        </td>
+                                                        <td class="align-middle text-center">
+                                                            <h6 class="mb-0 text-sm">
+                                                                {{ $course->semester->begin }}-{{ $course->semester->end }}
+                                                            </h6>
+                                                        </td>
+                                                    </tr>
                                                 @endif
                                             @endforeach
                                         @endif

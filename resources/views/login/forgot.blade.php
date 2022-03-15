@@ -16,12 +16,8 @@
                         </div>
                         <div class="card-body">
                             <form role="form" class="text-start">
-                                <div class="input-group input-group-outline my-3">
-                                    <label class="form-label">{{ __('enteremal') }}: </label>
-                                    <input type="text" name="username" class="form-control">
-                                </div>
+                                <b>{{ __('tbforgotpass') }}</b>
                                 <div class="text-center">
-                                    <button type="button" name="send" class="btn bg-gradient-primary w-40 my-4 mb-2">{{ __('send') }}</button>
                                     <a href="{{ route('login') }}" type="button" class="btn bg-gradient-primary w-40 my-4 mb-2">{{ __('back') }}</a>
                                 </div>
                             </form>

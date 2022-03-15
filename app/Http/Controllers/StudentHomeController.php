@@ -8,7 +8,6 @@ use App\Http\Requests\UpdateProfileRequest;
 use App\Models\Course;
 use App\Models\User;
 use App\Models\Semester;
-use App\Models\TimeTable;
 
 class StudentHomeController extends Controller
 {
@@ -50,11 +49,6 @@ class StudentHomeController extends Controller
             ->where('begin', $year)
             ->firstOrFail();
 
-        $courses = Course::with(['timeTables', 'semester', 'users'])
-            ->where('semester_id', $semesters->id)
-            ->where('name', 'like', '%' . $request->name_course . '%')
-            ->simplepaginate(config('auth.paginate.register'));
-
         $countCourses = Course::with(['users'])->get();
 
         $users = User::with([
@@ -62,7 +56,11 @@ class StudentHomeController extends Controller
                 $query->where('role_id', config('auth.roles.lecturer'));
             },
         ])->findOrFail(Auth::id());
-
+        
+        $listCourse = Course::with(['timetables', 'semester', 'users'])
+                ->orderBy('name')
+                ->paginate(config('auth.paginate.register'));
+        
         $total = 0;
         foreach ($users->courses as $course) {
             if ($course->semester_id == $semesters->id) {
@@ -70,17 +68,25 @@ class StudentHomeController extends Controller
             }
         }
 
-        $listTimeTable = '';
+        session()->put('totalCredit', $total);
+
+        $listTimeTables = '';
         foreach ($users->courses as $course) {
             if ($course->semester_id == $semesters->id) {
                 foreach ($course->timetables as $timetable) {
-                    $listTimeTable = $listTimeTable . 'T' . $timetable->day . '(' . $timetable->lesson . ')';
+                    $listTimeTables = $listTimeTables . 'T' . $timetable->day . '(' . $timetable->lesson . ') ';
                 }
             }
         }
-        $compactData = [$users, $courses, $semesters, $countCourses, $total, $listTimeTable];
 
-        return view('student.registerCourse', compact('compactData'));
+        return view('student.registerCourse', [
+            'users' => $users,
+            'semesters' => $semesters,
+            'countCourses' => $countCourses,
+            'total' => $total,
+            'listTimeTables' => $listTimeTables,
+            'listCourse' => $listCourse,
+        ]);
     }
 
     public function show($id)
@@ -109,7 +115,7 @@ class StudentHomeController extends Controller
 
         return redirect()
             ->route('student.edit')
-            ->with('success');
+            ->with('success', __('update success'));
     }
 
     public function listStudent($course_id)
@@ -131,6 +137,14 @@ class StudentHomeController extends Controller
 
     public function registerCourse($course_id)
     {
+        $credit = Course::findOrFail($course_id)->credits;
+
+        if (session('totalCredit') + $credit > config('auth.credit.max')) {
+            session()->flash('overCredit', __('errorCredit'));
+
+            return redirect()->back();
+        }
+
         $user = Auth::user();
         $user->courses()->attach($course_id);
 

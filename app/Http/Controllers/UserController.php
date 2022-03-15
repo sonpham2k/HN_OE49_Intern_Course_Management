@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\ResetPassRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 
 class UserController extends Controller
@@ -60,6 +61,29 @@ class UserController extends Controller
 
     public function storeResetPass(ResetPassRequest $request)
     {
-        //
+        $input = $request->oldpass;
+        $user = User::find(auth()->user()->id);
+
+        if (!Hash::check($input, $user->password)) {
+            return redirect()
+                    ->route('reset')
+                    ->with('error', __('error pass'));
+        } else {
+            if ($request->newpass == $request->oldpass) {
+                return redirect()
+                    ->route('reset')
+                    ->with('error', __('same pass'));
+            } elseif ($request->newpass == $request->confirmpass) {
+                $newpassword = bcrypt($request->newpass);
+                Auth::user()->update(['password' => $newpassword]);
+                return redirect()
+                    ->route('reset')
+                    ->with('success', __('sucess pass'));
+            } else {
+                return redirect()
+                    ->route('reset')
+                    ->with('error', __('error confirm'));
+            }
+        }
     }
 }

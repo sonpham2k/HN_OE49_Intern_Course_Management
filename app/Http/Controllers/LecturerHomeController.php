@@ -67,6 +67,6 @@ class LecturerHomeController extends Controller
 
         return redirect()
             ->route('lecturer.edit')
-            ->with('success');
+            ->with('success', __('update success'));
     }
 }

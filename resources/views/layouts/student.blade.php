@@ -33,7 +33,7 @@
     <link id="pagestyle" href="{{ asset('bower_components/bower_project1/css/user/material-dashboard.css?v=3.0.0') }}"
         rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('bower_components/bower_project1/css/user/app.css') }}" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ asset('bower_components/jquery-1.11.3.min/index.js') }}"></script>
 </head>
 
 <body class="g-sidenav-show  bg-gray-200">
@@ -223,7 +223,6 @@
             Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
         }
     </script>
-    <script type="text/javascript" src="{{ asset('bower_components/jquery-1.11.3.min/index.js') }}"></script>
     <script async defer src="{{ asset('bower_components/bower_project1/js/user/buttons/index.js') }}"></script>
     <script src="{{ asset('bower_components/bower_project1/js/user/material-dashboard.min.js?v=3.0.0') }}"></script>
 </body>
