@@ -110,7 +110,6 @@
     "Save": "Lưu",
     "Edit Success": "Chỉnh sửa thành công",
     "course_name.required": "Tên khoá học là bắt buộc",
-    "course_name.string": "Tên khoá học phải là dạng chuỗi",
     "credits.integer": "Số tín chỉ phải là số nguyên",
     "numbers.integer": "Sĩ số phải là số nguyên",
     "user.integer": "Không được truyền giá trị vào trường này",

@@ -39,7 +39,8 @@
                                     <form style="display: flex; justify-content: center"
                                         action="{{ route('students.destroy', ['student' => $student]) }}" method="POST">
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-red">{{ __('Delete') }}</button>
+                                        <button type="submit" class=" btn btn-red"
+                                            data-confirm="{{ __('pop up student') }}?">{{ __('Delete') }}</button>
                                         @csrf
                                     </form>
                                 </td>

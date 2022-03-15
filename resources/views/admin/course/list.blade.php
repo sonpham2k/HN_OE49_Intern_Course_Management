@@ -21,6 +21,7 @@
                             <th>{{ __('Numbers') }}</th>
                             <th></th>
                             <th></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -35,6 +36,13 @@
                                 <td>{{ $course->numbers }}</td>
                                 <td>
                                     <form style="display: flex; justify-content: center"
+                                        action="{{ route('timetables.index', ['id' => $course->id]) }}" method="GET">
+                                        <button type="submit" class="btn btn-blue">{{ __('View Timetable') }}</button>
+                                        @csrf
+                                    </form>
+                                </td>
+                                <td>
+                                    <form style="display: flex; justify-content: center"
                                         action="{{ route('courses.edit', ['course' => $course]) }}" method="GET">
                                         <button type="submit" class="btn btn-warning btn-sm">{{ __('Update') }}</button>
                                         @csrf
@@ -44,7 +52,8 @@
                                     <form style="display: flex; justify-content: center"
                                         action="{{ route('courses.destroy', ['course' => $course]) }}" method="POST">
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-red">{{ __('Delete') }}</button>
+                                        <button type="submit" class=" btn btn-red"
+                                            data-confirm="{{ __('pop up') }}?">{{ __('Delete') }}</button>
                                         @csrf
                                     </form>
                                 </td>
