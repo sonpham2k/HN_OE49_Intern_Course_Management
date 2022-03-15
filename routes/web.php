@@ -46,20 +46,32 @@ Route::group(['middleware' => 'localization'], function () {
         Route::get('edit', [StudentHomeController::class, 'edit'])->name('student.edit');
         Route::put('update', [StudentHomeController::class, 'update'])->name('student.update');
         Route::get('searchCourse', [StudentHomeController::class, 'searchCourse'])
-                ->name('students.searchCourse');
+            ->name('students.searchCourse');
         Route::get('liststudent/{course_id}', [StudentHomeController::class, 'listStudent'])
-                ->name('liststudent-student');
+            ->name('liststudent-student');
         Route::delete('delete/{course_id}', [StudentHomeController::class, 'deleteCourse'])
-                ->name('students-deleteCourse');
+            ->name('students-deleteCourse');
         Route::post('registerCourse/{course_id}', [StudentHomeController::class, 'registerCourse'])
-                ->name('students-registCourse');
+            ->name('students-registCourse');
     });
 
     Route::get('change-language/{language}', [Localization::class, 'changeLanguage'])->name('change-language');
 
-    Route::resources([
-        'students' => StudentController::class,
-        'lecturers' => LecturerController::class,
-        'courses' => CourseController::class
-    ]);
+    Route::prefix('admin')->group(function () {
+        Route::resources([
+            'students' => StudentController::class,
+            'lecturers' => LecturerController::class,
+            'courses' => CourseController::class,
+        ]);
+        Route::prefix('timetables')->group(function () {
+            Route::get('index/{id}', [TimeTableController::class, 'index'])->name('timetables.index');
+            Route::post('store/{id}', [TimeTableController::class, 'store'])->name('timetables.store');
+            Route::get('edit/{id}/{timetable_id}', [TimeTableController::class, 'edit'])
+                ->name('timetables.edit');
+            Route::patch('update/{id}/{timetable_id}', [TimeTableController::class, 'update'])
+                ->name('timetables.update');
+            Route::delete('destroy/{id}', [TimeTableController::class, 'destroy'])
+                ->name('timetables.destroy');
+        });
+    });
 });

@@ -48,8 +48,6 @@
             <ul class="nav main">
                 <li class="ic-dashboard"><a href="{{ route('home') }}"><span>{{ __('Dashboard') }}</span></a>
                 </li>
-                <li class="ic-form-style"><a href=""><span>{{ __('User Profile') }}</span></a></li>
-                </li>
             </ul>
         </div>
         <div class="clear">

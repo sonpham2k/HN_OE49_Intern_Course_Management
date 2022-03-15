@@ -40,7 +40,8 @@
                                         action="{{ route('lecturers.destroy', ['lecturer' => $lecturer]) }}"
                                         method="POST">
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-red">{{ __('Delete') }}</button>
+                                        <button type="submit" class=" btn btn-red"
+                                            data-confirm="{{ __('pop up lecturer') }}?">{{ __('Delete') }}</button>
                                         @csrf
                                     </form>
                                 </td>
