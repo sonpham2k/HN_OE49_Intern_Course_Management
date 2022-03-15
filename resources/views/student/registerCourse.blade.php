@@ -87,7 +87,7 @@
                                                             class="text-secondary text-xl font-weight-bold">{{ $course->numbers }}</span>
                                                     </td>
 
-                                                    {{-- Tính số sinh viên đăng kí môn này --}}
+                                                    {{-- Tính tổng số sinh viên đăng kí môn này --}}
                                                     @php
                                                         $countRegist = 0;
                                                         foreach ($countCourses as $countCourse) {
