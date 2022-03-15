@@ -32,7 +32,7 @@ class StudentHomeController extends Controller
         return view('student.timetable', compact('users', 'semesters'));
     }
 
-    public function registerCourse(Request $request)
+    public function searchCourse(Request $request)
     {
         $now = getdate();
         $year = $now['year'];
@@ -47,22 +47,41 @@ class StudentHomeController extends Controller
             $semesNow = config('auth.register.seme-0');
         }
 
-        $semester = Semester::where('name', $semesNow)
+        $semesters = Semester::where('name', $semesNow)
             ->where('begin', $year)
             ->firstOrFail();
 
         $courses = Course::with(['timeTables', 'semester', 'users'])
-            ->where('semester_id', $semester->id)
+            ->where('semester_id', $semesters->id)
             ->where('name', 'like', '%' . $request->name_course . '%')
             ->simplepaginate(config('auth.paginate.register'));
 
-        $user = User::with([
+        $countCourses = Course::with(['users'])->get();
+
+        $users = User::with([
             'courses.users' => function ($query) {
                 $query->where('role_id', config('auth.roles.lecturer'));
             },
         ])->findOrFail(Auth::id());
 
-        return view('student.registerCourse', compact('user', 'courses', 'semester'));
+        $total = 0;
+        foreach ($users->courses as $course) {
+            if ($course->semester_id == $semesters->id) {
+                $total += $course->credits;
+            }
+        }
+
+        $listTimeTable = '';
+        foreach ($users->courses as $course) {
+            if ($course->semester_id == $semesters->id) {
+                foreach ($course->timetables as $timetable) {
+                    $listTimeTable = $listTimeTable . 'T' . $timetable->day . '(' . $timetable->lesson . ')';
+                }
+            }
+        }
+        $compactData = [$users, $courses, $semesters, $countCourses, $total, $listTimeTable];
+        
+        return view('student.registerCourse', compact('compactData'));
     }
 
     public function show($id)
@@ -105,6 +124,17 @@ class StudentHomeController extends Controller
 
     public function deleteCourse($course_id)
     {
-        //
+        $user = Auth::user();
+        $user->courses()->detach($course_id);
+
+        return redirect()->back();
+    }
+
+    public function registerCourse($course_id)
+    {
+        $user = Auth::user();
+        $user->courses()->attach($course_id);
+
+        return redirect()->back();
     }
 }

@@ -15,21 +15,31 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <form role="form" class="text-start">
+                                <form method="post" class="text-start" action="{{ route('storeResetPass') }}">
+                                    @csrf
                                     <div class="input-group input-group-outline my-3">
-                                        <label class="form-label">{{ __('Email') }}: </label>
-                                        <input type="text" class="form-control">
+                                        <label class="form-label">{{ __('oldpass') }}: </label>
+                                        <input type="text" name="oldpass" class="form-control">
                                     </div>
+                                    @error('oldpass')
+                                        <span style="color: red">{{ $message }}</span>
+                                    @enderror
                                     <div class="input-group input-group-outline my-3">
                                         <label class="form-label">{{ __('newpass') }}: </label>
-                                        <input type="password" class="form-control">
+                                        <input type="password" name="newpass" class="form-control">
                                     </div>
+                                    @error('newpass')
+                                        <span style="color: red">{{ $message }}</span>
+                                    @enderror
                                     <div class="input-group input-group-outline my-3">
                                         <label class="form-label">{{ __('confirmpass') }}: </label>
-                                        <input type="password" class="form-control">
+                                        <input type="password" name="confirmpass" class="form-control">
                                     </div>
+                                    @error('confirmpass')
+                                        <span style="color: red">{{ $message }}</span>
+                                    @enderror
                                     <div class="text-center">
-                                        <button type="button"
+                                        <button
                                             class="btn bg-gradient-primary w-70 my-4 mb-2">{{ __('resetpass') }}</button>
                                     </div>
                                 </form>
