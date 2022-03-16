@@ -5,10 +5,17 @@
             <h2>{{ __('Timetable of course') }}
                 {{ $course->name }}
             </h2>
-            @if (session('msg'))
-                <div class="alert alert-danger">
+            @if (session('success'))
+                <div class="success">
                     <h3>
-                        {{ session('msg') }}
+                        {{ session('success') }}
+                    </h3>
+                </div>
+            @endif
+            @if (session('alert'))
+                <div class="alert">
+                    <h3>
+                        {{ session('alert') }}
                     </h3>
                 </div>
             @endif

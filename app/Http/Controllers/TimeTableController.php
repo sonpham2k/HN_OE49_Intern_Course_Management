@@ -43,10 +43,19 @@ class TimeTableController extends Controller
     public function store(AddTimeTableRequest $request, $id)
     {
         $course = Course::findOrFail($id);
-        $lecturer = $course->users()->where('role_id', config('auth.roles.lecturer'))->firstOrFail();
-        $lecturer->load('courses.timetables');
+        $lecturer = $course->users()->where('role_id', config('auth.roles.lecturer'))->first();
         $check = true;
-        foreach ($lecturer->courses as $course) {
+        if ($lecturer) {
+            $lecturer->load('courses.timetables');
+            foreach ($lecturer->courses as $course) {
+                foreach ($course->timetables as $timetable) {
+                    if ($timetable->day == $request->day && $timetable->lesson == $request->lesson) {
+                        $check = false;
+                        break;
+                    }
+                }
+            }
+        } else {
             foreach ($course->timetables as $timetable) {
                 if ($timetable->day == $request->day && $timetable->lesson == $request->lesson) {
                     $check = false;
@@ -60,9 +69,9 @@ class TimeTableController extends Controller
                 'lesson' => $request->lesson,
                 'course_id' => $id,
             ]);
-            $request->session()->flash('msg', __('Add Timetable Success'));
+            $request->session()->flash('success', __('Add Timetable Success'));
         } else {
-            $request->session()->flash('msg', __('Add Timetable Fail'));
+            $request->session()->flash('alert', __('Add Timetable Fail'));
         }
 
         return redirect()->back();
@@ -103,10 +112,19 @@ class TimeTableController extends Controller
     public function update(UpdateTimeTableRequest $request, $id, $timetable_id)
     {
         $course = Course::findOrFail($id);
-        $lecturer = $course->users()->where('role_id', config('auth.roles.lecturer'))->firstOrFail();
-        $lecturer->load('courses.timetables');
+        $lecturer = $course->users()->where('role_id', config('auth.roles.lecturer'))->first();
         $check = true;
-        foreach ($lecturer->courses as $course) {
+        if ($lecturer) {
+            $lecturer->load('courses.timetables');
+            foreach ($lecturer->courses as $course) {
+                foreach ($course->timetables as $timetable) {
+                    if ($timetable->day == $request->day && $timetable->lesson == $request->lesson) {
+                        $check = false;
+                        break;
+                    }
+                }
+            }
+        } else {
             foreach ($course->timetables as $timetable) {
                 if ($timetable->day == $request->day && $timetable->lesson == $request->lesson) {
                     $check = false;
@@ -121,9 +139,9 @@ class TimeTableController extends Controller
                     'day' => $request->day,
                     'lesson' => $request->lesson,
                 ]);
-            $request->session()->flash('msg', __('Edit Timetable Success'));
+            $request->session()->flash('success', __('Edit Timetable Success'));
         } else {
-            $request->session()->flash('msg', __('Edit Timetable Fail'));
+            $request->session()->flash('alert', __('Edit Timetable Fail'));
         }
 
         return redirect()->route('timetables.index', ['id' => $id]);
