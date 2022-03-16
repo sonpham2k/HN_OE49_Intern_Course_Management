@@ -46,7 +46,6 @@ class StudentHomeController extends Controller
         } else {
             $semesNow = config('auth.register.seme-0');
         }
-
         $semesters = Semester::where('name', $semesNow)
             ->where('begin', $year)
             ->firstOrFail();
@@ -80,7 +79,7 @@ class StudentHomeController extends Controller
             }
         }
         $compactData = [$users, $courses, $semesters, $countCourses, $total, $listTimeTable];
-        
+
         return view('student.registerCourse', compact('compactData'));
     }
 
@@ -125,6 +124,7 @@ class StudentHomeController extends Controller
     public function deleteCourse($course_id)
     {
         $user = Auth::user();
+        $user->courses()->detach($course_id);
 
         return redirect()->back();
     }
@@ -132,6 +132,7 @@ class StudentHomeController extends Controller
     public function registerCourse($course_id)
     {
         $user = Auth::user();
+        $user->courses()->attach($course_id);
 
         return redirect()->back();
     }

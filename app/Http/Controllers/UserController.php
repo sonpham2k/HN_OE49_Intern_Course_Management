@@ -21,8 +21,6 @@ class UserController extends Controller
             'email' => $request->input('email'),
             'password' => $request->input('password'),
         ])) {
-            $request->session()->put('user', Auth::user());
-
             return redirect()->route('home');
         }
         $data = "__('Login fail')";
@@ -33,22 +31,20 @@ class UserController extends Controller
     public function logout(Request $request)
     {
         Auth::logout();
-        $request->session()->forget('user');
 
         return redirect()->route('login');
     }
 
     public function home()
     {
-        $role = session('user')->role_id;
-        $user = session('user');
+        $role = Auth::user()->role_id;
 
         if ($role == config('auth.roles.admin')) {
-            return view('admin.home', compact('user'));
+            return view('admin.home');
         } elseif ($role == config('auth.roles.lecturer')) {
-            return view('lecturer.home', compact('user'));
+            return view('lecturer.home');
         } else {
-            return view('student.home', compact('user'));
+            return view('student.home');
         }
     }
 
