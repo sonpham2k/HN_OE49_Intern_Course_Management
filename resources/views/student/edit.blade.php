@@ -11,6 +11,11 @@
             </div>
         </div>
     </div>
+    @if ($message = Session::get('success'))
+        <div class="alert alert-success">
+            <p>{{ $message }}</p>
+        </div>
+    @endif
     <div class="col-20 col-xl-4 centerForm">
         <div class="card card-plain h-100">
             <div class="card my-4">

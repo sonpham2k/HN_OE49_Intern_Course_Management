@@ -1,13 +1,6 @@
 @extends('layouts.student')
 @section('content')
-    @php
-        $users = $compactData[0];
-        $courses = $compactData[1];
-        $semesters = $compactData[2];
-        $countCourses = $compactData[3];
-        $total = $compactData[4];
-        $listTimeTable = $compactData[5];
-    @endphp
+
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
         <div class="container-fluid">
             <div class="row">
@@ -17,7 +10,7 @@
                     {{ config('auth.credit.max') }}]</h>
             </div>
         </div>
-        
+
         <div class="container-fluid py-4">
             <div class="card my-4">
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
@@ -71,107 +64,108 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($courses as $course)
-                                        @foreach ($course->timetables as $timetable)
-                                            @foreach ($course->users as $teacher)
-                                                @if ($teacher->role_id == config('auth.roles.lecturer'))
-                                                    <tr>
-                                                        <td class="align-middle text-center">
-                                                            <div class="d-flex flex-column justify-content-center">
-                                                                <h6 class="mb-0 text-xxl">{{ $course->name }}</h6>
-                                                            </div>
-                                                        </td>
-                                                        <td class="align-middle text-center">
-                                                            <span
-                                                                class="text-secondary text-xl font-weight-bold">{{ $teacher->fullname }}
-                                                            </span>
-                                                        </td>
-                                                        <td class="align-middle text-center">
-                                                            <span
-                                                                class="text-secondary text-xl font-weight-bold">{{ $course->credits }}</span>
-                                                        </td>
-                                                        <td class="align-middle text-center">
-                                                            <span
-                                                                class="text-secondary text-xl font-weight-bold">{{ $course->numbers }}</span>
-                                                        </td>
+                                    @foreach ($listCourse as $course)
+                                        @foreach ($course->users as $teacher)
+                                            @if ($teacher->role_id == config('auth.roles.lecturer'))
+                                                <tr>
+                                                    <td class="align-middle text-center">
+                                                        <div class="d-flex flex-column justify-content-center">
+                                                            <h6 class="mb-0 text-xxl">{{ $course->name }}</h6>
+                                                        </div>
+                                                    </td>
+                                                    <td class="align-middle text-center">
+                                                        <span
+                                                            class="text-secondary text-xl font-weight-bold">{{ $teacher->fullname }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="align-middle text-center">
+                                                        <span
+                                                            class="text-secondary text-xl font-weight-bold">{{ $course->credits }}</span>
+                                                    </td>
+                                                    <td class="align-middle text-center">
+                                                        <span
+                                                            class="text-secondary text-xl font-weight-bold">{{ $course->numbers }}</span>
+                                                    </td>
 
-                                                        {{-- Tính số sinh viên đăng kí môn này --}}
-                                                        @php
-                                                            $countRegist = 0;
-                                                            foreach ($countCourses as $countCourse) {
-                                                                if ($countCourse->id == $course->id) {
-                                                                    foreach ($countCourse->users as $countUser) {
-                                                                        if ($countUser->role_id == config('auth.roles.student')) {
-                                                                            $countRegist++;
-                                                                        } else {
-                                                                            $countRegist + 0;
-                                                                        }
+                                                    {{-- Tính số sinh viên đăng kí môn này --}}
+                                                    @php
+                                                        $countRegist = 0;
+                                                        foreach ($countCourses as $countCourse) {
+                                                            if ($countCourse->id == $course->id) {
+                                                                foreach ($countCourse->users as $countUser) {
+                                                                    if ($countUser->role_id == config('auth.roles.student')) {
+                                                                        $countRegist++;
+                                                                    } else {
+                                                                        $countRegist + 0;
                                                                     }
                                                                 }
                                                             }
-                                                        @endphp
-                                                        <td class="align-middle text-center">
-                                                            <span class="text-secondary text-xl font-weight-bold">
-                                                                {{ $countRegist }}
-                                                            </span>
-                                                        </td>
-
-                                                        <td class="align-middle text-center">
-                                                            <span
-                                                                class="text-secondary text-xl font-weight-bold">T{{ $timetable->day }}({{ $timetable->lesson }})</span>
-                                                        </td>
-
-                                                        {{-- Kiểm tra môn đã được đăng kí hay chưa --}}
-                                                        @php
-                                                            $courseID = $course->id;
-                                                            $count = 0;
-                                                            $checkTime = strpos($listTimeTable, 'T' . $timetable->day . '(' . $timetable->lesson . ')');
-                                                            foreach ($users->courses as $course2) {
-                                                                if ($course2->id == $courseID) {
-                                                                    $count++;
-                                                                } else {
-                                                                    $count + 0;
-                                                                }
+                                                        }
+                                                    @endphp
+                                                    <td class="align-middle text-center">
+                                                        <span class="text-secondary text-xl font-weight-bold">
+                                                            {{ $countRegist }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="align-middle text-center">
+                                                        <span class="text-secondary text-xl font-weight-bold">
+                                                            @foreach ($course->timetables as $timetable)
+                                                                T{{ $timetable->day }}({{ $timetable->lesson }})
+                                                            @endforeach
+                                                        </span>
+                                                    </td>
+                                                    {{-- Kiểm tra môn đã được đăng kí hay chưa --}}
+                                                    @php
+                                                        $courseID = $course->id;
+                                                        $count = 0;
+                                                        $checkTime = strpos($listTimeTables, 'T' . $timetable->day . '(' . $timetable->lesson . ')');
+                                                        foreach ($users->courses as $course2) {
+                                                            if ($course2->id == $courseID) {
+                                                                $count++;
+                                                            } else {
+                                                                $count + 0;
                                                             }
-                                                        @endphp
-                                                        @if ($count == 1)
+                                                        }
+                                                    @endphp
+                                                    @if ($count == 1)
+                                                        <td class="align-middle text-center">
+                                                            <label
+                                                                class="btnRegistered">{{ __('choose registered') }}</label>
+                                                        </td>
+                                                    @else
+                                                        @if ($countRegist == $course->numbers)
                                                             <td class="align-middle text-center">
                                                                 <label
-                                                                    class="btnRegistered">{{ __('choose registered') }}</label>
+                                                                    class="btnOverSlot">{{ __('over slot') }}</label>
                                                             </td>
                                                         @else
-                                                            @if ($countRegist == $course->numbers)
+                                                            @if ($checkTime != false)
                                                                 <td class="align-middle text-center">
                                                                     <label
-                                                                        class="btnOverSlot">{{ __('over slot') }}</label>
+                                                                        class="btnSameSchedule">{{ __('same schedule') }}</label>
                                                                 </td>
                                                             @else
-                                                                @if ($checkTime != false)
-                                                                    <td class="align-middle text-center">
-                                                                        <label
-                                                                            class="btnSameSchedule">{{ __('same schedule') }}</label>
-                                                                    </td>
-                                                                @else
-                                                                    <td class="align-middle text-center">
-                                                                        <form action="{{ route('students-registCourse', ['course_id' => $course->id]) }}" method="POST">
-                                                                            @csrf
-                                                                            <input type="submit"
-                                                                                class="btn btn-sm mb-0 btnRegister"
-                                                                                value="{{ __('choose register') }}"></a>
-                                                                        </form>
-                                                                    </td>
-                                                                @endif
+                                                                <td class="align-middle text-center">
+                                                                    <form
+                                                                        action="{{ route('students-registCourse', ['course_id' => $course->id]) }}"
+                                                                        method="POST">
+                                                                        @csrf
+                                                                        <input type="submit"
+                                                                            class="btn btn-sm mb-0 btnRegister"
+                                                                            value="{{ __('choose register') }}"></a>
+                                                                    </form>
+                                                                </td>
                                                             @endif
                                                         @endif
-                                                    </tr>
-                                                @endif
-                                            @endforeach
+                                                    @endif
+                                                </tr>
+                                            @endif
                                         @endforeach
                                     @endforeach
                         @endif
                         </table>
                     </div>
-                    {{ $courses->links() }}
+                    {{ $listCourse->links() }}
                 </div>
             </div>
 
@@ -216,44 +210,45 @@
                                 @endphp
                                 @foreach ($users->courses as $course)
                                     @if ($course->semester_id == $semesters->id)
-                                        @foreach ($course->timetables as $timetable)
-                                            <tr>
+                                        <tr>
+                                            <td class="align-middle text-center">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-xl">{{ $course->name }}</h6>
+                                                </div>
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                <span
+                                                    class="text-secondary text-xl font-weight-bold">{{ $course->users[0]->fullname }}</span>
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                <span
+                                                    class="text-secondary text-xl font-weight-bold">{{ $course->credits }}</span>
+                                            </td>
+
+                                            <td class="align-middle text-center">
+                                                <span class="text-secondary text-xl font-weight-bold">
+                                                    @foreach ($course->timetables as $timetable)
+                                                        T{{ $timetable->day }}({{ $timetable->lesson }})
+                                                    @endforeach
+                                                </span>
+                                            </td>
+
+                                            @php
+                                                $totalCredit += $course->credits;
+                                                $totalCourse = $totalCourse + 1;
+                                            @endphp
+                                            <form
+                                                action='{{ route('students-deleteCourse', ['course_id' => $course->id]) }}'
+                                                method="POST">
+                                                @method('delete')
+                                                @csrf
                                                 <td class="align-middle text-center">
-                                                    <div class="d-flex flex-column justify-content-center">
-                                                        <h6 class="mb-0 text-xl">{{ $course->name }}</h6>
-                                                    </div>
+                                                    <input class="btn btn-link text-danger text-gradient btn-delete"
+                                                        type="submit" class="btn-delete"
+                                                        data-confirm="{{ __('pop up') }}?" value="{{ __('delete') }}">
                                                 </td>
-                                                <td class="align-middle text-center">
-                                                    <span
-                                                        class="text-secondary text-xl font-weight-bold">{{ $course->users[0]->fullname }}</span>
-                                                </td>
-                                                <td class="align-middle text-center">
-                                                    <span
-                                                        class="text-secondary text-xl font-weight-bold">{{ $course->credits }}</span>
-                                                </td>
-                                                <td class="align-middle text-center">
-                                                    <span
-                                                        class="text-secondary text-xl font-weight-bold">T{{ $timetable->day }}({{ $timetable->lesson }})</span>
-                                                </td>
-                                                @php
-                                                    $totalCredit += $course->credits;
-                                                    $totalCourse = $totalCourse + 1;
-                                                @endphp
-                                                <form
-                                                    action='{{ route('students-deleteCourse', ['course_id' => $course->id]) }}'
-                                                    method="POST">
-                                                    @method('delete')
-                                                    @csrf
-                                                    <td class="align-middle text-center">
-                                                        <input
-                                                            class="btn btn-link text-danger text-gradient btn-delete"
-                                                            type="submit" class="btn-delete"
-                                                            data-confirm="{{ __('pop up') }}?"
-                                                            value="{{ __('delete') }}">
-                                                    </td>
-                                                </form>
-                                            </tr>
-                                        @endforeach
+                                            </form>
+                                        </tr>
                                     @endif
                                 @endforeach
                             </tbody>

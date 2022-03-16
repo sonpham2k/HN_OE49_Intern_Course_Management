@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Authentication Defaults
@@ -119,13 +118,13 @@ return [
         'seme-2' => 2,
         'month-3' => 5,
         'seme-3' => 3,
-        'seme-0'
+        'seme-0',
     ],
     'paginate' => [
         'register' => 6,
     ],
     'credit' => [
         'min' => 10,
-        'max' => 30
+        'max' => 20,
     ],
 ];
