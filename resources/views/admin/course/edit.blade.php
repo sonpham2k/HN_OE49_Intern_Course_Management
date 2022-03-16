@@ -3,10 +3,10 @@
     <div class="grid_10">
         <div class="box round first grid">
             <h2>{{ __('Edit Course') }}</h2>
-            @if (isset($data))
-                <div class="alert alert-danger">
+            @if (session('success'))
+                <div class="success">
                     <h3>
-                        {{ $data }}
+                        {{ session('success') }}
                     </h3>
                 </div>
             @endif
@@ -57,10 +57,16 @@
                             <td>
                                 <select name="user">
                                     @foreach ($lecturers as $key => $lecturer)
-                                        @if ($lecturer->id == $course->users[0]->id)
-                                            <option selected="selected" value="{{ $lecturer->id }}">
-                                                {{ $lecturer->fullname }}
-                                            </option>
+                                        @if (isset($course->users[0]->id))
+                                            @if ($lecturer->id == $course->users[0]->id)
+                                                <option selected="selected" value="{{ $lecturer->id }}">
+                                                    {{ $lecturer->fullname }}
+                                                </option>
+                                            @else
+                                                <option value="{{ $lecturer->id }}">
+                                                    {{ $lecturer->fullname }}
+                                                </option>
+                                            @endif
                                         @else
                                             <option value="{{ $lecturer->id }}">
                                                 {{ $lecturer->fullname }}

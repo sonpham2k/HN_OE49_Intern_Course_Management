@@ -4,7 +4,7 @@
         <div class="box round first grid">
             <h2>{{ __('Add Course') }}</h2>
             @if (session('success'))
-                <div class="alert alert-danger">
+                <div class="success">
                     <h3>
                         {{ session('success') }}
                     </h3>

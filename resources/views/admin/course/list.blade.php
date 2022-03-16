@@ -32,7 +32,11 @@
                                     <a href="{{ route('courses.show', ['course' => $course]) }}">{{ $course->name }}</a>
                                 </td>
                                 <td>{{ $course->credits }}</td>
-                                <td>{{ $course->users[0]->fullname }}</td>
+                                <td>
+                                    @if (isset($course->users[0]->fullname))
+                                        {{ $course->users[0]->fullname }}
+                                    @endif
+                                </td>
                                 <td>{{ $course->numbers }}</td>
                                 <td>
                                     <form style="display: flex; justify-content: center"
