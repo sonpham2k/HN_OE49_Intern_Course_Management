@@ -21,7 +21,7 @@
     "profile": "My profile",
     "signout": "Sign Out",
     "Subject": "Subject",
-    "Day": "Day",
+    "Day": "Day(Lesson)",
     "Lesson": "Lesson",
     "name": "Full Name",
     "dob": "Date of Birth",
@@ -153,5 +153,6 @@
     "error confirm": "Wrong confirm password",
     "update success": "Edit information success",
     "tbforgotpass": "Please go to the training room to receive instructions from the staff.",
-    "errorCredit": "Exceeded the number of credits allowed"
+    "errorCredit": "Exceeded the number of credits allowed",
+    "sloted registered": "You have registered for this course, please register for another course"
 }
