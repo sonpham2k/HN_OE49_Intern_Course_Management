@@ -43,7 +43,10 @@ class TimeTableController extends Controller
     public function store(AddTimeTableRequest $request, $id)
     {
         $course = Course::findOrFail($id);
-        $lecturer = $course->users()->where('role_id', config('auth.roles.lecturer'))->first();
+        $lecturer = $course
+            ->users()
+            ->where('role_id', config('auth.roles.lecturer'))
+            ->first();
         $check = true;
         if ($lecturer) {
             $lecturer->load('courses.timetables');
@@ -112,7 +115,10 @@ class TimeTableController extends Controller
     public function update(UpdateTimeTableRequest $request, $id, $timetable_id)
     {
         $course = Course::findOrFail($id);
-        $lecturer = $course->users()->where('role_id', config('auth.roles.lecturer'))->first();
+        $lecturer = $course
+            ->users()
+            ->where('role_id', config('auth.roles.lecturer'))
+            ->first();
         $check = true;
         if ($lecturer) {
             $lecturer->load('courses.timetables');
@@ -133,12 +139,10 @@ class TimeTableController extends Controller
             }
         }
         if ($check == true) {
-            DB::table('timetables')
-                ->findOrFail($timetable_id)
-                ->update([
-                    'day' => $request->day,
-                    'lesson' => $request->lesson,
-                ]);
+            TimeTable::findOrFail($timetable_id)->update([
+                'day' => $request->day,
+                'lesson' => $request->lesson,
+            ]);
             $request->session()->flash('success', __('Edit Timetable Success'));
         } else {
             $request->session()->flash('alert', __('Edit Timetable Fail'));
