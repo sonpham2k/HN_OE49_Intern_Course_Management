@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateProfileRequest;
 use App\Models\Course;
 use App\Models\User;
 use App\Models\Semester;
+use App\Models\TimeTable;
 
 class LecturerHomeController extends Controller
 {

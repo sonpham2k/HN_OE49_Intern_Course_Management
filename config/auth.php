@@ -124,7 +124,7 @@ return [
         'register' => 6,
     ],
     'credit' => [
-        'min' => 10,
-        'max' => 20,
+        'min' => 3,
+        'max' => 11,
     ],
 ];

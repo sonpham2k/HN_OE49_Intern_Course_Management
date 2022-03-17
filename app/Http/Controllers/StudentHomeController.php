@@ -57,10 +57,13 @@ class StudentHomeController extends Controller
             },
         ])->findOrFail(Auth::id());
         
-        $listCourse = Course::with(['timetables', 'semester', 'users'])
-                ->orderBy('name')
-                ->paginate(config('auth.paginate.register'));
-        
+        $listCourse = Course::with(['timetables', 'semester', 'users' => function ($query) {
+            $query->where('role_id', config('auth.roles.lecturer'));
+        }])
+            ->where('semester_id', $semesters->id)
+            ->orderBy('name')
+            ->paginate(config('auth.paginate.register'));
+                
         $total = 0;
         foreach ($users->courses as $course) {
             if ($course->semester_id == $semesters->id) {
@@ -130,23 +133,42 @@ class StudentHomeController extends Controller
     public function deleteCourse($course_id)
     {
         $user = Auth::user();
-        $user->courses()->detach($course_id);
+        $course = Course::findOrFail($course_id);
+
+        foreach ($user->courses as $value) {
+            if ($value->pivot->course_id == $course_id) {
+                $course->update(['slot', $course->slot--]);
+                $user->courses()->detach($course_id);
+            }
+        }
 
         return redirect()->back();
     }
 
     public function registerCourse($course_id)
     {
-        $credit = Course::findOrFail($course_id)->credits;
-
-        if (session('totalCredit') + $credit > config('auth.credit.max')) {
-            session()->flash('overCredit', __('errorCredit'));
-
-            return redirect()->back();
-        }
-
+        $course = Course::findOrFail($course_id);
         $user = Auth::user();
-        $user->courses()->attach($course_id);
+
+        foreach ($user->courses as $value) {
+            if ($value->pivot->course_id == $course_id) {
+                session()->flash('overCredit', __('sloted registered'));
+
+                return redirect()->back();
+            }
+        }
+        
+        if ($course->slot < $course->numbers) {
+            if (session('totalCredit') + $course->credits > config('auth.credit.max')) {
+                session()->flash('overCredit', __('errorCredit'));
+
+                return redirect()->back();
+            }
+
+            $course->update(['slot', $course->slot++]);
+            $user = Auth::user();
+            $user->courses()->attach($course_id);
+        }
 
         return redirect()->back();
     }

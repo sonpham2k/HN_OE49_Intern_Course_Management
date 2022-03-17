@@ -76,6 +76,7 @@ class UserController extends Controller
             } elseif ($request->newpass == $request->confirmpass) {
                 $newpassword = bcrypt($request->newpass);
                 Auth::user()->update(['password' => $newpassword]);
+                
                 return redirect()
                     ->route('reset')
                     ->with('success', __('sucess pass'));

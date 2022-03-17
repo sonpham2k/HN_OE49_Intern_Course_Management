@@ -35,7 +35,6 @@
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxl font-weight-bolder opacity-7">
                                                 {{ __('Day') }}</th>
-
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxl font-weight-bolder opacity-7">
                                                 {{ __('semester') }}</th>

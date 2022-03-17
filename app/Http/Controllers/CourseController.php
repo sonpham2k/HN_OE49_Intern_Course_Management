@@ -54,13 +54,14 @@ class CourseController extends Controller
             'credits' => $request->credits,
             'numbers' => $request->numbers,
             'semester_id' => $request->semester,
+            'slot' => 0,
         ]);
-        $count = Course::all()->count() + 1;
+        $count = Course::all()->count();
         $course = Course::findOrFail($count);
         $course->users()->attach($request->user);
         $request->session()->flash('success', __('Success'));
 
-        return redirect()->route('courses.create');
+        return redirect()->route('timetables.index', ['id' => $count]);
     }
 
     /**
@@ -113,11 +114,17 @@ class CourseController extends Controller
                 'numbers' => $request->numbers,
                 'semester_id' => $request->semester,
             ]);
+
         $course = Course::with(['users' => function ($query) {
             return $query->where('role_id', config('auth.roles.lecturer'));
         }])->findOrFail($id);
-        if ($course->users[0]->id != $request->user) {
-            $course->users()->detach($course->users[0]->id);
+        
+        if (isset($course->user[0])) {
+            if ($course->users[0]->id != $request->user) {
+                $course->users()->detach($course->users[0]->id);
+                $course->users()->attach($request->user);
+            }
+        } else {
             $course->users()->attach($request->user);
         }
         $request->session()->flash('success', __('Edit Success'));

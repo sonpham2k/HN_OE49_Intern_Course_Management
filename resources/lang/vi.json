@@ -21,7 +21,7 @@
     "profile": "Thông tin cá nhân",
     "signout": "Đăng xuất",
     "Subject": "Tên môn học",
-    "Day": "Ngày (Thứ)",
+    "Day": "Thứ (Kíp)",
     "Lesson": "Thời gian (Kíp)",
     "name": "Họ và tên",
     "dob": "Ngày sinh",
@@ -153,5 +153,6 @@
     "error confirm": "Nhập lại mật khẩu không đúng",
     "update success": "Cập nhật thông tin thành công",
     "tbforgotpass": "Bạn hãy đến phòng đào tạo để nhận được sự hướng dẫn từ cán bộ.",
-    "errorCredit": "Vượt quá số tín chỉ cho phép"
+    "errorCredit": "Vượt quá số tín chỉ cho phép",
+    "sloted registered": "Bạn đã đăng kí môn này, haỹ đăng kí môn khác"
 }
