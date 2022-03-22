@@ -10,13 +10,13 @@ class SemesterTest extends ModelTestCase
 {
     protected $semester;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
         $this->semester = new Semester();
     }
 
-    public function tearDown() : void
+    public function tearDown(): void
     {
         unset($this->semester);
         parent::tearDown();
