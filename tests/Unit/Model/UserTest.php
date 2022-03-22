@@ -11,13 +11,13 @@ class UserTest extends ModelTestCase
 {
     protected $user;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
         $this->user = new User();
     }
 
-    public function tearDown() : void
+    public function tearDown(): void
     {
         unset($this->user);
         parent::tearDown();
@@ -40,7 +40,7 @@ class UserTest extends ModelTestCase
 
     public function testUserRelation()
     {
-        $this->assertBelongsToRelation($this->user->roles(), $this->user, new Role(), 'roles_id');
+        $this->assertBelongsToRelation($this->user->role(), $this->user, new Role(), 'role_id');
         $this->assertBelongsToManyRelation(
             $this->user->courses(),
             $this->user,

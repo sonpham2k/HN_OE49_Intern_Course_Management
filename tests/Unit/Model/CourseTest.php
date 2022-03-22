@@ -12,13 +12,13 @@ class CourseTest extends ModelTestCase
 {
     protected $course;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
         $this->course = new Course();
     }
 
-    public function tearDown() : void
+    public function tearDown(): void
     {
         unset($this->course);
         parent::tearDown();
