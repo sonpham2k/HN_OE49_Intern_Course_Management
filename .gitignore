@@ -15,3 +15,4 @@ yarn-error.log
 /.vscode
 public/bower_components/*
 /public/mix-manifest.json
+/coverage
