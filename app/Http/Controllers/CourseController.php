@@ -6,9 +6,9 @@ use App\Http\Requests\AddCourseRequest;
 use App\Http\Requests\EditCourseRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use App\Models\Course;
-use App\Models\Semester;
-use App\Models\User;
+use App\Repositories\Course\CourseRepositoryInterface;
+use App\Repositories\Semester\SemesterRepositoryInterface;
+use App\Repositories\User\UserRepositoryInterface;
 
 class CourseController extends Controller
 {
@@ -17,11 +17,23 @@ class CourseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    protected $courseRepo;
+    protected $semesterRepo;
+    protected $userRepo;
+    public function __construct(
+        CourseRepositoryInterface $courseRepo,
+        SemesterRepositoryInterface $semesterRepo,
+        UserRepositoryInterface $userRepo
+    ) {
+        $this->courseRepo = $courseRepo;
+        $this->semesterRepo = $semesterRepo;
+        $this->userRepo = $userRepo;
+    }
+
     public function index()
     {
-        $courses = Course::with(['users' => function ($query) {
-            return $query->where('role_id', config('auth.roles.lecturer'));
-        }])->get();
+        $courses = $this->courseRepo->getAllCourseWithLecturer();
 
         return view('admin.course.list', compact('courses'));
     }
@@ -33,8 +45,8 @@ class CourseController extends Controller
      */
     public function create()
     {
-        $users = User::where('role_id', config('auth.roles.lecturer'))->get();
-        $semesters = Semester::all();
+        $users = $this->userRepo->getLecturer();
+        $semesters = $this->semesterRepo->getAll();
 
         return view('admin.course.add', compact('users', 'semesters'));
     }
@@ -47,18 +59,18 @@ class CourseController extends Controller
      */
     public function store(AddCourseRequest $request)
     {
-        $lecturer = User::where('role_id', config('auth.roles.lecturer'))->findOrFail($request->user);
-        $semester = Semester::findOrFail($request->semester);
-        DB::table('courses')->insert([
+        $this->userRepo->find($request->user, [
+            'role_id' => config('auth.roles.lecturer')
+        ]);
+        $this->semesterRepo->find($request->semester);
+        $count = $this->courseRepo->create([
             'name' => $request->name,
+            'user' => $request->user,
             'credits' => $request->credits,
             'numbers' => $request->numbers,
             'semester_id' => $request->semester,
             'slot' => 0,
         ]);
-        $count = Course::all()->count();
-        $course = Course::findOrFail($count);
-        $course->users()->attach($request->user);
         $request->session()->flash('success', __('Success'));
 
         return redirect()->route('timetables.index', ['id' => $count]);
@@ -72,9 +84,8 @@ class CourseController extends Controller
      */
     public function show($id)
     {
-        $course = Course::findOrFail($id);
-        $users = $course->users
-            ->where('role_id', config('auth.roles.student'));
+        $course = $this->courseRepo->find($id);
+        $users = $this->courseRepo->getStudentOfCourse($course);
 
         return view('admin.course.show', compact('users', 'course'));
     }
@@ -87,11 +98,9 @@ class CourseController extends Controller
      */
     public function edit($id)
     {
-        $course = Course::with(['users' => function ($query) {
-            return $query->where('role_id', config('auth.roles.lecturer'));
-        }])->findOrFail($id);
-        $lecturers = User::where('role_id', config('auth.roles.lecturer'))->get();
-        $semesters = Semester::all();
+        $course = $this->courseRepo->getCourseWithLecturer($id);
+        $lecturers = $this->userRepo->getLecturer();
+        $semesters = $this->semesterRepo->getAll();
 
         return view('admin.course.edit', compact('course', 'semesters', 'lecturers'));
     }
@@ -105,28 +114,15 @@ class CourseController extends Controller
      */
     public function update(EditCourseRequest $request, $id)
     {
-        $lecturer = User::findOrFail($request->user);
-        DB::table('courses')
-            ->where('id', $id)
-            ->update([
-                'name' => $request->name,
-                'credits' => $request->credits,
-                'numbers' => $request->numbers,
-                'semester_id' => $request->semester,
-            ]);
+        $this->userRepo->find($request->user);
 
-        $course = Course::with(['users' => function ($query) {
-            return $query->where('role_id', config('auth.roles.lecturer'));
-        }])->findOrFail($id);
-        
-        if (isset($course->user[0])) {
-            if ($course->users[0]->id != $request->user) {
-                $course->users()->detach($course->users[0]->id);
-                $course->users()->attach($request->user);
-            }
-        } else {
-            $course->users()->attach($request->user);
-        }
+        $this->courseRepo->update($id, [
+            'name' => $request->name,
+            'user' => $request->user,
+            'credits' => $request->credits,
+            'numbers' => $request->numbers,
+            'semester_id' => $request->semester,
+        ]);
         $request->session()->flash('success', __('Edit Success'));
 
         return redirect()->route('courses.index');
@@ -140,9 +136,7 @@ class CourseController extends Controller
      */
     public function destroy($id)
     {
-        $course = Course::findOrFail($id);
-        $course->users()->detach();
-        $course->delete();
+        $result = $this->courseRepo->delete($id);
 
         return redirect()->back();
     }
