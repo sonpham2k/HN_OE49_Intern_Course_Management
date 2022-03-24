@@ -71,9 +71,10 @@ class CourseController extends Controller
             'semester_id' => $request->semester,
             'slot' => 0,
         ]);
-        $request->session()->flash('success', __('Success'));
 
-        return redirect()->route('timetables.index', ['id' => $count]);
+        return redirect()
+            ->route('timetables.index', ['id' => $count])
+            ->with('success', __('Success'));
     }
 
     /**
@@ -123,9 +124,17 @@ class CourseController extends Controller
             'numbers' => $request->numbers,
             'semester_id' => $request->semester,
         ]);
-        $request->session()->flash('success', __('Edit Success'));
+        $course = $this->courseRepo->getCourseWithLecturer($id);
+        if (isset($course->users[0])) {
+            if ($course->users[0]->id != $request->user) {
+                $course->users()->detach($course->users[0]->id);
+                $course->users()->attach($request->user);
+            }
+        } else {
+            $course->users()->attach($request->user);
+        }
 
-        return redirect()->route('courses.index');
+        return redirect()->route('courses.index')->with('success', __('Edit Success'));
     }
 
     /**
