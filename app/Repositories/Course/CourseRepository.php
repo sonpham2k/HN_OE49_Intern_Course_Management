@@ -59,15 +59,6 @@ class CourseRepository extends BaseRepository implements CourseRepositoryInterfa
                 'numbers' => $attributes['numbers'],
                 'semester_id' => $attributes['semester_id'],
             ]);
-        $course = $this->getCourseWithLecturer($id);
-        if (isset($course->user[0])) {
-            if ($course->users[0]->id != $attributes['user']) {
-                $course->users()->detach($course->users[0]->id);
-                $course->users()->attach($attributes['user']);
-            }
-        } else {
-            $course->users()->attach($attributes['user']);
-        }
     }
 
     public function delete($id)
