@@ -7,43 +7,35 @@ use App\Http\Requests\EditUserRequest;
 use App\Http\Requests\UpdateProfileRequest;
 use App\Http\Resources\Students;
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class StudentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    protected $userRepo;
+
+    public function __construct(
+        UserRepositoryInterface $userRepo
+    ) {
+        $this->userRepo = $userRepo;
+    }
+
     public function index()
     {
-        $students = User::where('role_id', config('auth.roles.student'))->get();
+        $students = $this->userRepo->getStudent();
 
         return view('admin.student.list', compact('students'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         return view('admin.student.add');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(AddUserRequest $request)
     {
-        DB::table('users')->insert([
+        $this->userRepo->insertStudent([
             'username' => $request->username,
             'password' => Hash::make($request->password),
             'fullname' => $request->fullname,
@@ -52,73 +44,40 @@ class StudentController extends Controller
             'address' => $request->address,
             'role_id' => config('auth.roles.student'),
         ]);
-        $request->session()->flash('success', __('Success'));
 
-        return redirect()->route('students.create');
+        return redirect()->route('students.create')->with('success', __('Success'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        $user = User::with(['courses.users' => function ($query) {
-            $query->where('role_id', config('auth.roles.lecturer'));
-        }])
-            ->findOrFail($id);
+        $user = $this->userRepo->getTeacher($id);
 
         return view('admin.student.show', compact('user'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        $student = User::findOrFail($id);
+        $student = $this->userRepo->editStudent($id);
 
         return view('admin.student.edit', compact('student'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(EditUserRequest $request, $id)
     {
-        $row = DB::table('users')
-            ->where('id', $id)
-            ->update([
-                'fullname' => $request->input('fullname'),
-                'username' => $request->input('username'),
-                'dob' => $request->input('date'),
-                'address' => $request->input('address'),
-                'email' => $request->input('email'),
-            ]);
-
+        $this->userRepo->updateStudent([
+            'fullname' => $request->input('fullname'),
+            'username' => $request->input('username'),
+            'dob' => $request->input('date'),
+            'address' => $request->input('address'),
+            'email' => $request->input('email'),
+        ], $id);
+        
         return redirect()->route('students.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        $student = User::findOrFail($id);
-        $student->courses()->detach();
-        $student->delete();
+        $result = $this->userRepo->delete($id);
 
         return redirect()->back();
     }
