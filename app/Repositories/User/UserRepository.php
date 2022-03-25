@@ -16,4 +16,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     {
         return User::where('role_id', config('auth.roles.lecturer'))->get();
     }
+
+    //dmoededoedmed
+    ///asdasdasda
 }
