@@ -7,10 +7,18 @@ use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\ResetPassRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
+use App\Repositories\User\UserRepositoryInterface;
 
 class UserController extends Controller
 {
+    protected $userRepo;
+
+    public function __construct(
+        UserRepositoryInterface $userRepo
+    ) {
+        $this->userRepo = $userRepo;
+    }
+
     public function login()
     {
         return view('login.login');
@@ -18,10 +26,12 @@ class UserController extends Controller
 
     public function store(UserStoreRequest $request)
     {
-        if (Auth::attempt([
+        $checkLogin = $this->userRepo->loginUser([
             'email' => $request->input('email'),
             'password' => $request->input('password'),
-        ])) {
+        ]);
+
+        if ($checkLogin) {
             return redirect()->route('home');
         }
         $data = "__('Login fail')";
@@ -29,16 +39,16 @@ class UserController extends Controller
         return view('login.login', compact('data'));
     }
 
-    public function logout(Request $request)
+    public function logout()
     {
-        Auth::logout();
+        $user = $this->userRepo->logoutUser();
 
         return redirect()->route('login');
     }
 
     public function home()
     {
-        $role = Auth::user()->role_id;
+        $role = $this->userRepo->roleUser();
 
         if ($role == config('auth.roles.admin')) {
             return view('admin.home');
@@ -61,21 +71,28 @@ class UserController extends Controller
 
     public function storeResetPass(ResetPassRequest $request)
     {
-        $input = $request->oldpass;
-        $user = User::find(auth()->user()->id);
+        $input = [
+            'oldpass' => $request->input('oldpass'),
+            'newpass' => $request->input('newpass'),
+            'confirmpass' => $request->input('confirmpass'),
+        ];
 
-        if (!Hash::check($input, $user->password)) {
+        $checkLogin = $this->userRepo->checkOldAndCurrentPass($input);
+        $checkSamePassOldNew = $this->userRepo->checkSamePassOldAndNew($input);
+        $checkSamePassNewConfirm = $this->userRepo->checkSamePassNewAndConfirm($input);
+
+        if (!$checkLogin) {
             return redirect()
                     ->route('reset')
                     ->with('error', __('error pass'));
         } else {
-            if ($request->newpass == $request->oldpass) {
+            if ($checkSamePassOldNew) {
                 return redirect()
                     ->route('reset')
                     ->with('error', __('same pass'));
-            } elseif ($request->newpass == $request->confirmpass) {
-                $newpassword = bcrypt($request->newpass);
-                Auth::user()->update(['password' => $newpassword]);
+            } elseif ($checkSamePassNewConfirm) {
+                $newpassword = $this->userRepo->changePasstobcrypt($input);
+                $this->userRepo->updatePass($newpassword);
                 
                 return redirect()
                     ->route('reset')
