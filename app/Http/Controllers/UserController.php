@@ -13,9 +13,8 @@ class UserController extends Controller
 {
     protected $userRepo;
 
-    public function __construct(
-        UserRepositoryInterface $userRepo
-    ) {
+    public function __construct(UserRepositoryInterface $userRepo)
+    {
         $this->userRepo = $userRepo;
     }
 
@@ -26,29 +25,28 @@ class UserController extends Controller
 
     public function store(UserStoreRequest $request)
     {
-        $checkLogin = $this->userRepo->loginUser([
-            'email' => $request->input('email'),
-            'password' => $request->input('password'),
-        ]);
-
-        if ($checkLogin) {
+        if (Auth::attempt([
+                'email' => $request->input('email'),
+                'password' => $request->input('password'),
+            ])
+        ) {
             return redirect()->route('home');
         }
-        $data = "__('Login fail')";
+        $data = __('Login fail');
 
         return view('login.login', compact('data'));
     }
 
     public function logout()
     {
-        $user = $this->userRepo->logoutUser();
+        Auth::logout();
 
         return redirect()->route('login');
     }
 
     public function home()
     {
-        $role = $this->userRepo->roleUser();
+        $role = Auth::user()->role_id;
 
         if ($role == config('auth.roles.admin')) {
             return view('admin.home');
@@ -77,14 +75,14 @@ class UserController extends Controller
             'confirmpass' => $request->input('confirmpass'),
         ];
 
-        $checkLogin = $this->userRepo->checkOldAndCurrentPass($input);
+        $userCheck = $this->userRepo->userCheck();
         $checkSamePassOldNew = $this->userRepo->checkSamePassOldAndNew($input);
         $checkSamePassNewConfirm = $this->userRepo->checkSamePassNewAndConfirm($input);
 
-        if (!$checkLogin) {
+        if (!Hash::check($input['oldpass'], $userCheck->password)) {
             return redirect()
-                    ->route('reset')
-                    ->with('error', __('error pass'));
+                ->route('reset')
+                ->with('error', __('error pass'));
         } else {
             if ($checkSamePassOldNew) {
                 return redirect()
@@ -92,7 +90,7 @@ class UserController extends Controller
                     ->with('error', __('same pass'));
             } elseif ($checkSamePassNewConfirm) {
                 $newpassword = $this->userRepo->changePasstobcrypt($input);
-                $this->userRepo->updatePass($newpassword);
+                Auth::user()->update(['password' => $newpassword]);
                 
                 return redirect()
                     ->route('reset')
