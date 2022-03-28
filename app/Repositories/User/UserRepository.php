@@ -4,9 +4,6 @@ namespace App\Repositories\User;
 
 use App\Repositories\BaseRepository;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
 
 class UserRepository extends BaseRepository implements UserRepositoryInterface
 {
@@ -20,44 +17,16 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         return User::where('role_id', config('auth.roles.lecturer'))->get();
     }
 
-    public function loginUser($attributes = [])
+    public function userCheck()
     {
-        $login = Auth::attempt([
-            'email' => $attributes['email'],
-            'password' => $attributes['password'],
-        ]);
-
-        return $login;
-    }
-
-    public function logoutUser()
-    {
-        return Auth::logout();
-    }
-
-    public function roleUser()
-    {
-        $role = Auth::user()->role_id;
-
-        return $role;
-    }
-
-    public function checkOldAndCurrentPass($attributes = [])
-    {
-        $input = $attributes['oldpass'];
-        $user = User::find(auth()->user()->id);
+        $user = User::find(auth()->user());
         
-        return Hash::check($input, $user->password);
+        return $user;
     }
 
     public function changePasstobcrypt($attributes = [])
     {
         return bcrypt($attributes['newpass']);
-    }
-
-    public function updatePass($newpass)
-    {
-        Auth::user()->update(['password' => $newpass]);
     }
 
     public function checkSamePassOldAndNew($attributes = [])

@@ -6,6 +6,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Requests\AddCourseRequest;
 use App\Http\Requests\ResetPassRequest;
 use App\Http\Requests\UserStoreRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Repositories\User\UserRepositoryInterface;
 use Mockery;
 use Tests\TestCase;
@@ -38,6 +40,7 @@ class UserControllerTest extends ControllerTestCase
 
     public function testViewLogin()
     {
+
         $view = $this->userController->login();
         $this->testAssertView('login.login', $view);
     }
@@ -49,7 +52,7 @@ class UserControllerTest extends ControllerTestCase
             'password' => '123456',
         ]);
 
-        $this->userRepo->shouldReceive('loginUser')->andReturn(true);
+        Auth::shouldReceive('attempt')->andReturn(true);
         $redirect = $this->userController->store($request);
         $this->assertInstanceOf(RedirectResponse::class, $redirect);
     }
@@ -61,14 +64,14 @@ class UserControllerTest extends ControllerTestCase
             'password' => '123456',
         ]);
 
-        $this->userRepo->shouldReceive('loginUser')->andReturn(false);
+        Auth::shouldReceive('attempt')->andReturn(false);
         $view = $this->userController->store($request);
         $this->testAssertView('login.login', $view);
     }
 
     public function testViewLogout()
     {
-        $this->userRepo->shouldReceive('logoutUser');
+        Auth::shouldReceive('logout');
 
         $redirect = $this->userController->logout();
         $this->assertInstanceOf(RedirectResponse::class, $redirect);
@@ -76,21 +79,30 @@ class UserControllerTest extends ControllerTestCase
 
     public function testViewAdminHome()
     {
-        $this->userRepo->shouldReceive('roleUser')->andReturn(config('auth.roles.admin'));
+        $user = Mockery::mock(User::class)->makePartial();
+        $user->role_id = config('auth.roles.admin');
+        Auth::shouldReceive('user')->andReturn($user);
+
         $view = $this->userController->home();
         $this->testAssertView('admin.home', $view);
     }
 
     public function testViewLecturerHome()
     {
-        $this->userRepo->shouldReceive('roleUser')->andReturn(config('auth.roles.lecturer'));
+        $user = Mockery::mock(User::class)->makePartial();
+        $user->role_id = config('auth.roles.lecturer');
+        Auth::shouldReceive('user')->andReturn($user);
+
         $view = $this->userController->home();
         $this->testAssertView('lecturer.home', $view);
     }
 
     public function testViewStudentHome()
     {
-        $this->userRepo->shouldReceive('roleUser')->andReturn(config('auth.roles.student'));
+        $user = Mockery::mock(User::class)->makePartial();
+        $user->role_id = config('auth.roles.student');
+        Auth::shouldReceive('user')->andReturn($user);
+
         $view = $this->userController->home();
         $this->testAssertView('student.home', $view);
     }
@@ -114,12 +126,13 @@ class UserControllerTest extends ControllerTestCase
             'newpass' => '123456',
             'confirm' => '12345678',
         ]);
-        $this->testReceiveManyActionReturnValue($this->userRepo, [
-            'checkOldAndCurrentPass',
-        ], [
-            false,
-        ]);
-        $this->userRepo->shouldReceive('checkOldAndCurrentPass')->andReturn(false);
+
+        $user = Mockery::mock(User::class)->makePartial();
+        $user->id = 1;
+        $user->password = '123456';
+
+        $this->userRepo->shouldReceive('userCheck')->andReturn($user);
+        Hash::shouldReceive('check')->andReturn(false);
         $redirect = $this->userController->storeResetPass($request);
         $this->assertInstanceOf(RedirectResponse::class, $redirect);
     }
@@ -131,14 +144,14 @@ class UserControllerTest extends ControllerTestCase
             'newpass' => '123456',
             'confirm' => '12345678',
         ]);
-        $this->testReceiveManyActionReturnValue($this->userRepo, [
-            'checkOldAndCurrentPass',
-            'checkSamePassOldAndNew',
-        ], [
-            true,
-            true,
-        ]);
-    
+
+        $user = Mockery::mock(User::class)->makePartial();
+        $user->id = 1;
+        $user->password = '123456';
+        $this->userRepo->shouldReceive('userCheck')->andReturn($user);
+        Hash::shouldReceive('check')->andReturn(true);
+        
+        $this->userRepo->shouldReceive('checkSamePassOldAndNew')->andReturn(true);
         $redirect = $this->userController->storeResetPass($request);
         $this->assertInstanceOf(RedirectResponse::class, $redirect);
     }
@@ -150,19 +163,26 @@ class UserControllerTest extends ControllerTestCase
             'newpass' => '123456',
             'confirm' => '12345678',
         ]);
+
+        $user = Mockery::mock(User::class)->makePartial();
+        $user->id = 1;
+        $user->password = '123456';
+        $this->userRepo->shouldReceive('userCheck')->andReturn($user);
+        Hash::shouldReceive('check')->andReturn(true);
+
         $this->testReceiveManyActionReturnValue($this->userRepo, [
-            'checkOldAndCurrentPass',
             'checkSamePassOldAndNew',
             'checkSamePassNewAndConfirm',
-            'changePasstobcrypt',
-            'updatePass',
         ], [
-            true,
             false,
             true,
-            true,
-            true
         ]);
+
+        $newpassword = $this->userRepo->shouldReceive('changePasstobcrypt')->andReturn($request->newpass);
+
+        $user = Mockery::mock(User::class)->makePartial();
+        $user->id = 1;
+        Auth::shouldReceive('user->update')->andReturn(true);
         
         $redirect = $this->userController->storeResetPass($request);
         $this->assertInstanceOf(RedirectResponse::class, $redirect);
@@ -175,12 +195,17 @@ class UserControllerTest extends ControllerTestCase
             'newpass' => '123456',
             'confirm' => '12345678',
         ]);
+        
+        $user = Mockery::mock(User::class)->makePartial();
+        $user->id = 1;
+        $user->password = '123456';
+        $this->userRepo->shouldReceive('userCheck')->andReturn($user);
+        Hash::shouldReceive('check')->andReturn(true);
+
         $this->testReceiveManyActionReturnValue($this->userRepo, [
-            'checkOldAndCurrentPass',
             'checkSamePassOldAndNew',
             'checkSamePassNewAndConfirm',
         ], [
-            true,
             false,
             false,
         ]);

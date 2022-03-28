@@ -14,6 +14,13 @@
                                     <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">{{ __('signin') }}</h4>
                                 </div>
                             </div>
+                            @php
+                                if(isset($data)){
+                            @endphp
+                                    <span style="color: red">{{ $data }}</span>
+                            @php
+                                }
+                            @endphp
                             <div class="card-body">
                                 <form method="post" class="text-start" action="{{ route('store') }}">
                                     @csrf
@@ -34,10 +41,10 @@
                                         <span style="color: red">{{ $message }}</span>
                                     @enderror
                                     <div class="text-center">
-                                        <button class="btn bg-gradient-primary w-100 my-4 mb-2">{{ __('login') }}</button>
+                                        <button id="btnLogin" class="btn bg-gradient-primary w-100 my-4 mb-2">{{ __('login') }}</button>
                                     </div>
                                     <p class="mt-4 text-sm text-center">
-                                        <a href="{{ route('forgot') }}"
+                                        <a href="{{ route('forgot') }}" id="btnForgot"
                                             class="text-primary text-gradient font-weight-bold">{{ __('forgot') }}?</a>
                                     </p>
                                 </form>
