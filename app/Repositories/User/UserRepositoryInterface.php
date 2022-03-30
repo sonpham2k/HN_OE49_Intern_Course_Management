@@ -6,5 +6,16 @@ use App\Repositories\RepositoryInterface;
 
 interface UserRepositoryInterface extends RepositoryInterface
 {
-    public function getLecturer();
+    public function getLecturers();
+
+    public function getStudents();
+
+    //Insert sử dụng DB
+    public function insertDB($attributes = []);
+
+    //update sử dụng DB
+    public function updateDB($id, $attributes = []);
+
+    //Show khoá học của sinh viên
+    public function showCourseOfStudent($id);
 }
