@@ -11,6 +11,8 @@ use App\Repositories\Semester\SemesterRepository;
 use App\Repositories\Semester\SemesterRepositoryInterface;
 use App\Repositories\User\UserRepository;
 use App\Repositories\User\UserRepositoryInterface;
+use App\Repositories\TimeTable\TimeTableRepository;
+use App\Repositories\TimeTable\TimeTableRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(CourseRepositoryInterface::class, CourseRepository::class);
         $this->app->bind(SemesterRepositoryInterface::class, SemesterRepository::class);
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
+        $this->app->bind(TimeTableRepositoryInterface::class, TimeTableRepository::class);
     }
 
     /**

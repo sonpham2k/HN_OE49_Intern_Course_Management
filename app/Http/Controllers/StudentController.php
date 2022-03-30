@@ -4,12 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AddUserRequest;
 use App\Http\Requests\EditUserRequest;
-use App\Http\Requests\UpdateProfileRequest;
-use App\Http\Resources\Students;
-use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Repositories\User\UserRepositoryInterface;
 
 class StudentController extends Controller
 {
@@ -18,9 +16,17 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    protected $userRepo;
+
+    public function __construct(UserRepositoryInterface $userRepo)
+    {
+        $this->userRepo = $userRepo;
+    }
+
     public function index()
     {
-        $students = User::where('role_id', config('auth.roles.student'))->get();
+        $students = $this->userRepo->getStudents();
 
         return view('admin.student.list', compact('students'));
     }
@@ -43,18 +49,18 @@ class StudentController extends Controller
      */
     public function store(AddUserRequest $request)
     {
-        DB::table('users')->insert([
+        $this->userRepo->insertDB([
             'username' => $request->username,
-            'password' => Hash::make($request->password),
+            'password' => $request->password,
             'fullname' => $request->fullname,
-            'dob' => $request->date,
+            'dob' => $request->dob,
             'email' => $request->email,
             'address' => $request->address,
             'role_id' => config('auth.roles.student'),
         ]);
-        $request->session()->flash('success', __('Success'));
 
-        return redirect()->route('students.create');
+        return redirect()->route('students.create')
+            ->with('success', __('Success'));
     }
 
     /**
@@ -65,10 +71,7 @@ class StudentController extends Controller
      */
     public function show($id)
     {
-        $user = User::with(['courses.users' => function ($query) {
-            $query->where('role_id', config('auth.roles.lecturer'));
-        }])
-            ->findOrFail($id);
+        $user = $this->userRepo->showCourseOfStudent($id);
 
         return view('admin.student.show', compact('user'));
     }
@@ -81,7 +84,7 @@ class StudentController extends Controller
      */
     public function edit($id)
     {
-        $student = User::findOrFail($id);
+        $student = $this->userRepo->find($id);
 
         return view('admin.student.edit', compact('student'));
     }
@@ -95,15 +98,13 @@ class StudentController extends Controller
      */
     public function update(EditUserRequest $request, $id)
     {
-        $row = DB::table('users')
-            ->where('id', $id)
-            ->update([
-                'fullname' => $request->input('fullname'),
-                'username' => $request->input('username'),
-                'dob' => $request->input('date'),
-                'address' => $request->input('address'),
-                'email' => $request->input('email'),
-            ]);
+        $this->userRepo->updateDB($id, [
+            'fullname' => $request->input('fullname'),
+            'username' => $request->input('username'),
+            'dob' => $request->input('date'),
+            'address' => $request->input('address'),
+            'email' => $request->input('email'),
+        ]);
 
         return redirect()->route('students.index');
     }
@@ -116,9 +117,7 @@ class StudentController extends Controller
      */
     public function destroy($id)
     {
-        $student = User::findOrFail($id);
-        $student->courses()->detach();
-        $student->delete();
+        $this->userRepo->delete($id);
 
         return redirect()->back();
     }

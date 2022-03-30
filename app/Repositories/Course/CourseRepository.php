@@ -33,6 +33,17 @@ class CourseRepository extends BaseRepository implements CourseRepositoryInterfa
         }])->findOrFail($id);
     }
 
+    public function getLecturerOfCourse($id)
+    {
+        $course = Course::findOrFail($id);
+        $lecturer = $course
+            ->users()
+            ->where('role_id', config('auth.roles.lecturer'))
+            ->first();
+
+        return $lecturer;
+    }
+
     public function create($attributes = [])
     {
         DB::table('courses')->insert([

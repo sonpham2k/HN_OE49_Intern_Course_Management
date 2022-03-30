@@ -45,7 +45,7 @@ class CourseController extends Controller
      */
     public function create()
     {
-        $users = $this->userRepo->getLecturer();
+        $users = $this->userRepo->getLecturers();
         $semesters = $this->semesterRepo->getAll();
 
         return view('admin.course.add', compact('users', 'semesters'));
@@ -100,7 +100,7 @@ class CourseController extends Controller
     public function edit($id)
     {
         $course = $this->courseRepo->getCourseWithLecturer($id);
-        $lecturers = $this->userRepo->getLecturer();
+        $lecturers = $this->userRepo->getLecturers();
         $semesters = $this->semesterRepo->getAll();
 
         return view('admin.course.edit', compact('course', 'semesters', 'lecturers'));

@@ -9,6 +9,9 @@ use App\Models\TimeTable;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Repositories\Course\CourseRepositoryInterface;
+use App\Repositories\TimeTable\TimeTableRepositoryInterface;
+use App\Repositories\User\UserRepositoryInterface;
 
 class TimeTableController extends Controller
 {
@@ -17,9 +20,23 @@ class TimeTableController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    protected $courseRepo;
+    protected $timetableRepo;
+    protected $userRepo;
+    public function __construct(
+        CourseRepositoryInterface $courseRepo,
+        TimeTableRepositoryInterface $timetableRepo,
+        UserRepositoryInterface $userRepo
+    ) {
+        $this->courseRepo = $courseRepo;
+        $this->timetableRepo = $timetableRepo;
+        $this->userRepo = $userRepo;
+    }
+
     public function index($id)
     {
-        $course = Course::findOrFail($id);
+        $course = $this->courseRepo->find($id);
 
         return view('admin.timetable.home', compact('course'));
     }
@@ -42,11 +59,8 @@ class TimeTableController extends Controller
      */
     public function store(AddTimeTableRequest $request, $id)
     {
-        $course = Course::findOrFail($id);
-        $lecturer = $course
-            ->users()
-            ->where('role_id', config('auth.roles.lecturer'))
-            ->first();
+        $course = $this->courseRepo->find($id);
+        $lecturer = $this->courseRepo->getLecturerOfCourse($id);
         $check = true;
         if ($lecturer) {
             $lecturer->load('courses.timetables');
@@ -67,7 +81,7 @@ class TimeTableController extends Controller
             }
         }
         if ($check == true) {
-            DB::table('timetables')->insert([
+            $this->timetableRepo->insertDB([
                 'day' => $request->day,
                 'lesson' => $request->lesson,
                 'course_id' => $id,
@@ -99,8 +113,8 @@ class TimeTableController extends Controller
      */
     public function edit($id, $timetable_id)
     {
-        $course = Course::findOrFail($id);
-        $timetable1 = TimeTable::findOrFail($timetable_id);
+        $course = $this->courseRepo->find($id);
+        $timetable1 = $this->timetableRepo->find($timetable_id);
 
         return view('admin.timetable.edit', compact('course', 'timetable1'));
     }
@@ -114,11 +128,8 @@ class TimeTableController extends Controller
      */
     public function update(UpdateTimeTableRequest $request, $id, $timetable_id)
     {
-        $course = Course::findOrFail($id);
-        $lecturer = $course
-            ->users()
-            ->where('role_id', config('auth.roles.lecturer'))
-            ->first();
+        $course = $this->courseRepo->find($id);
+        $lecturer = $this->courseRepo->getLecturerOfCourse($id);
         $check = true;
         if ($lecturer) {
             $lecturer->load('courses.timetables');
@@ -139,7 +150,7 @@ class TimeTableController extends Controller
             }
         }
         if ($check == true) {
-            TimeTable::findOrFail($timetable_id)->update([
+            $this->timetableRepo->update($timetable_id, [
                 'day' => $request->day,
                 'lesson' => $request->lesson,
             ]);
@@ -159,8 +170,7 @@ class TimeTableController extends Controller
      */
     public function destroy($id)
     {
-        $timetable = TimeTable::findOrFail($id);
-        $timetable->delete();
+        $this->timetableRepo->delete($id);
 
         return redirect()->back();
     }
