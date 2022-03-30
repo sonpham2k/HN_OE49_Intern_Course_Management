@@ -52,7 +52,7 @@ class CourseControllerTest extends ControllerTestCase
 
     public function testCreateReturnView()
     {
-        $this->testReceiveManyRepo([$this->userRepo, $this->semesterRepo], ['getLecturer', 'getAll']);
+        $this->testReceiveManyRepo([$this->userRepo, $this->semesterRepo], ['getLecturers', 'getAll']);
         $view = $this->courseController->create();
         $this->testAssertView('admin.course.add', $view, ['users', 'semesters']);
     }
@@ -157,7 +157,7 @@ class CourseControllerTest extends ControllerTestCase
             $this->semesterRepo,
         ], [
             'getCourseWithLecturer',
-            'getLecturer',
+            'getLecturers',
             'getAll'
         ]);
         $view = $this->courseController->edit(1);

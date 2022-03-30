@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Repositories\User\UserRepositoryInterface;
 
 class LecturerController extends Controller
 {
@@ -16,9 +17,17 @@ class LecturerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    protected $userRepo;
+
+    public function __construct(UserRepositoryInterface $userRepo)
+    {
+        $this->userRepo = $userRepo;
+    }
+
     public function index()
     {
-        $lecturers = User::where('role_id', config('auth.roles.lecturer'))->get();
+        $lecturers = $this->userRepo->getLecturers();
 
         return view('admin.lecturer.list', compact('lecturers'));
     }
@@ -41,18 +50,18 @@ class LecturerController extends Controller
      */
     public function store(AddUserRequest $request)
     {
-        DB::table('users')->insert([
+        $this->userRepo->insertDB([
             'username' => $request->username,
-            'password' => Hash::make($request->password),
+            'password' => $request->password,
             'fullname' => $request->fullname,
             'dob' => $request->dob,
             'email' => $request->email,
             'address' => $request->address,
             'role_id' => config('auth.roles.lecturer'),
         ]);
-        $request->session()->flash('success', __('Success'));
 
-        return redirect()->route('lecturers.create');
+        return redirect()->route('lecturers.create')
+            ->with('success', __('Success'));
     }
 
     /**
@@ -63,7 +72,7 @@ class LecturerController extends Controller
      */
     public function show($id)
     {
-        $user = User::findOrFail($id);
+        $user = $this->userRepo->find($id);
 
         return view('admin.lecturer.show', compact('user'));
     }
@@ -76,7 +85,7 @@ class LecturerController extends Controller
      */
     public function edit($id)
     {
-        $lecturer = User::findOrFail($id);
+        $lecturer = $this->userRepo->find($id);
 
         return view('admin.lecturer.edit', compact('lecturer'));
     }
@@ -90,15 +99,13 @@ class LecturerController extends Controller
      */
     public function update(EditLecturerRequest $request, $id)
     {
-        DB::table('users')
-            ->where('id', $id)
-            ->update([
-                'fullname' => $request->input('fullname'),
-                'username' => $request->input('username'),
-                'dob' => $request->input('date'),
-                'address' => $request->input('address'),
-                'email' => $request->input('email'),
-            ]);
+        $this->userRepo->updateDB($id, [
+            'fullname' => $request->input('fullname'),
+            'username' => $request->input('username'),
+            'dob' => $request->input('date'),
+            'address' => $request->input('address'),
+            'email' => $request->input('email'),
+        ]);
 
         return redirect()->route('lecturers.index');
     }
@@ -111,9 +118,7 @@ class LecturerController extends Controller
      */
     public function destroy($id)
     {
-        $lecturer = User::findOrFail($id);
-        $lecturer->courses()->detach();
-        $lecturer->delete();
+        $this->userRepo->delete($id);
 
         return redirect()->back();
     }

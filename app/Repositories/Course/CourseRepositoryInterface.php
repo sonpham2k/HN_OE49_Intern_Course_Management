@@ -14,4 +14,7 @@ interface CourseRepositoryInterface extends RepositoryInterface
 
     // Lấy ra sinh viên của khoá học đó
     public function getStudentOfCourse($course);
+
+    // Lấy ra giảng viên của khoá học
+    public function getLecturerOfCourse($id);
 }
