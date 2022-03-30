@@ -6,13 +6,26 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\UpdateLecturerRequest;
 use App\Http\Requests\UpdateProfileRequest;
-use App\Models\Course;
-use App\Models\User;
-use App\Models\Semester;
-use App\Models\TimeTable;
+use App\Repositories\Course\CourseRepositoryInterface;
+use App\Repositories\User\UserRepositoryInterface;
+use App\Repositories\Semester\SemesterRepositoryInterface;
 
 class LecturerHomeController extends Controller
 {
+    protected $userRepo;
+    protected $courseRepo;
+    protected $semesterRepo;
+
+    public function __construct(
+        UserRepositoryInterface $userRepo,
+        CourseRepositoryInterface $courseRepo,
+        SemesterRepositoryInterface $semesterRepo
+    ) {
+        $this->userRepo = $userRepo;
+        $this->courseRepo = $courseRepo;
+        $this->semesterRepo = $semesterRepo;
+    }
+
     public function home()
     {
         return view('lecturer.home');
@@ -20,24 +33,16 @@ class LecturerHomeController extends Controller
 
     public function getTimeTable()
     {
-        $semesters = Semester::all();
+        $semesters = $this->semesterRepo->getAll();
 
-        $users = User::with([
-            'courses' => function ($query) {
-                $query->with(['timetables', 'semester']);
-            },
-        ])
-            ->where('id', Auth::id())
-            ->firstOrFail();
+        $users = $this->userRepo->getTimeTableUser();
 
         return view('lecturer.timetable', compact('users', 'semesters'));
     }
 
     public function listStudent($course_id)
     {
-        $users = Course::with('users')
-            ->where('id', $course_id)
-            ->firstOrFail();
+        $users = $this->userRepo->getListStudent($course_id);
 
         return view('lecturer.liststudent', compact('users'));
     }
@@ -59,11 +64,13 @@ class LecturerHomeController extends Controller
 
     public function update(UpdateProfileRequest $request)
     {
-        User::where('id', Auth::id())->update([
+        $input = [
             'fullname' => $request->input('name'),
             'dob' => $request->input('date'),
             'address' => $request->input('address'),
-        ]);
+        ];
+
+        $this->userRepo->updateUser($input);
         $success = __('changeSucess');
 
         return redirect()

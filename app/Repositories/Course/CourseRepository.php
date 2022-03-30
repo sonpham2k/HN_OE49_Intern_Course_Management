@@ -67,4 +67,35 @@ class CourseRepository extends BaseRepository implements CourseRepositoryInterfa
         $course->users()->detach();
         $course->delete();
     }
+
+    public function getCourse()
+    {
+        return Course::with(['users'])->get();
+    }
+
+    public function findCourse($id)
+    {
+        return Course::findOrFail($id);
+    }
+
+    public function listCourse($id)
+    {
+        $listCourse = Course::with(['timetables', 'semester', 'users' => function ($query) {
+            $query->where('role_id', config('auth.roles.lecturer'));
+        }])
+            ->where('semester_id', $id)
+            ->orderBy('name')
+            ->paginate(config('auth.paginate.register'));
+
+        return $listCourse;
+    }
+
+    public function listStudent($id)
+    {
+        $users = Course::with('users')
+            ->where('id', $id)
+            ->firstOrFail();
+
+        return $users;
+    }
 }
