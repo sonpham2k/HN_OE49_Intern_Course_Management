@@ -99,4 +99,46 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 
         return false;
     }
+
+    public function getTimeTableUser()
+    {
+        $users = User::with([
+            'courses' => function ($query) {
+                $query->with(['timetables', 'semester']);
+            },
+        ])
+            ->where('id', Auth::id())
+            ->firstOrFail();
+
+        return $users;
+    }
+
+    public function getListStudent($id)
+    {
+        $users = Course::with('users')
+            ->where('id', $id)
+            ->firstOrFail();
+        
+        return $users;
+    }
+
+    public function updateUser($attributes = [])
+    {
+        User::where('id', Auth::id())->update([
+            'fullname' => $attributes['fullname'],
+            'dob' => $attributes['dob'],
+            'address' => $attributes['address'],
+        ]);
+    }
+
+    public function getCourseLecturer()
+    {
+        $users = User::with([
+            'courses.users' => function ($query) {
+                $query->where('role_id', config('auth.roles.lecturer'));
+            },
+        ])->findOrFail(Auth::id());
+
+        return $users;
+    }
 }
