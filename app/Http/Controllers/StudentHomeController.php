@@ -5,12 +5,26 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\UpdateProfileRequest;
-use App\Models\Course;
-use App\Models\User;
-use App\Models\Semester;
+use App\Repositories\Course\CourseRepositoryInterface;
+use App\Repositories\User\UserRepositoryInterface;
+use App\Repositories\Semester\SemesterRepositoryInterface;
 
 class StudentHomeController extends Controller
 {
+    protected $userRepo;
+    protected $courseRepo;
+    protected $semesterRepo;
+
+    public function __construct(
+        UserRepositoryInterface $userRepo,
+        CourseRepositoryInterface $courseRepo,
+        SemesterRepositoryInterface $semesterRepo
+    ) {
+        $this->userRepo = $userRepo;
+        $this->courseRepo = $courseRepo;
+        $this->semesterRepo = $semesterRepo;
+    }
+
     public function home()
     {
         return view('student.home');
@@ -18,15 +32,9 @@ class StudentHomeController extends Controller
 
     public function getTimeTable()
     {
-        $semesters = Semester::all();
+        $semesters = $this->semesterRepo->getAll();
 
-        $users = User::with([
-            'courses' => function ($query) {
-                $query->with(['timetables', 'semester']);
-            },
-        ])
-            ->where('id', Auth::id())
-            ->firstOrFail();
+        $users = $this->userRepo->getTimeTableUser();
 
         return view('student.timetable', compact('users', 'semesters'));
     }
@@ -36,33 +44,27 @@ class StudentHomeController extends Controller
         $now = getdate();
         $year = $now['year'];
         $month = $now['mon'];
-        if ($month == config('auth.register.month-1')) {
-            $semesNow = config('auth.register.seme-1');
-        } elseif ($month == config('auth.register.month-2')) {
-            $semesNow = config('auth.register.seme-2');
-        } elseif ($month == config('auth.register.month-3')) {
-            $semesNow = config('auth.register.seme-3');
-        } else {
-            $semesNow = config('auth.register.seme-0');
+        switch ($month) {
+            case config('auth.register.month-1'):
+                $semesNow = config('auth.register.seme-1');
+                break;
+            case config('auth.register.month-2'):
+                $semesNow = config('auth.register.seme-2');
+                break;
+            case config('auth.register.month-3'):
+                $semesNow = config('auth.register.seme-3');
+                break;
+            default:
+                $semesNow = config('auth.register.seme-0');
         }
-        $semesters = Semester::where('name', $semesNow)
-            ->where('begin', $year)
-            ->firstOrFail();
-
-        $countCourses = Course::with(['users'])->get();
-
-        $users = User::with([
-            'courses.users' => function ($query) {
-                $query->where('role_id', config('auth.roles.lecturer'));
-            },
-        ])->findOrFail(Auth::id());
         
-        $listCourse = Course::with(['timetables', 'semester', 'users' => function ($query) {
-            $query->where('role_id', config('auth.roles.lecturer'));
-        }])
-            ->where('semester_id', $semesters->id)
-            ->orderBy('name')
-            ->paginate(config('auth.paginate.register'));
+        $semesters = $this->semesterRepo->getSemesterNow($semesNow, $year);
+
+        $countCourses = $this->courseRepo->getCourse();
+
+        $users = $this->userRepo->getCourseLecturer();
+        
+        $listCourse = $this->courseRepo->listCourse($semesters->id);
                 
         $total = 0;
         foreach ($users->courses as $course) {
@@ -109,11 +111,13 @@ class StudentHomeController extends Controller
 
     public function update(UpdateProfileRequest $request)
     {
-        User::where('id', Auth::id())->update([
+        $input = [
             'fullname' => $request->input('name'),
             'dob' => $request->input('date'),
             'address' => $request->input('address'),
-        ]);
+        ];
+
+        $this->userRepo->updateUser($input);
         $success = __('changeSucess');
 
         return redirect()
@@ -123,9 +127,7 @@ class StudentHomeController extends Controller
 
     public function listStudent($course_id)
     {
-        $users = Course::with('users')
-            ->where('id', $course_id)
-            ->firstOrFail();
+        $users = $this->courseRepo->listStudent($course_id);
 
         return view('student.liststudent', compact('users'));
     }
@@ -133,7 +135,7 @@ class StudentHomeController extends Controller
     public function deleteCourse($course_id)
     {
         $user = Auth::user();
-        $course = Course::findOrFail($course_id);
+        $course = $this->courseRepo->findCourse($course_id);
 
         foreach ($user->courses as $value) {
             if ($value->pivot->course_id == $course_id) {
@@ -147,7 +149,7 @@ class StudentHomeController extends Controller
 
     public function registerCourse($course_id)
     {
-        $course = Course::findOrFail($course_id);
+        $course = $this->courseRepo->findCourse($course_id);
         $user = Auth::user();
 
         foreach ($user->courses as $value) {

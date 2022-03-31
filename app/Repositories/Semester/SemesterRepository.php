@@ -11,4 +11,18 @@ class SemesterRepository extends BaseRepository implements SemesterRepositoryInt
     {
         return Semester::class;
     }
+
+    public function getAll()
+    {
+        return Semester::all();
+    }
+
+    public function getSemesterNow($semesNow, $year)
+    {
+        $semesters = Semester::where('name', $semesNow)
+            ->where('begin', $year)
+            ->firstOrFail();
+
+        return $semesters;
+    }
 }
