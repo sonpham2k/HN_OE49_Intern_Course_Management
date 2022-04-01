@@ -16,3 +16,4 @@ yarn-error.log
 public/bower_components/*
 /public/mix-manifest.json
 /coverage
+.env.dusk
