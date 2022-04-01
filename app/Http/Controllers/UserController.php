@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\ResetPassRequest;
+use App\Http\Requests\ForgotPassRequest;
+use App\Http\Requests\ResetPassForgotRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Repositories\User\UserRepositoryInterface;
@@ -57,9 +59,25 @@ class UserController extends Controller
         }
     }
 
-    public function forgot()
+    public function sendEmail(ForgotPassRequest $request)
     {
-        return view('login.forgot');
+        $email = $request->input('email');
+
+        return redirect()->route('send.mail');
+    }
+
+    public function viewResetForgotPass()
+    {
+        return view('login.resetForgotPass');
+    }
+
+    public function resetForgotPass(ResetPassForgotRequest $request)
+    {
+        $email = $request->input('email');
+        $newpass = $request->input('newpass');
+        $confirmpass = $request->input('confirmpass');
+        
+        return redirect()->route('reset.forgot.password');
     }
 
     public function resetpass()
@@ -78,7 +96,6 @@ class UserController extends Controller
         $userCheck = $this->userRepo->userCheck();
         $checkSamePassOldNew = $this->userRepo->checkSamePassOldAndNew($input);
         $checkSamePassNewConfirm = $this->userRepo->checkSamePassNewAndConfirm($input);
-
         if (!Hash::check($input['oldpass'], $userCheck->password)) {
             return redirect()
                 ->route('reset')

@@ -107,12 +107,6 @@ class UserControllerTest extends ControllerTestCase
         $this->testAssertView('student.home', $view);
     }
 
-    public function testViewForgot()
-    {
-        $view = $this->userController->forgot();
-        $this->testAssertView('login.forgot', $view);
-    }
-
     public function testViewResetPass()
     {
         $view = $this->userController->resetpass();
