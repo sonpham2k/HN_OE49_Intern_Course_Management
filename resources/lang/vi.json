@@ -154,5 +154,13 @@
     "update success": "Cập nhật thông tin thành công",
     "tbforgotpass": "Bạn hãy đến phòng đào tạo để nhận được sự hướng dẫn từ cán bộ.",
     "errorCredit": "Vượt quá số tín chỉ cho phép",
-    "sloted registered": "Bạn đã đăng kí môn này, haỹ đăng kí môn khác"
+    "sloted registered": "Bạn đã đăng kí môn này, haỹ đăng kí môn khác",
+    "notifi reset": "Hãy nhập email để nhận mã",
+    "reset pass": "Cập nhật mật khẩu",
+    "send success": "Gửi mail thành công",
+    "send error": "Gửi mail không thành công",
+    "code required": "Hãy nhập mã xác nhận đã gửi đến Email",
+    "code": "Mã xác nhận",
+    "none Email": "Email chưa được đăng kí",
+    "wrong code": "Sai mã xác nhận"
 }
