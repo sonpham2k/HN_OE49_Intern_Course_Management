@@ -156,5 +156,15 @@
     "errorCredit": "Vượt quá số tín chỉ cho phép",
     "sloted registered": "Bạn đã đăng kí môn này, haỹ đăng kí môn khác",
     "notifi reset": "Hãy nhập email để nhận mã",
+<<<<<<< Updated upstream
     "reset pass": "Cập nhật mật khẩu"
+=======
+    "reset pass": "Cập nhật mật khẩu",
+    "send success": "Gửi mail thành công",
+    "send error": "Gửi mail không thành công",
+    "code required": "Hãy nhập mã xác nhận đã gửi đến Email",
+    "code": "Mã xác nhận",
+    "none Email": "Email chưa được đăng kí",
+    "wrong code": "Sai mã xác nhận"
+>>>>>>> Stashed changes
 }

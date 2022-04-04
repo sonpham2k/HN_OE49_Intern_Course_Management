@@ -156,5 +156,11 @@
     "errorCredit": "Exceeded the number of credits allowed",
     "sloted registered": "You have registered for this course, please register for another course",
     "notifi reset": "Reset code sent to your email",
-    "reset pass": "Update password"
+    "reset pass": "Update password",
+    "send success": "Send mail success",
+    "send error": "Send mail error",
+    "code required": "Please enter the confirmation code sent to Email",
+    "code": "Verification Code",
+    "none Email": "Email is not registered",
+    "wrong code": "Wrong verification Code"
 }

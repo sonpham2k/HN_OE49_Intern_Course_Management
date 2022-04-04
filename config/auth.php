@@ -114,7 +114,7 @@ return [
     'register' => [
         'month-1' => 8,
         'seme-1' => 1,
-        'month-2' => 3,
+        'month-2' => 4,
         'seme-2' => 2,
         'month-3' => 5,
         'seme-3' => 3,
@@ -126,5 +126,9 @@ return [
     'credit' => [
         'min' => 3,
         'max' => 11,
+    ],
+    'code' => [
+        'min' => 100000,
+        'max' => 999999,
     ],
 ];

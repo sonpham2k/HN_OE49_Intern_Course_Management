@@ -18,6 +18,23 @@
                             <div class="card-body">
                                 <form method="post" class="text-start" action="{{ route('reset.forgot.password') }}">
                                     @csrf
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+=======
+                                    @if ($message = Session::get('error'))
+                                        <div class="alert alert-danger text-white">
+                                            <p>{{ $message }}</p>
+                                        </div>
+                                    @endif
+                                    @if ($message = Session::get('success'))
+                                        <div class="alert alert-success text-white">
+                                            <p>{{ $message }}</p>
+                                        </div>
+                                    @endif
+                                    {{--  Email  --}}
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
                                     <div class="input-group input-group-outline my-3">
                                         <label class="form-label">{{ __('Email') }}: </label>
                                         <input type="email" name="email" class="form-control">
@@ -25,6 +42,23 @@
                                     @error('email')
                                         <span style="color: red">{{ $message }}</span>
                                     @enderror
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+=======
+
+                                    {{--  Code  --}}
+                                    <div class="input-group input-group-outline my-3">
+                                        <label class="form-label">{{ __('code') }}: </label>
+                                        <input type="text" name="code" class="form-control">
+                                    </div>
+                                    @error('code')
+                                        <span style="color: red">{{ $message }}</span>
+                                    @enderror
+
+                                    {{--  New password  --}}
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
                                     <div class="input-group input-group-outline my-3">
                                         <label class="form-label">{{ __('newpass') }}: </label>
                                         <input type="password" name="newpass" class="form-control">
@@ -32,6 +66,14 @@
                                     @error('newpass')
                                         <span style="color: red">{{ $message }}</span>
                                     @enderror
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+=======
+
+                                    {{--  Old password  --}}
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
                                     <div class="input-group input-group-outline my-3">
                                         <label class="form-label">{{ __('confirmpass') }}: </label>
                                         <input type="password" name="confirmpass" class="form-control">

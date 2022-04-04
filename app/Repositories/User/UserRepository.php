@@ -24,6 +24,11 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         return User::where('role_id', config('auth.roles.student'))->get();
     }
 
+    public function getAllUser()
+    {
+        return User::all();
+    }
+
     public function insertDB($attributes = [])
     {
         DB::table('users')->insert([
@@ -39,10 +44,11 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 
     public function showCourseOfStudent($id)
     {
-        return User::with(['courses.users' => function ($query) {
-            $query->where('role_id', config('auth.roles.lecturer'));
-        }])
-            ->findOrFail($id);
+        return User::with([
+            'courses.users' => function ($query) {
+                $query->where('role_id', config('auth.roles.lecturer'));
+            },
+        ])->findOrFail($id);
     }
 
     public function updateDB($id, $attributes = [])
@@ -140,5 +146,19 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         ])->findOrFail(Auth::id());
 
         return $users;
+    }
+
+    public function getCodeResetPass($id, $code)
+    {
+        User::where('id', $id)->update([
+            'password' => bcrypt($code),
+        ]);
+    }
+
+    public function resetPassAndDeleteCode($id, $pass)
+    {
+        User::where('id', $id)->update([
+            'password' => bcrypt($pass),
+        ]);
     }
 }
