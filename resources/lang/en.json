@@ -46,7 +46,7 @@
     "email is string": "Enter the correct email format",
     "Password min": "Password length min is 6",
     "Password max": "Password length max is 255",
-    "email min": "Email length min is 6",
+    "email min": "Email length min is 12",
     "email max": "Email length max is 255",
     "search": "Search",
     "semester": "Semester",
@@ -154,5 +154,7 @@
     "update success": "Edit information success",
     "tbforgotpass": "Please go to the training room to receive instructions from the staff.",
     "errorCredit": "Exceeded the number of credits allowed",
-    "sloted registered": "You have registered for this course, please register for another course"
+    "sloted registered": "You have registered for this course, please register for another course",
+    "notifi reset": "Reset code sent to your email",
+    "reset pass": "Update password"
 }

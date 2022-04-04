@@ -22,8 +22,13 @@ use App\Http\Controllers\LoginController;
 Route::group(['middleware' => 'localization'], function () {
     Route::prefix('users')->group(function () {
         Route::get('/login', [LoginController::class, 'login'])->name('login');
-        Route::get('/forgot', [LoginController::class, 'forgot'])->name('forgot');
-        Route::get('/reset', [LoginController::class, 'resetpass'])->name('reset');
+        Route::get('/forgot-password', [LoginController::class, 'forgot'])->name('forgot');
+        Route::post('/forgot-password', [UserController::class, 'sendEmail'])->name('send.mail');
+        Route::get('/reset-forgot-password', [UserController::class, 'viewResetForgotPass'])
+            ->name('view.reset.forgot.password');
+        Route::post('/reset-forgot-password', [UserController::class, 'resetForgotPass'])
+            ->name('reset.forgot.password');
+        Route::get('/reset', [UserController::class, 'resetpass'])->name('reset');
         Route::post('/reset', [UserController::class, 'storeResetPass'])->name('storeResetPass');
         Route::get('login', [UserController::class, 'login'])->name('login');
         Route::post('login', [UserController::class, 'store'])->name('store');

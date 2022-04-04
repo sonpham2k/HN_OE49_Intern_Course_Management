@@ -46,7 +46,7 @@
     "email is string": "Nhập đúng định dạng Email",
     "Password min": "Mật khẩu có độ dài tối thiểu 6 kí tự",
     "Password max": "Mật khẩu có độ dài tối đa 255 kí tự",
-    "email min": "Email có độ dài tối thiểu 6 kí tự",
+    "email min": "Email có độ dài tối thiểu 12 kí tự",
     "email max": "Email có độ dài tối đa 255 kí tự",
     "search": "Tìm kiếm",
     "semester": "Học kì",
@@ -154,5 +154,7 @@
     "update success": "Cập nhật thông tin thành công",
     "tbforgotpass": "Bạn hãy đến phòng đào tạo để nhận được sự hướng dẫn từ cán bộ.",
     "errorCredit": "Vượt quá số tín chỉ cho phép",
-    "sloted registered": "Bạn đã đăng kí môn này, haỹ đăng kí môn khác"
+    "sloted registered": "Bạn đã đăng kí môn này, haỹ đăng kí môn khác",
+    "notifi reset": "Hãy nhập email để nhận mã",
+    "reset pass": "Cập nhật mật khẩu"
 }
