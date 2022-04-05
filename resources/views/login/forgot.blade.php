@@ -17,6 +17,18 @@
                         <div class="card-body">
                             <form role="form" class="text-start" method="POST" action="{{ route('send.mail') }}">
                                 @csrf
+                                <div>
+                                    @if ($message = Session::get('error'))
+                                        <div class="alert alert-danger text-white">
+                                            <p>{{ $message }}</p>
+                                        </div>
+                                    @endif
+                                    @if ($message = Session::get('success'))
+                                        <div class="alert alert-success text-white">
+                                            <p>{{ $message }}</p>
+                                        </div>
+                                    @endif
+                                </div>
                                 <b>{{ __('notifi reset') }}</b>
                                 <div class="input-group input-group-outline my-3">
                                     <label class="form-label">Email: </label>

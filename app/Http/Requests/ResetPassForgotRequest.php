@@ -26,6 +26,7 @@ class ResetPassForgotRequest extends FormRequest
     {
         return [
             'email' => 'required|min:12|max:255',
+            'code' => 'required',
             'newpass' => 'required|min:6|max:20',
             'confirmpass' => 'required|min:6|max:20',
         ];
@@ -35,6 +36,7 @@ class ResetPassForgotRequest extends FormRequest
     {
         return [
             'email.required' => __('email required'),
+            'code.required' => __('code required'),
             'newpass.required' => __('newpass required'),
             'confirmpass.required' => __('confirm required'),
             'email.min' => __('email min'),
