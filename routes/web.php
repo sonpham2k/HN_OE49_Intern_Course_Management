@@ -58,6 +58,7 @@ Route::group(['middleware' => 'localization'], function () {
             ->name('students-deleteCourse');
         Route::post('registerCourse/{course_id}', [StudentHomeController::class, 'registerCourse'])
             ->name('students-registCourse');
+        Route::get('/notifications', [StudentHomeController::class, 'notifications']);
     });
 
     Route::get('change-language/{language}', [Localization::class, 'changeLanguage'])->name('change-language');
