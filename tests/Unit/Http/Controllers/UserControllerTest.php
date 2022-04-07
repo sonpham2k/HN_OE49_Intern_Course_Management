@@ -6,6 +6,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Requests\AddCourseRequest;
 use App\Http\Requests\ResetPassRequest;
 use App\Http\Requests\UserStoreRequest;
+use App\Http\Requests\ForgotPassRequest;
+use App\Http\Requests\ResetPassForgotRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Repositories\User\UserRepositoryInterface;
@@ -13,6 +15,7 @@ use Mockery;
 use Tests\TestCase;
 use Illuminate\Http\RedirectResponse;
 use Tests\ControllerTestCase;
+use App\Models\User;
 
 class UserControllerTest extends ControllerTestCase
 {
@@ -40,7 +43,6 @@ class UserControllerTest extends ControllerTestCase
 
     public function testViewLogin()
     {
-
         $view = $this->userController->login();
         $this->testAssertView('login.login', $view);
     }
@@ -107,6 +109,32 @@ class UserControllerTest extends ControllerTestCase
         $this->testAssertView('student.home', $view);
     }
 
+    public function testSendEmailSuccess()
+    {
+        $request = new ForgotPassRequest([
+            'email' => 'Jack97@gmail.com'
+        ]);
+
+        $user = User::factory()->make();
+
+        $this->userRepo->shouldReceive('findUser')->andReturn($user);
+        $this->userRepo->shouldReceive('getCodeResetPass')->andReturn($user);
+        
+        $redirect = $this->userController->sendEmail($request);
+        $this->assertInstanceOf(RedirectResponse::class, $redirect);
+    }
+
+    public function testSendEmailFail()
+    {
+        $request = new ForgotPassRequest([
+            'email' => 'phamngocson_t63@hus.edu.com'
+        ]);
+        $this->userRepo->shouldReceive('findUser')->andReturn(false);
+        
+        $redirect = $this->userController->sendEmail($request);
+        $this->assertInstanceOf(RedirectResponse::class, $redirect);
+    }
+
     public function testViewResetPass()
     {
         $view = $this->userController->resetpass();
@@ -125,7 +153,7 @@ class UserControllerTest extends ControllerTestCase
         $user->id = 1;
         $user->password = '123456';
 
-        $this->userRepo->shouldReceive('userCheck')->andReturn($user);
+        Auth::shouldReceive('user')->andReturn($user);
         Hash::shouldReceive('check')->andReturn(false);
         $redirect = $this->userController->storeResetPass($request);
         $this->assertInstanceOf(RedirectResponse::class, $redirect);
@@ -142,7 +170,7 @@ class UserControllerTest extends ControllerTestCase
         $user = Mockery::mock(User::class)->makePartial();
         $user->id = 1;
         $user->password = '123456';
-        $this->userRepo->shouldReceive('userCheck')->andReturn($user);
+        Auth::shouldReceive('user')->andReturn($user);
         Hash::shouldReceive('check')->andReturn(true);
         
         $this->userRepo->shouldReceive('checkSamePassOldAndNew')->andReturn(true);
@@ -161,7 +189,7 @@ class UserControllerTest extends ControllerTestCase
         $user = Mockery::mock(User::class)->makePartial();
         $user->id = 1;
         $user->password = '123456';
-        $this->userRepo->shouldReceive('userCheck')->andReturn($user);
+        Auth::shouldReceive('user')->andReturn($user);
         Hash::shouldReceive('check')->andReturn(true);
 
         $this->testReceiveManyActionReturnValue($this->userRepo, [
@@ -173,9 +201,7 @@ class UserControllerTest extends ControllerTestCase
         ]);
 
         $newpassword = $this->userRepo->shouldReceive('changePasstobcrypt')->andReturn($request->newpass);
-
-        $user = Mockery::mock(User::class)->makePartial();
-        $user->id = 1;
+        $user = User::factory()->make();
         Auth::shouldReceive('user->update')->andReturn(true);
         
         $redirect = $this->userController->storeResetPass($request);
@@ -193,7 +219,7 @@ class UserControllerTest extends ControllerTestCase
         $user = Mockery::mock(User::class)->makePartial();
         $user->id = 1;
         $user->password = '123456';
-        $this->userRepo->shouldReceive('userCheck')->andReturn($user);
+        Auth::shouldReceive('user')->andReturn($user);
         Hash::shouldReceive('check')->andReturn(true);
 
         $this->testReceiveManyActionReturnValue($this->userRepo, [
