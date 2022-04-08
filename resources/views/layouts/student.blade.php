@@ -34,6 +34,11 @@
         rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('bower_components/bower_project1/css/user/app.css') }}" />
     <script type="text/javascript" src="{{ asset('bower_components/jquery-1.11.3.min/index.js') }}"></script>
+    @if (!auth()->guest())
+        <script>
+            window.Laravel.userId = {{ auth()->user()->id }}
+        </script>
+    @endif
 </head>
 
 <body class="g-sidenav-show  bg-gray-200">
@@ -130,13 +135,27 @@
                                 <span class="d-sm-inline d-none">{{ __('signout') }}</span>
                             </a>
                         </li>
+                        <li class="nav-item px-3 d-flex align-items-center">
+                            <a href="" class="nav-link text-body p-0">
+                                <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown pe-2 d-flex align-items-center">
+                            <a href="javascript:;" class="nav-link text-body p-0" id="notifications"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa fa-bell cursor-pointer"></i>
+                            </a>
+                            <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" id="notificationsMenu"
+                                aria-labelledby="dropdownMenuButton">
+                                <li class="dropdown-header">No notifications</li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
             </div>
         </nav>
         <!-- End Navbar -->
         @yield('content')
-        </div>
     </main>
     <div class="fixed-plugin">
         <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
