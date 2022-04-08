@@ -147,6 +147,11 @@ class StudentHomeController extends Controller
         return redirect()->back();
     }
 
+    public function notifications()
+    {
+        return Auth::user()->unreadNotifications()->limit(config('maxNotify'))->get()->toArray();
+    }
+
     public function registerCourse($course_id)
     {
         $course = $this->courseRepo->findCourse($course_id);
@@ -159,7 +164,7 @@ class StudentHomeController extends Controller
                 return redirect()->back();
             }
         }
-        
+
         if ($course->slot < $course->numbers) {
             if (session('totalCredit') + $course->credits > config('auth.credit.max')) {
                 session()->flash('overCredit', __('errorCredit'));
