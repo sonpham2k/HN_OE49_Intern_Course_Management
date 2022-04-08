@@ -163,5 +163,18 @@
     "code": "Mã xác nhận",
     "none Email": "Email chưa được đăng kí",
     "wrong code": "Sai mã xác nhận",
-    "contentEmail": "Đây là mật khẩu mới của bạn, hãy đăng nhập và thay đổi mật khẩu"
+    "contentEmail": "Đây là mật khẩu mới của bạn, hãy đăng nhập và thay đổi mật khẩu",
+    "notice8": "Thông báo: V/v Điều chỉnh lịch thực hành môn Vật lý 1 và thí nghiệm",
+    "notice7": "Thông báo: V/v Đăng ký bảo vệ khóa luận trực tuyến khóa 2017 khối ngành kinh tế,Truyền thông ĐPT",
+    "notice6": "Thông báo: V/v tổ chức đăng ký học kỳ 1 năm học 2021 - 2022",
+    "notice5": "Thông báo: V/v Tổ chức đăng ký học ghép cùng khóa 2021 - học kỳ 1 năm học 2021 - 2022",
+    "notice4": "Thông báo: V/v Đăng ký xét tốt nghiệp tháng 10 năm 2021",
+    "notice3": "Thông báo: V/v Đăng ký chuyên ngành đào tạo các lớp khóa D18 ngành Công nghệ kỹ thuật Điện, điện tử",
+    "notice2": "Thông báo: V/v tổ chức kế hoạch thi kỳ thi phụ học kỳ 2 và học kỳ phụ(kỳ hè) năm học 2020 - 2021",
+    "notice1": "Thông báo: V/v Tổ chức đăng ký môn học kỳ 2, năm học 2021 - 2022",
+    "chart": "Biểu đồ",
+    "watch chart": "Biểu đồ số lượt đăng kí của của giáo viên theo các năm",
+    "text search": "Nhập thông tin tìm kiếm giảng viên",
+    "total search": "Kết quả",
+    "watch search": "Xem"
 }
