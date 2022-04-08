@@ -75,7 +75,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 
     public function userCheck()
     {
-        $user = User::find(auth()->user());
+        $user = Auth::user();
 
         return $user;
     }
@@ -156,10 +156,22 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         ]);
     }
 
-    public function resetPassAndDeleteCode($id, $pass)
+    public function findUser($email)
     {
-        User::where('id', $id)->update([
-            'password' => bcrypt($pass),
-        ]);
+        $count = 0;
+        $users = User::all();
+        foreach ($users as $user) {
+            if ($user->email == $email) {
+                $count++;
+                $trueUser = $user;
+            } else {
+                $count;
+            }
+        }
+        if ($count != 0) {
+            return $trueUser;
+        } else {
+            return false;
+        }
     }
 }

@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Models\User;
 use App\Models\Course;
 use App\Models\Role;
+use App\Models\Report;
 use Tests\ModelTestCase;
 
 class UserTest extends ModelTestCase
@@ -48,5 +49,6 @@ class UserTest extends ModelTestCase
             'course_user.user_id',
             'course_user.course_id'
         );
+        $this->assertHasManyRelation($this->user->reports(), $this->user, new Report());
     }
 }

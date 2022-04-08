@@ -63,28 +63,19 @@ class UserController extends Controller
 
     public function sendEmail(ForgotPassRequest $request)
     {
-        $count = 0;
         $email = $request->input('email');
-        $users = $this->userRepo->getAllUser();
-        foreach ($users as $user) {
-            if ($user->email == $email) {
-                $count++;
-                $trueUser = $user;
-            } else {
-                $count;
-            }
-        }
-        if ($count != 0) {
+        $checkUser = $this->userRepo->findUser($email);
+        if ($checkUser) {
             $characters = config('auth.randomString');
             $charactersLength = strlen($characters);
             $code = '';
             for ($i = 0; $i < config('auth.randomLength'); $i++) {
                 $code .= $characters[rand(0, $charactersLength - 1)];
             }
-            $this->userRepo->getCodeResetPass($trueUser->id, $code);
+            $this->userRepo->getCodeResetPass($checkUser->id, $code);
             $message = [
                 'type' => 'Reset password',
-                'name' => $trueUser->fullname,
+                'name' => $checkUser->fullname,
                 'password' => $code,
             ];
             SendEmail::dispatch($message, $email);
@@ -96,56 +87,6 @@ class UserController extends Controller
                 ->route('send.mail')
                 ->with('error', __('send error'));
         }
-
-        return redirect()->route('send.mail');
-    }
-
-    public function viewResetForgotPass()
-    {
-        return view('login.resetForgotPass');
-    }
-
-    public function resetForgotPass(ResetPassForgotRequest $request)
-    {
-        $email = $request->input('email');
-        $code = $request->input('code');
-        $newpass = $request->input('newpass');
-        $confirmpass = $request->input('confirmpass');
-        $count = 0;
-
-        $users = $this->userRepo->getAllUser();
-        foreach ($users as $user) {
-            if ($user->email == $email) {
-                $count++;
-                $trueUser = $user;
-            } else {
-                $count;
-            }
-        }
-        if ($count == 0) {
-            return redirect()
-                ->route('reset.forgot.password')
-                ->with('error', __('none Email'));
-        } else {
-            if (!Hash::check($code, $trueUser->password)) {
-                return redirect()
-                    ->route('reset.forgot.password')
-                    ->with('error', __('wrong code'));
-            } else {
-                if ($newpass != $confirmpass) {
-                    return redirect()
-                        ->route('reset.forgot.password')
-                        ->with('error', __('error confirm'));
-                } else {
-                    $this->userRepo->resetPassAndDeleteCode($trueUser->id, $newpass);
-                    return redirect()
-                        ->route('reset.forgot.password')
-                        ->with('success', __('sucess pass'));
-                }
-            }
-        }
-
-        return redirect()->route('reset.forgot.password');
     }
 
     public function resetpass()
@@ -161,7 +102,7 @@ class UserController extends Controller
             'confirmpass' => $request->input('confirmpass'),
         ];
 
-        $userCheck = $this->userRepo->userCheck();
+        $userCheck = Auth::user();
         $checkSamePassOldNew = $this->userRepo->checkSamePassOldAndNew($input);
         $checkSamePassNewConfirm = $this->userRepo->checkSamePassNewAndConfirm($input);
         if (!Hash::check($input['oldpass'], $userCheck->password)) {
