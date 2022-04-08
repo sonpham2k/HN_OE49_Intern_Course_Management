@@ -72,7 +72,7 @@ class LecturerHomeController extends Controller
 
         $this->userRepo->updateUser($input);
         $success = __('changeSucess');
-
+        //asd
         return redirect()
             ->route('lecturer.edit')
             ->with('success', __('update success'));
