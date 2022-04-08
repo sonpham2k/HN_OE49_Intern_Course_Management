@@ -163,5 +163,15 @@
     "code": "Verification Code",
     "none Email": "Email is not registered",
     "wrong code": "Wrong verification Code",
-    "contentEmail": "This is your new password, log in and change it"
+    "contentEmail": "This is your new password, log in and change it",
+    "notice8": "Notice: Adjusting the practice schedule for Physics 1 and experiments",
+    "notice7": "Notice: Registration for the defense of the online thesis of the 2017 course in economics, DPT Media",
+    "notice6": "Notice: Organizes registration for the first semester of the academic year 2021 - 2022",
+    "notice5": "Notice: Organize registration for the same class of 2021 - semester 1 of the academic year 2021 - 2022",
+    "notice4": "Notice: Registration for graduation in October 2021",
+    "notice3": "Notice: Register for a major in training courses of course D18 in Electrical and Electronic Engineering Technology",
+    "notice2": "Notice: Organizes the plan for the second semester exam and the sub-semester (summer term) for the 2020-2021 school year",
+    "notice1": "Notice: Organized registration for the second semester of the school year 2021 - 2022",
+    "chart": "Chart",
+    "watch chart": "Graph of teachers' registrations by years"
 }

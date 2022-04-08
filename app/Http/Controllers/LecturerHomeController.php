@@ -77,4 +77,9 @@ class LecturerHomeController extends Controller
             ->route('lecturer.edit')
             ->with('success', __('update success'));
     }
+
+    public function viewChart()
+    {
+        return view('charts.chart');
+    }
 }
