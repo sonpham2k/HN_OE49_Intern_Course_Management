@@ -53,7 +53,7 @@ class StudentController extends Controller
             'username' => $request->username,
             'password' => $request->password,
             'fullname' => $request->fullname,
-            'dob' => $request->dob,
+            'dob' => $request->date,
             'email' => $request->email,
             'address' => $request->address,
             'role_id' => config('auth.roles.student'),

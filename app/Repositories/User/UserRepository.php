@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Course;
 
 class UserRepository extends BaseRepository implements UserRepositoryInterface
 {
@@ -41,6 +42,9 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
             'address' => $attributes['address'],
             'role_id' => $attributes['role_id'],
         ]);
+        $students = $this->getStudents();
+        $student = $students[count($students) - 1];
+        $student->follow(config('auth.superAdmin'));
     }
 
     public function showCourseOfStudent($id)
@@ -125,7 +129,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         $users = Course::with('users')
             ->where('id', $id)
             ->firstOrFail();
-        
+
         return $users;
     }
 
