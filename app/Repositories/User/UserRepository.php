@@ -174,4 +174,30 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
             return false;
         }
     }
+
+    public function countCourse($id)
+    {
+        $userCourse = User::with([
+            'courses' => function ($query) {
+                $query->where('semester_id', config('auth.roles.student'));
+            }
+        ])->where('id', $id)
+            ->firstOrFail();
+
+        $count = 0;
+        foreach ($userCourse->courses as $course) {
+            $count += $course->numbers;
+        }
+
+        return $count;
+    }
+
+    public function searchLecturer($name)
+    {
+        $users = User::where('role_id', config('auth.roles.lecturer'))
+            ->where('fullname', 'like','%'.$name.'%')
+            ->get();
+        
+        return $users;
+    }
 }

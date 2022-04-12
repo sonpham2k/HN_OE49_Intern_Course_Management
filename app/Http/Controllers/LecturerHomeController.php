@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateLecturerRequest;
 use App\Http\Requests\UpdateProfileRequest;
 use App\Repositories\Course\CourseRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
+use App\Repositories\Year\YearRepositoryInterface;
 use App\Repositories\Semester\SemesterRepositoryInterface;
 
 class LecturerHomeController extends Controller
@@ -15,15 +16,18 @@ class LecturerHomeController extends Controller
     protected $userRepo;
     protected $courseRepo;
     protected $semesterRepo;
-
+    protected $yearRepo;
+    
     public function __construct(
         UserRepositoryInterface $userRepo,
         CourseRepositoryInterface $courseRepo,
-        SemesterRepositoryInterface $semesterRepo
+        SemesterRepositoryInterface $semesterRepo,
+        YearRepositoryInterface $yearRepo
     ) {
         $this->userRepo = $userRepo;
         $this->courseRepo = $courseRepo;
         $this->semesterRepo = $semesterRepo;
+        $this->yearRepo = $yearRepo;
     }
 
     public function home()
@@ -76,5 +80,19 @@ class LecturerHomeController extends Controller
         return redirect()
             ->route('lecturer.edit')
             ->with('success', __('update success'));
+    }
+
+    public function viewChart(Request $request)
+    {
+        $users = $this->userRepo->searchLecturer($request->name);
+        
+        $years = $this->yearRepo->allYear();
+
+        $year = [];
+        foreach ($years as $yearBE) {
+            $year[] = $yearBE->begin.'-'.$yearBE->end;
+        }
+        
+        return view('charts.chart', compact('users', 'year'));
     }
 }

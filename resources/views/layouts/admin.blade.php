@@ -13,6 +13,7 @@
     <!-- END: load jquery -->
     <script src="{{ asset('bower_components/bower_project1/js/admin/app.js') }}" type="text/javascript"></script>
     <script src="{{ asset('bower_components/bower_project1/js/admin/admin.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bower_components/chart.min/index.js') }}" type="text/javascript"></script>
 </head>
 
 <body>
@@ -60,6 +61,7 @@
                             <ul class="submenu">
                                 <li><a href="{{ route('lecturers.create') }}">{{ __('Add Lecturer') }}</a> </li>
                                 <li><a href="{{ route('lecturers.index') }}">{{ __('Lecturers List') }}</a> </li>
+                                <li><a href="{{ route('lecturers.chart') }}">{{ __('chart') }}</a> </li>
                             </ul>
                         </li>
                         <li><a class="menuitem">{{ __('Student Option') }}</a>
