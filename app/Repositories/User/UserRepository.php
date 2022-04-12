@@ -178,4 +178,13 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
             return false;
         }
     }
+
+    public function searchLecturer($name)
+    {
+        $users = User::where('role_id', config('auth.roles.lecturer'))
+            ->where('fullname', 'like', '%'.$name.'%')
+            ->get();
+        
+        return $users;
+    }
 }
