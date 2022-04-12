@@ -74,6 +74,11 @@
                                 <li><a href="{{ route('courses.index') }}">{{ __('Courses List') }}</a> </li>
                             </ul>
                         </li>
+                        <li><a class="menuitem">{{ __('Post Option') }}</a>
+                            <ul class="submenu">
+                                <li><a href="{{ route('posts.create') }}">{{ __('Add Post') }}</a> </li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
             </div>

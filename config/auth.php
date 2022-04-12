@@ -134,4 +134,5 @@ return [
     'randomString' => '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
     'randomLength' => 10,
     'maxNotify' => 5,
+    'superAdmin' => 1,
 ];

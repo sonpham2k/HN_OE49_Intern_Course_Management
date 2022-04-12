@@ -68,6 +68,7 @@ Route::group(['middleware' => 'localization'], function () {
             'students' => StudentController::class,
             'lecturers' => LecturerController::class,
             'courses' => CourseController::class,
+            'posts' => PostController::class,
         ]);
         Route::prefix('timetables')->group(function () {
             Route::get('index/{id}', [TimeTableController::class, 'index'])->name('timetables.index');

@@ -36,9 +36,8 @@ class NewPost extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['database', 'broadcast'];
     }
-
     /**
      * Get the mail representation of the notification.
      *
@@ -71,7 +70,13 @@ class NewPost extends Notification
     public function toArray($notifiable)
     {
         return [
-            //
+            'id' => $this->id,
+            'read_at' => null,
+            'data' => [
+                'following_id' => $this->following->id,
+                'following_name' => $this->following->name,
+                'post_id' => $this->post->id,
+            ],
         ];
     }
 }
