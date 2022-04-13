@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NotificationEvent;
+use App\Models\Notify;
+use App\Notifications\NewPost;
 use Illuminate\Http\Request;
 use App\Repositories\Post\PostRepositoryInterface;
+use Illuminate\Support\Facades\Notification;
+use Pusher\Pusher;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -44,7 +50,35 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $this->postRepo->create($request->all());
+        $post = $this->postRepo->create([
+            'title' => $request->title,
+            'content' => $request->content,
+            'user_id' => config('auth.superAdmin'),
+        ]);
+        $data = [
+            'title' => $request->title,
+            'content' => $request->content,
+        ];
+
+        $options = [
+            'cluster' => 'ap1',
+            'useTLS' => true,
+        ];
+
+        $pusher = new Pusher(
+            env('PUSHER_APP_KEY'),
+            env('PUSHER_APP_SECRET'),
+            env('PUSHER_APP_ID'),
+            $options
+        );
+
+        $pusher->trigger('NotificationEvent', 'send-notification', $data);
+        $user = Auth::user();
+        foreach ($user->followers as $follower) {
+            Notification::send($follower, new NewPost($user, $post));
+        }
+
+        return redirect()->back();
     }
 
     /**

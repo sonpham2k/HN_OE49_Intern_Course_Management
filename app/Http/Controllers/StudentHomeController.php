@@ -147,9 +147,24 @@ class StudentHomeController extends Controller
         return redirect()->back();
     }
 
-    public function notifications()
+    public function markAsRead($id)
     {
-        return Auth::user()->unreadNotifications()->limit(config('maxNotify'))->get()->toArray();
+        $userUnreadNoti = auth()->user()->unreadNotifications->where('id', $id)->first();
+        if ($userUnreadNoti) {
+            $userUnreadNoti->markAsRead();
+        }
+
+        return redirect()->back();
+    }
+
+    public function markAsReadAll()
+    {
+        $userUnreadNoti = auth()->user()->unreadNotifications;
+        if ($userUnreadNoti) {
+            $userUnreadNoti->markAsRead();
+        }
+
+        return redirect()->back();
     }
 
     public function registerCourse($course_id)

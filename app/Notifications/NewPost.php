@@ -9,7 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class NewPost extends Notification
+class NewPost extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -36,7 +36,7 @@ class NewPost extends Notification
      */
     public function via($notifiable)
     {
-        return ['database', 'broadcast'];
+        return ['database'];
     }
     /**
      * Get the mail representation of the notification.
@@ -58,6 +58,8 @@ class NewPost extends Notification
             'following_id' => $this->following->id,
             'following_name' => $this->following->name,
             'post_id' => $this->post->id,
+            'title' => $this->post->title,
+            'content' => $this->post->content,
         ];
     }
 
@@ -76,6 +78,8 @@ class NewPost extends Notification
                 'following_id' => $this->following->id,
                 'following_name' => $this->following->name,
                 'post_id' => $this->post->id,
+                'title' => $this->post->title,
+                'content' => $this->post->content,
             ],
         ];
     }

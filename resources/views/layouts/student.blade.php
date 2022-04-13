@@ -18,6 +18,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!--     Fonts and icons     -->
     <link rel="stylesheet" type="text/css"
         href="{{ asset('bower_components/bower_project1/css/user/font/index') }}" />
@@ -33,12 +34,9 @@
     <link id="pagestyle" href="{{ asset('bower_components/bower_project1/css/user/material-dashboard.css?v=3.0.0') }}"
         rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('bower_components/bower_project1/css/user/app.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
+    <script src="{{ asset('js/app.js') }}" defer></script>
     <script type="text/javascript" src="{{ asset('bower_components/jquery-1.11.3.min/index.js') }}"></script>
-    @if (!auth()->guest())
-        <script>
-            window.Laravel.userId = {{ auth()->user()->id }}
-        </script>
-    @endif
 </head>
 
 <body class="g-sidenav-show  bg-gray-200">
@@ -140,15 +138,39 @@
                                 <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
                             </a>
                         </li>
-                        <li class="nav-item dropdown pe-2 d-flex align-items-center">
-                            <a href="javascript:;" class="nav-link text-body p-0" id="notifications"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fa fa-bell cursor-pointer"></i>
-                            </a>
-                            <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" id="notificationsMenu"
-                                aria-labelledby="dropdownMenuButton">
-                                <li class="dropdown-header">No notifications</li>
-                            </ul>
+                        <li class="nav-item dropdown">
+                            <a id="notifications" class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+                                <i class="far fa-bell" id="bell"></i>
+                                @if (!auth()->user()->unreadNotifications->isEmpty())
+                                    <span class="pending badge bg-primary badge-number">
+                                        {{ auth()->user()->unreadNotifications->count() }}
+                                    </span>
+                                @endif
+                            </a><!-- End Notification Icon -->
+
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+                                <li class="dropdown-header">
+                                    {{ __('notification') }}
+                                    <a href="{{ route('mark-as-read-all') }}" >
+                                        <span class="mark-as-read badge rounded-pill bg-primary p-2 ms-2 text-light">
+                                            {{ __('mark_as_read_all') }}
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <ul class="p-0 m-0" id="notification-list">
+                                        @foreach (Auth::user()->notifications as $notification)
+                                            <li
+                                                class="notification-item {{ $notification->unread() ? 'unread' : '' }}">
+                                                <a class="text-decoration-none" href="#">
+                                                    <p class="mb-1"></p>
+                                                    <small>{{ __($notification->data['title']) }}</small>
+                                                </a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </li>
+                            </ul><!-- End Notification Dropdown Items -->
                         </li>
                     </ul>
                 </div>
@@ -248,6 +270,7 @@
     </script>
     <script async defer src="{{ asset('bower_components/bower_project1/js/user/buttons/index.js') }}"></script>
     <script src="{{ asset('bower_components/bower_project1/js/user/material-dashboard.min.js?v=3.0.0') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/mine.js') }}"></script>
 </body>
 
 </html>
