@@ -15,7 +15,7 @@ class LecturerHomeController extends Controller
     protected $userRepo;
     protected $courseRepo;
     protected $semesterRepo;
-
+    
     public function __construct(
         UserRepositoryInterface $userRepo,
         CourseRepositoryInterface $courseRepo,
@@ -76,5 +76,13 @@ class LecturerHomeController extends Controller
         return redirect()
             ->route('lecturer.edit')
             ->with('success', __('update success'));
+    }
+
+    public function viewChart(Request $request)
+    {
+        $users = $this->userRepo->searchLecturer($request->name);
+        $listYear = [];
+        
+        return view('charts.chart', compact('users', 'listYear'));
     }
 }

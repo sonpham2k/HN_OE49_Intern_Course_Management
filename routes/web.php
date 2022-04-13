@@ -43,6 +43,7 @@ Route::group(['middleware' => 'localization'], function () {
             ->name('liststudent-lecturer');
         Route::get('edit', [LecturerHomeController::class, 'edit'])->name('lecturer.edit');
         Route::put('update', [LecturerHomeController::class, 'update'])->name('lecturer.update');
+        Route::get('chart', [LecturerHomeController::class, 'viewChart'])->name('lecturers.chart');
     });
 
     Route::prefix('student')->group(function () {
