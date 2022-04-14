@@ -179,12 +179,46 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         }
     }
 
-    public function searchLecturer($name)
+    public function searchAllLecturer($name)
     {
         $users = User::where('role_id', config('auth.roles.lecturer'))
             ->where('fullname', 'like', '%'.$name.'%')
             ->get();
         
         return $users;
+    }
+
+    public function searchLecturer($year, $id)
+    {
+        for ($i = 0; $i < count($year); $i++) {
+            $userCourse[$i] = User::with([
+                'courses' => function ($query) use ($i) {
+                    $query->with([
+                        'semester' => function ($query) use ($i) {
+                            $query->where('year_id', $i + 1);
+                        },
+                    ]);
+                },
+            ])
+                ->where('id', $id)
+                ->get();
+        }
+    }
+
+    public function getDataChart($id)
+    {
+        $user = User::where('id', $id)
+                ->first()
+                ->courses()
+                ->wherePivot('user_id', $id)
+                ->get()
+                ->groupBy(function ($item) {
+                    return $item->semester->begin.'-'.$item->semester->end;
+                })
+                ->map(function ($value) {
+                    return array_sum($value->pluck('numbers')->toArray());
+                });
+        
+        return $user;
     }
 }
