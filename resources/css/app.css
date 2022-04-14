@@ -1,0 +1,39 @@
+#notification-list {
+    max-height: 300px;
+    overflow-x: scroll;
+}
+
+.notification-item {
+    cursor: pointer;
+    border-bottom: 1px solid #a5c5fe;
+}
+
+.notification-item a {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.header-nav .notifications .notification-item {
+    display: block !important;
+}
+
+.notification-item.unread {
+    background-color: rgb(213, 224, 245, 0.5);
+}
+
+.notification-item.unread:hover {
+    background-color: #fff !important;
+}
+
+.pending {
+    color: #fff;
+    position: absolute;
+    top: 0;
+    left: 15px;
+}
+
+#notifications {
+    position: relative;
+}
