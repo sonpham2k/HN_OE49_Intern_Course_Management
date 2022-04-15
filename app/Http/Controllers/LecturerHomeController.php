@@ -15,7 +15,7 @@ class LecturerHomeController extends Controller
     protected $userRepo;
     protected $courseRepo;
     protected $semesterRepo;
-    
+
     public function __construct(
         UserRepositoryInterface $userRepo,
         CourseRepositoryInterface $courseRepo,
@@ -56,7 +56,7 @@ class LecturerHomeController extends Controller
     {
         $user = Auth::user();
         if (!$user) {
-            abort('404');
+            abort('404', 'Not Found');
         }
 
         return view('lecturer.edit', compact('user'));
@@ -80,9 +80,16 @@ class LecturerHomeController extends Controller
 
     public function viewChart(Request $request)
     {
-        $users = $this->userRepo->searchLecturer($request->name);
-        $listYear = [];
-        
-        return view('charts.chart', compact('users', 'listYear'));
+        $users = $this->userRepo->searchAllLecturer($request->name);
+        $data = [];
+        $year = [];
+        if (isset($request->watch)) {
+            $this->userRepo->searchLecturer($year, $request->watch);
+            $user = $this->userRepo->getDataChart($request->watch);
+            $year = $user->keys()->all();
+            $data = $user->values()->all();
+        }
+
+        return view('charts.chart', compact('users', 'year', 'data'));
     }
 }

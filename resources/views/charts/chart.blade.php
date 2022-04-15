@@ -86,8 +86,13 @@
             </table>
         </div>
     </div>
+    @php
+        $sub =  __('subcribers');
+    @endphp
     <script>
-        window.year = '{!! json_encode($listYear) !!}';
+        window.year = '{!! json_encode($year) !!}';
+        window.data = '{!! json_encode($data) !!}';
+        window.sub = '{!! $sub !!}';
     </script>
     <script src="{{ asset('bower_components/bower_project1/js/user/chart.js') }}" type="text/javascript"></script>
     </div>
