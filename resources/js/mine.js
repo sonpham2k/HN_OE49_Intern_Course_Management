@@ -4,7 +4,7 @@ $(document).ready(function() {
         cluster: "ap1",
     });
     var channel = pusher.subscribe("NotificationEvent");
-    channel.bind("send-notification", async function(data) {
+    channel.bind("send-notification", function(data) {
         let pending = parseInt($("#notifications").find(".pending").html());
         if (Number.isNaN(pending)) {
             $("#notifications").append(
@@ -15,14 +15,15 @@ $(document).ready(function() {
                 .find(".pending")
                 .html(pending + 1);
         }
+
+        let url = window.location.origin + '/student/mark-at-read/' + data.id;
         let notificationItem = `
-        <li data-id="{{ $notification->id }}"
-            class="notification-item {{ $notification->unread() ? 'unread' : '' }}">
-            <a class="text-decoration-none" href="">
-                <p class="mb-1">{{ $notification->data['title'] }}</p>
-                <small>{{ $notification->data['content'] }}</small>
-            </a>
-        </li>`;
+        <li 
+            class="notification-item unread">
+            <a class="text-decoration-none" href="` + url + `"> 
+                <p class="mb-1">` + data.data.title + `</p> 
+            </a> 
+            </li>`;
         $("#notification-list").prepend(notificationItem);
     });
 });

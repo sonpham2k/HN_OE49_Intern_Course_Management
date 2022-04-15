@@ -55,30 +55,12 @@ class PostController extends Controller
             'content' => $request->content,
             'user_id' => config('auth.superAdmin'),
         ]);
-        $data = [
-            'title' => $request->title,
-            'content' => $request->content,
-        ];
-
-        $options = [
-            'cluster' => 'ap1',
-            'useTLS' => true,
-        ];
-
-        $pusher = new Pusher(
-            env('PUSHER_APP_KEY'),
-            env('PUSHER_APP_SECRET'),
-            env('PUSHER_APP_ID'),
-            $options
-        );
-
-        $pusher->trigger('NotificationEvent', 'send-notification', $data);
         $user = Auth::user();
         foreach ($user->followers as $follower) {
             Notification::send($follower, new NewPost($user, $post));
         }
 
-        return redirect()->back();
+        return redirect()->back()->with('success', __('Success'));
     }
 
     /**

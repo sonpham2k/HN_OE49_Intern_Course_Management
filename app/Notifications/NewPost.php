@@ -6,8 +6,8 @@ use App\Models\User;
 use App\Models\Post;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Pusher\Pusher;
 
 class NewPost extends Notification implements ShouldQueue
 {
@@ -21,6 +21,7 @@ class NewPost extends Notification implements ShouldQueue
 
     protected $following;
     protected $post;
+    protected $data;
 
     public function __construct(User $following, Post $post)
     {
@@ -39,31 +40,6 @@ class NewPost extends Notification implements ShouldQueue
         return ['database'];
     }
     /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-        return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
-    }
-
-    public function toDatabase($notifiable)
-    {
-        return [
-            'following_id' => $this->following->id,
-            'following_name' => $this->following->name,
-            'post_id' => $this->post->id,
-            'title' => $this->post->title,
-            'content' => $this->post->content,
-        ];
-    }
-
-    /**
      * Get the array representation of the notification.
      *
      * @param  mixed  $notifiable
@@ -71,7 +47,18 @@ class NewPost extends Notification implements ShouldQueue
      */
     public function toArray($notifiable)
     {
-        return [
+        $options = [
+            'cluster' => 'ap1',
+            'useTLS' => true,
+        ];
+
+        $pusher = new Pusher(
+            env('PUSHER_APP_KEY'),
+            env('PUSHER_APP_SECRET'),
+            env('PUSHER_APP_ID'),
+            $options
+        );
+        $data = [
             'id' => $this->id,
             'read_at' => null,
             'data' => [
@@ -82,5 +69,9 @@ class NewPost extends Notification implements ShouldQueue
                 'content' => $this->post->content,
             ],
         ];
+
+        $pusher->trigger('NotificationEvent', 'send-notification', $data);
+
+        return $data;
     }
 }

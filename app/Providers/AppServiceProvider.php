@@ -15,8 +15,8 @@ use App\Repositories\TimeTable\TimeTableRepository;
 use App\Repositories\TimeTable\TimeTableRepositoryInterface;
 use App\Repositories\Post\PostRepository;
 use App\Repositories\Post\PostRepositoryInterface;
-use App\Models\Post;
-use App\Observers\PostObserver;
+use App\Repositories\Notify\NotifyRepository;
+use App\Repositories\Notify\NotifyRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -35,6 +35,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
         $this->app->bind(TimeTableRepositoryInterface::class, TimeTableRepository::class);
         $this->app->bind(PostRepositoryInterface::class, PostRepository::class);
+        $this->app->bind(NotifyRepositoryInterface::class, NotifyRepository::class);
     }
 
     /**
@@ -45,6 +46,5 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Paginator::useBootstrap();
-        Post::observe(PostObserver::class);
     }
 }

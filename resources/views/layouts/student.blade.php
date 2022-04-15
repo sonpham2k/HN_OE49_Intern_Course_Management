@@ -151,20 +151,22 @@
                             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
                                 <li class="dropdown-header">
                                     {{ __('notification') }}
-                                    <a href="{{ route('mark-as-read-all') }}" >
+                                    <a href="{{ route('mark-as-read-all') }}">
                                         <span class="mark-as-read badge rounded-pill bg-primary p-2 ms-2 text-light">
                                             {{ __('mark_as_read_all') }}
                                         </span>
                                     </a>
                                 </li>
                                 <li>
-                                    <ul class="p-0 m-0" id="notification-list">
+                                    <ul class="p-0 m-0" id="notification-list"
+                                        data-url={{ route('getListNoti') }}>
                                         @foreach (Auth::user()->notifications as $notification)
                                             <li
                                                 class="notification-item {{ $notification->unread() ? 'unread' : '' }}">
-                                                <a class="text-decoration-none" href="#">
-                                                    <p class="mb-1"></p>
-                                                    <small>{{ __($notification->data['title']) }}</small>
+                                                <a class="text-decoration-none"
+                                                    href="{{ route('mark-as-read', ['id' => $notification->data['id']]) }}">
+                                                    <p class="mb-1">
+                                                        {{ $notification->data['data']['title'] }}</p>
                                                 </a>
                                             </li>
                                         @endforeach
@@ -270,7 +272,6 @@
     </script>
     <script async defer src="{{ asset('bower_components/bower_project1/js/user/buttons/index.js') }}"></script>
     <script src="{{ asset('bower_components/bower_project1/js/user/material-dashboard.min.js?v=3.0.0') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/mine.js') }}"></script>
 </body>
 
 </html>

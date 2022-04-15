@@ -8,21 +8,29 @@ use App\Http\Requests\UpdateProfileRequest;
 use App\Repositories\Course\CourseRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
 use App\Repositories\Semester\SemesterRepositoryInterface;
+use App\Repositories\Post\PostRepositoryInterface;
+use App\Repositories\Notify\NotifyRepositoryInterface;
 
 class StudentHomeController extends Controller
 {
     protected $userRepo;
     protected $courseRepo;
     protected $semesterRepo;
+    protected $postRepo;
+    protected $notiRepo;
 
     public function __construct(
         UserRepositoryInterface $userRepo,
         CourseRepositoryInterface $courseRepo,
-        SemesterRepositoryInterface $semesterRepo
+        SemesterRepositoryInterface $semesterRepo,
+        PostRepositoryInterface $postRepo,
+        NotifyRepositoryInterface $notiRepo
     ) {
         $this->userRepo = $userRepo;
         $this->courseRepo = $courseRepo;
         $this->semesterRepo = $semesterRepo;
+        $this->postRepo = $postRepo;
+        $this->notiRepo = $notiRepo;
     }
 
     public function home()
@@ -57,15 +65,15 @@ class StudentHomeController extends Controller
             default:
                 $semesNow = config('auth.register.seme-0');
         }
-        
+
         $semesters = $this->semesterRepo->getSemesterNow($semesNow, $year);
 
         $countCourses = $this->courseRepo->getCourse();
 
         $users = $this->userRepo->getCourseLecturer();
-        
+
         $listCourse = $this->courseRepo->listCourse($semesters->id);
-                
+
         $total = 0;
         foreach ($users->courses as $course) {
             if ($course->semester_id == $semesters->id) {
@@ -149,17 +157,17 @@ class StudentHomeController extends Controller
 
     public function markAsRead($id)
     {
-        $userUnreadNoti = auth()->user()->unreadNotifications->where('id', $id)->first();
-        if ($userUnreadNoti) {
-            $userUnreadNoti->markAsRead();
+        $noti = $this->notiRepo->getNotify($id);
+        if (!$noti->read_at) {
+            $noti->markAsRead();
         }
-
-        return redirect()->back();
+        $post = $this->postRepo->find($noti->data["data"]["post_id"]);
+        return view('student.notice', compact('post'));
     }
 
     public function markAsReadAll()
     {
-        $userUnreadNoti = auth()->user()->unreadNotifications;
+        $userUnreadNoti = $this->notiRepo->getListUnRead();
         if ($userUnreadNoti) {
             $userUnreadNoti->markAsRead();
         }
