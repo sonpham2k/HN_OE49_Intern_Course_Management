@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Course;
+use App\Models\Post;
+use App\Notifications\NewPost;
+use Illuminate\Support\Facades\Notification;
+use Pusher\Pusher;
 
 class UserRepository extends BaseRepository implements UserRepositoryInterface
 {
@@ -182,9 +186,9 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     public function searchAllLecturer($name)
     {
         $users = User::where('role_id', config('auth.roles.lecturer'))
-            ->where('fullname', 'like', '%'.$name.'%')
+            ->where('fullname', 'like', '%' . $name . '%')
             ->get();
-        
+
         return $users;
     }
 
@@ -208,17 +212,17 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     public function getDataChart($id)
     {
         $user = User::where('id', $id)
-                ->first()
-                ->courses()
-                ->wherePivot('user_id', $id)
-                ->get()
-                ->groupBy(function ($item) {
-                    return $item->semester->begin.'-'.$item->semester->end;
-                })
-                ->map(function ($value) {
-                    return array_sum($value->pluck('numbers')->toArray());
-                });
-        
+            ->first()
+            ->courses()
+            ->wherePivot('user_id', $id)
+            ->get()
+            ->groupBy(function ($item) {
+                return $item->semester->begin . '-' . $item->semester->end;
+            })
+            ->map(function ($value) {
+                return array_sum($value->pluck('numbers')->toArray());
+            });
+
         return $user;
     }
 }

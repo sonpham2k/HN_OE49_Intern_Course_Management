@@ -114,7 +114,6 @@ class UserControllerTest extends ControllerTestCase
         $request = new ForgotPassRequest([
             'email' => 'Jack97@gmail.com'
         ]);
-
         $user = User::factory()->make();
 
         $this->userRepo->shouldReceive('findUser')->andReturn($user);

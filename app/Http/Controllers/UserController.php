@@ -30,10 +30,9 @@ class UserController extends Controller
     public function store(UserStoreRequest $request)
     {
         if (Auth::attempt([
-                'email' => $request->input('email'),
-                'password' => $request->input('password'),
-            ])
-        ) {
+            'email' => $request->input('email'),
+            'password' => $request->input('password'),
+        ])) {
             return redirect()->route('home');
         }
         $data = __('Login fail');
