@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use Mail;
-use App\Mail\MailNotify;
+use App\Mail\ForgotPassMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -35,6 +35,6 @@ class SendEmail implements ShouldQueue
      */
     public function handle()
     {
-        Mail::to($this->email)->send(new MailNotify($this->data));
+        Mail::to($this->email)->send(new ForgotPassMail($this->data));
     }
 }

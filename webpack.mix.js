@@ -15,3 +15,4 @@ mix.js('resources/js/app.js', 'public/js')
     .js('resources/js/mine.js', 'public/js')
     .sourceMaps();
 mix.css('resources/css/app.css', 'public/css/app.css');
+mix.js('resources/js/chart.js', 'public/js').sourceMaps();
