@@ -220,7 +220,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
                 return $item->semester->begin . '-' . $item->semester->end;
             })
             ->map(function ($value) {
-                return array_sum($value->pluck('numbers')->toArray());
+                return array_sum($value->pluck('slot')->toArray());
             });
 
         return $user;
