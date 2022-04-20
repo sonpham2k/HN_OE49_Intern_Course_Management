@@ -75,7 +75,11 @@
                     <div class="col-lg-8">
                         <div class="card h-100">
                             <div class="col-10 d-flex align-items-center">
-                                <h6 class="mb-0">{{ __('chart') }}</h6>
+                                <h6 id="chartName" class="mb-0">{{ __('chart of') }}
+                                    @isset($name)
+                                        {{ $name }}
+                                    @endisset
+                                </h6>
                             </div>
                             <div>
                                 <canvas id="myChart" class="chart"></canvas>
@@ -87,13 +91,13 @@
         </div>
     </div>
     @php
-        $sub =  __('subcribers');
+    $sub = __('subcribers');
     @endphp
     <script>
         window.year = '{!! json_encode($year) !!}';
         window.data = '{!! json_encode($data) !!}';
         window.sub = '{!! $sub !!}';
     </script>
-    <script src="{{ asset('bower_components/bower_project1/js/user/chart.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/chart.js') }}" type="text/javascript"></script>
     </div>
 @endsection

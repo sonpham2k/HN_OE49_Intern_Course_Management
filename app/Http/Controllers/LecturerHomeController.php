@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\UpdateLecturerRequest;
 use App\Http\Requests\UpdateProfileRequest;
 use App\Repositories\Course\CourseRepositoryInterface;
+use App\Repositories\Report\ReportRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
 use App\Repositories\Semester\SemesterRepositoryInterface;
 
@@ -15,15 +16,18 @@ class LecturerHomeController extends Controller
     protected $userRepo;
     protected $courseRepo;
     protected $semesterRepo;
+    protected $reportRepo;
 
     public function __construct(
         UserRepositoryInterface $userRepo,
         CourseRepositoryInterface $courseRepo,
-        SemesterRepositoryInterface $semesterRepo
+        SemesterRepositoryInterface $semesterRepo,
+        ReportRepositoryInterface $reportRepo
     ) {
         $this->userRepo = $userRepo;
         $this->courseRepo = $courseRepo;
         $this->semesterRepo = $semesterRepo;
+        $this->reportRepo = $reportRepo;
     }
 
     public function home()
@@ -83,13 +87,16 @@ class LecturerHomeController extends Controller
         $users = $this->userRepo->searchAllLecturer($request->name);
         $data = [];
         $year = [];
+        $name = "";
         if (isset($request->watch)) {
-            $this->userRepo->searchLecturer($year, $request->watch);
-            $user = $this->userRepo->getDataChart($request->watch);
-            $year = $user->keys()->all();
-            $data = $user->values()->all();
+            $result = $this->reportRepo->findReportByUser($request->watch);
+            $name = $result[0]->user->fullname;
+            foreach ($result as $item) {
+                $year[] = $item->year;
+                $data[] = $item->subscribers;
+            }
         }
 
-        return view('charts.chart', compact('users', 'year', 'data'));
+        return view('charts.chart', compact('users', 'year', 'data', 'name'));
     }
 }

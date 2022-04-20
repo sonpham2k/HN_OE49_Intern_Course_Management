@@ -135,4 +135,7 @@ return [
     'randomLength' => 10,
     'maxNotify' => 5,
     'superAdmin' => 1,
+    'monthSchedule' => 6,
+    'timeSchedule' => '00:00',
+    'daySchedule' => 1,
 ];
