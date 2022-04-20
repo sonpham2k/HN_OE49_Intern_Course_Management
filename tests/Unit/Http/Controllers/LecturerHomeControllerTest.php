@@ -10,7 +10,9 @@ use App\Http\Requests\UpdateProfileRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Course;
+use App\Models\Report;
 use App\Models\Semester;
+use App\Repositories\Report\ReportRepositoryInterface;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -25,6 +27,7 @@ class LecturerHomeControllerTest extends ControllerTestCase
     protected $userRepo;
     protected $courseRepo;
     protected $semesterRepo;
+    protected $reportRepo;
 
     public function setUp(): void
     {
@@ -32,10 +35,12 @@ class LecturerHomeControllerTest extends ControllerTestCase
         $this->userRepo = Mockery::mock($this->app->make(UserRepositoryInterface::class));
         $this->courseRepo = Mockery::mock($this->app->make(CourseRepositoryInterface::class));
         $this->semesterRepo = Mockery::mock($this->app->make(SemesterRepositoryInterface::class));
+        $this->reportRepo = Mockery::mock($this->app->make(ReportRepositoryInterface::class));
         $this->lecturerHomeController = new lecturerHomeController(
             $this->userRepo,
             $this->courseRepo,
-            $this->semesterRepo
+            $this->semesterRepo,
+            $this->reportRepo
         );
     }
 
@@ -114,10 +119,20 @@ class LecturerHomeControllerTest extends ControllerTestCase
         $request = new Request();
         $request->watch = 5;
         $this->userRepo->shouldReceive('searchAllLecturer');
-        $this->userRepo->shouldReceive('searchLecturer');
-        $this->userRepo->shouldReceive('getDataChart')->andReturn(collect(['2021-2022' => 100]));
-
+        $report = Mockery::mock(Report::class)->makePartial();
+        $user = Mockery::mock(User::class)->makePartial();
+        $user->fullname = "Hello";
+        $report->year = '2021-2022';
+        $report->subscribers = 350;
+        $report->setRelation('user', $user);
+        $result[] = $report;
+        $this->reportRepo->shouldReceive('findReportByUser')->andReturn($result);
         $view = $this->lecturerHomeController->viewChart($request);
-        $this->testAssertView('charts.chart', $view);
+        $this->testAssertView('charts.chart', $view, [
+            'users',
+            'year',
+            'data',
+            'name',
+        ]);
     }
 }

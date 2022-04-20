@@ -17,6 +17,8 @@ use App\Repositories\Post\PostRepository;
 use App\Repositories\Post\PostRepositoryInterface;
 use App\Repositories\Notify\NotifyRepository;
 use App\Repositories\Notify\NotifyRepositoryInterface;
+use App\Repositories\Report\ReportRepository;
+use App\Repositories\Report\ReportRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -36,6 +38,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(TimeTableRepositoryInterface::class, TimeTableRepository::class);
         $this->app->bind(PostRepositoryInterface::class, PostRepository::class);
         $this->app->bind(NotifyRepositoryInterface::class, NotifyRepository::class);
+        $this->app->bind(ReportRepositoryInterface::class, ReportRepository::class);
     }
 
     /**

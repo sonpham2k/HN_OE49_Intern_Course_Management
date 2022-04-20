@@ -20,7 +20,13 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
-        $schedule->command('insert:reports')->everyMinute();
+        $schedule
+            ->command('insert:reports')
+            ->yearlyOn(
+                config('auth.monthSchedule'),
+                config('auth.daySchedule'),
+                config('auth.timeSchedule')
+            );
     }
 
     /**
@@ -30,7 +36,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }
