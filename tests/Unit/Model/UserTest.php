@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\Models\User;
 use App\Models\Course;
+use App\Models\Post;
 use App\Models\Role;
 use App\Models\Report;
 use Tests\ModelTestCase;
@@ -50,5 +51,20 @@ class UserTest extends ModelTestCase
             'course_user.course_id'
         );
         $this->assertHasManyRelation($this->user->reports(), $this->user, new Report());
+        $this->assertHasManyRelation($this->user->posts(), $this->user, new Post());
+        $this->assertBelongsToManyRelation(
+            $this->user->followers(),
+            $this->user,
+            new User(),
+            'followers.follows_id',
+            'followers.user_id'
+        );
+        $this->assertBelongsToManyRelation(
+            $this->user->follows(),
+            $this->user,
+            new User(),
+            'followers.user_id',
+            'followers.follows_id'
+        );
     }
 }
