@@ -159,7 +159,7 @@
                                 </li>
                                 <li>
                                     <ul class="p-0 m-0" id="notification-list"
-                                        data-url={{ route('getListNoti') }}>
+                                        data-url="">
                                         @foreach (Auth::user()->notifications as $notification)
                                             <li
                                                 class="notification-item {{ $notification->unread() ? 'unread' : '' }}">

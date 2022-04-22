@@ -48,7 +48,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         ]);
         $students = $this->getStudents();
         $student = $students[count($students) - 1];
-        $student->follow(config('auth.superAdmin'));
+        $student->follows()->attach(config('auth.superAdmin'));
     }
 
     public function showCourseOfStudent($id)
