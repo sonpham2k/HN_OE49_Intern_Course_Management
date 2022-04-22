@@ -62,7 +62,7 @@ class UserController extends Controller
 
     public function sendEmail(ForgotPassRequest $request)
     {
-        $email = $request->input('email');
+        $email = $request->email;
         $checkUser = $this->userRepo->findUser($email);
         if ($checkUser) {
             $characters = config('auth.randomString');
