@@ -16,6 +16,9 @@ use Tests\TestCase;
 use Illuminate\Http\RedirectResponse;
 use Tests\ControllerTestCase;
 use App\Models\User;
+use App\Jobs\SendEmail;
+use App\Mail\ForgotPassMail;
+use Illuminate\Support\Facades\Mail;
 
 class UserControllerTest extends ControllerTestCase
 {
@@ -111,23 +114,20 @@ class UserControllerTest extends ControllerTestCase
 
     public function testSendEmailSuccess()
     {
-        $request = new ForgotPassRequest([
-            'email' => 'Jack97@gmail.com'
-        ]);
+        Mail::fake();
+        $request = new ForgotPassRequest();
         $user = User::factory()->make();
-
         $this->userRepo->shouldReceive('findUser')->andReturn($user);
         $this->userRepo->shouldReceive('getCodeResetPass')->andReturn($user);
-        
         $redirect = $this->userController->sendEmail($request);
+        Mail::assertSent(ForgotPassMail::class);
         $this->assertInstanceOf(RedirectResponse::class, $redirect);
     }
 
     public function testSendEmailFail()
     {
-        $request = new ForgotPassRequest([
-            'email' => 'phamngocson_t63@hus.edu.com'
-        ]);
+        Mail::fake();
+        $request = new ForgotPassRequest();
         $this->userRepo->shouldReceive('findUser')->andReturn(false);
         
         $redirect = $this->userController->sendEmail($request);

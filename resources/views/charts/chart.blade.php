@@ -8,7 +8,7 @@
                     <form method="GET" action="{{ route('lecturers.chart') }}">
                         <table class="centerForm">
                             <div class="col-7 d-flex align-items-center">
-                                <h6 class="mb-0">{{ __('text search') }}</h6>
+                                <h6 id="findName" class="mb-0">{{ __('text search') }}</h6>
                             </div>
                             <tr>
                                 <td>
@@ -38,7 +38,7 @@
                             <h6 class="mb-0">{{ __('total search') }}</h6>
                         </div>
 
-                        <table class="centerForm data display">
+                        <table class="data display">
                             <tr>
                                 <td>
                                     <div class="marginTable">
@@ -52,10 +52,13 @@
                                 </td>
                                 <td></td>
                             </tr>
+                            @php
+                                $i = 1;
+                            @endphp
                             @foreach ($users as $user)
                                 <tr>
                                     <td class="align-middle text-center">
-                                        <div class="marginTable">{{ $user->id }}</div>
+                                        <div class="marginTable">{{ $i++ }}</div>
                                     </td>
                                     <td class="align-middle text-center">
                                         <div class="marginTable">{{ $user->fullname }}</div>
@@ -75,7 +78,7 @@
                     <div class="col-lg-8">
                         <div class="card h-100">
                             <div class="col-10 d-flex align-items-center">
-                                <h6 id="chartName" class="mb-0">{{ __('chart of') }}
+                                <h6 id="chartName" class="mb-0">{{ __('chart of') }} {{ __('lecturer') }}:
                                     @isset($name)
                                         {{ $name }}
                                     @endisset
