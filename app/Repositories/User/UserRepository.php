@@ -225,4 +225,18 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 
         return $user;
     }
+
+    public function getStudent()
+    {
+        $student = User::where('role_id', config('auth.roles.student'))->get();
+
+        return $student;
+    }
+
+    public function findStudent($id)
+    {
+        $student = User::where('role_id', config('auth.roles.student'))->find($id);
+
+        return $student;
+    }
 }
